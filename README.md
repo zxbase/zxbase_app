@@ -13,5 +13,11 @@ Multiplatform Zxbase application.
 ## Run
 
 ```shell
-flutter run -d macos --dart-define-from-file=sample_env
+tool/run_macos
+```
+
+## Test
+
+```shell
+tool/test
 ```

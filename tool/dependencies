@@ -1,3 +1,2 @@
-#!/bin/bash
 dart pub outdated --color
 dart pub outdated --color | grep 'dev_dependencies: all up-to-date'

@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_riverpod: ^2.6.0
+  path_provider: ^2.0.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

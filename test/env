@@ -4,3 +4,4 @@ SIGNALING_HOST='signaling.org'
 SIGNALIG_PORT=8002
 STUN_HOST='stun.org'
 STUN_PORT=8003
+BLUE_VAULT_PWD='test.pwd'

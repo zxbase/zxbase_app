@@ -25,6 +25,8 @@ class Config {
   late String stunHost;
   late int stunPort;
 
+  late String blueVaultPwd;
+
   // platform
   late String appPath;
   late String dbPath;
@@ -55,6 +57,8 @@ class Config {
 
     stunHost = const String.fromEnvironment('STUN_HOST');
     stunPort = const int.fromEnvironment('STUN_PORT');
+
+    blueVaultPwd = const String.fromEnvironment('BLUE_VAULT_PWD');
 
     if (Platform.isWindows) {
       appPath = Platform.environment['LOCALAPPDATA']!;

@@ -1,2 +1,2 @@
 dart pub outdated --color
-dart pub outdated --color | grep 'dev_dependencies: all up-to-date'
+dart pub outdated --color | egrep 'direct dependencies: all up-to-date.'

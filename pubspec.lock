@@ -94,6 +94,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_advanced_avatar:
+    dependency: transitive
+    description:
+      name: flutter_advanced_avatar
+      sha256: c97fa65a2499d85f367421b8386d45ce090046dcf24f6f71042e5e4e5c6a8c59
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -115,6 +123,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   js:
     dependency: transitive
     description:
@@ -336,6 +352,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.4"
+  timeago:
+    dependency: transitive
+    description:
+      name: timeago
+      sha256: b05159406a97e1cbb2b9ee4faa9fb096fe0e2dfcd8b08fcd2a00553450d3422e
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.1"
   typed_data:
     dependency: transitive
     description:
@@ -385,6 +409,15 @@ packages:
       url: "https://github.com/zxbase/zxbase_crypto"
     source: git
     version: "3.1.7"
+  zxbase_flutter_ui:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "308fa2878f7d93e2815d254adc1e1906a30d2a63"
+      url: "https://github.com/zxbase/zxbase_flutter_ui"
+    source: git
+    version: "1.8.6"
   zxbase_vault:
     dependency: "direct main"
     description:

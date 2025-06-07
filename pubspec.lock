@@ -369,7 +369,7 @@ packages:
     source: hosted
     version: "1.4.0"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       sha256: a5be9ef6618a7ac1e964353ef476418026db906c4facdedaa299b7a2e71690ff
@@ -401,7 +401,7 @@ packages:
     source: hosted
     version: "1.1.0"
   zxbase_crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "."
       ref: HEAD
@@ -418,6 +418,15 @@ packages:
       url: "https://github.com/zxbase/zxbase_flutter_ui"
     source: git
     version: "1.8.6"
+  zxbase_model:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: fe2529df453b8f2bfcdaf6fe66ef9003a816b19c
+      url: "https://github.com/zxbase/zxbase_model"
+    source: git
+    version: "1.0.5"
   zxbase_vault:
     dependency: "direct main"
     description:

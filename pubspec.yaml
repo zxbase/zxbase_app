@@ -1,5 +1,5 @@
 name: zxbase_app
-description: "A new Flutter project."
+description: "Multiplatform Zxbase application."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -13,9 +13,14 @@ dependencies:
 
   flutter_riverpod: ^2.6.0
   path_provider: ^2.0.0
+  uuid: ^4.0.0
 
+  zxbase_crypto:
+    git: https://github.com/zxbase/zxbase_crypto
   zxbase_flutter_ui:
     git: https://github.com/zxbase/zxbase_flutter_ui
+  zxbase_model:
+    git: https://github.com/zxbase/zxbase_model
   zxbase_vault:
     git: https://github.com/zxbase/zxbase_vault
 

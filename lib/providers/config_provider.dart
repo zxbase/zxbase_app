@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:zxbase_app/core/version.dart';
 
 enum ConfigState { none, ready }
 
@@ -16,6 +17,8 @@ class Config {
   final greenVaultSuffix = 'green';
 
   // environment
+  late Version version;
+
   late String rpsHost;
   late int rpsPort;
 
@@ -49,6 +52,7 @@ class Config {
       return;
     }
 
+    version = Version(text: const String.fromEnvironment('VERSION'));
     rpsHost = const String.fromEnvironment('RPS_HOST');
     rpsPort = const int.fromEnvironment('RPS_PORT');
 

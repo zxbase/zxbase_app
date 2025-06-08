@@ -13,6 +13,7 @@ void main() {
     var configProv = container.read(configProvider);
     await configProv.init();
 
+    expect(configProv.version.text == '3.1.14 (90)', true);
     expect(configProv.rpsPort == 8001, true);
     expect(configProv.rpsHost == 'rps.org', true);
     expect(['.', '/root'].contains(configProv.appPath), true);

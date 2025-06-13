@@ -7,7 +7,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'package:zxbase_app/core/ui/app_err.dart';
+import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/green_vault_provider.dart';
@@ -88,14 +88,14 @@ class UserVaultNotifier extends StateNotifier<UserVault> {
     return UserVaultEntry.fromJson(json.decode(json.encode(state.entries[id])));
   }
 
-  Future<AppErr> createEntry(UserVaultEntry entry) async {
+  Future<RV> createEntry(UserVaultEntry entry) async {
     for (UserVaultEntry val in state.entries.values) {
       if (entry.id == val.id) {
-        return AppErr.entryExists;
+        return RV.entryExists;
       }
 
       if (entry.title == val.title && entry.type == val.type) {
-        return AppErr.titleExists;
+        return RV.titleExists;
       }
     }
 
@@ -105,19 +105,19 @@ class UserVaultNotifier extends StateNotifier<UserVault> {
     stateCopy.entries[entry.id] = entry;
     stateCopy.populateUsernames();
     state = stateCopy; // trigger notification
-    return await _updateDoc(newState: stateCopy) ? AppErr.ok : AppErr.io;
+    return await _updateDoc(newState: stateCopy) ? RV.ok : RV.io;
   }
 
-  Future<AppErr> updateEntry(UserVaultEntry entry) async {
+  Future<RV> updateEntry(UserVaultEntry entry) async {
     if (!state.entries.containsKey(entry.id)) {
-      return AppErr.notFound;
+      return RV.notFound;
     }
 
     for (UserVaultEntry val in state.entries.values) {
       if (entry.title == val.title &&
           entry.type == val.type &&
           entry.id != val.id) {
-        return AppErr.titleExists;
+        return RV.titleExists;
       }
     }
 
@@ -127,19 +127,19 @@ class UserVaultNotifier extends StateNotifier<UserVault> {
     stateCopy.entries[entry.id] = entry;
     stateCopy.populateUsernames();
     state = stateCopy; // trigger notification
-    return await _updateDoc(newState: stateCopy) ? AppErr.ok : AppErr.io;
+    return await _updateDoc(newState: stateCopy) ? RV.ok : RV.io;
   }
 
-  Future<AppErr> deleteEntry({required String id}) async {
+  Future<RV> deleteEntry({required String id}) async {
     if (!state.entries.containsKey(id)) {
-      return AppErr.notFound;
+      return RV.notFound;
     }
     log('Delete entry $id.', name: _comp);
     UserVault stateCopy = UserVault.copy(state);
     stateCopy.entries.remove(id);
     stateCopy.populateUsernames();
     state = stateCopy; // trigger notification
-    return await _updateDoc(newState: stateCopy) ? AppErr.ok : AppErr.io;
+    return await _updateDoc(newState: stateCopy) ? RV.ok : RV.io;
   }
 
   List<String> search({required String query}) {

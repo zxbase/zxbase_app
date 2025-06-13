@@ -42,7 +42,7 @@ void main() {
     rv = await container.read(initProvider.notifier).setAttempts(1);
     expect(rv, equals(true));
 
-    // mark camera permission
+    // read camera permission
     rv = await container
         .read(initProvider.notifier)
         .setCameraPermissionInfoShowed();

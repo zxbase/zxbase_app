@@ -1,4 +1,4 @@
-import 'package:zxbase_app/core/ui/app_err.dart';
+import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/green_vault_provider.dart';
@@ -75,18 +75,18 @@ void main() {
     entry.notes = notes;
     entry.uris = uris;
 
-    AppErr rv = await userVaultNotifier.createEntry(entry);
-    expect(rv, equals(AppErr.ok));
+    RV rv = await userVaultNotifier.createEntry(entry);
+    expect(rv, equals(RV.ok));
 
     // creating same entry should fail
     UserVaultEntry entryCopy = userVaultNotifier.copyEntry(id: entryId)!;
     rv = await userVaultNotifier.createEntry(entryCopy);
-    expect(rv, equals(AppErr.entryExists));
+    expect(rv, equals(RV.entryExists));
 
     // using same title should fail
     entryCopy.id = '2';
     rv = await userVaultNotifier.createEntry(entryCopy);
-    expect(rv, equals(AppErr.titleExists));
+    expect(rv, equals(RV.titleExists));
 
     snapshot = userVaultNotifier.export();
     Revisions rev = Revisions.import(snapshot['rev']);
@@ -124,8 +124,8 @@ void main() {
     entryCopy.hidden = true;
 
     // update entry
-    AppErr rv = await userVaultNotifier.updateEntry(entryCopy);
-    expect(rv, equals(AppErr.ok));
+    RV rv = await userVaultNotifier.updateEntry(entryCopy);
+    expect(rv, equals(RV.ok));
 
     // check entry
     entry = userVault.entries[entryId]!;
@@ -155,8 +155,8 @@ void main() {
     entry.uris = ['https://second.com'];
     entry.hidden = true;
 
-    AppErr rv = await userVaultNotifier.createEntry(entry);
-    expect(rv, equals(AppErr.ok));
+    RV rv = await userVaultNotifier.createEntry(entry);
+    expect(rv, equals(RV.ok));
 
     List<String> entryIds = userVaultNotifier.search(query: 'second');
     expect(entryIds, equals(['2']));
@@ -196,8 +196,8 @@ void main() {
     expect(entry.uris, equals(uris));
 
     // delete entry
-    AppErr rv = await userVaultNotifier.deleteEntry(id: entryId);
-    expect(rv, equals(AppErr.ok));
+    RV rv = await userVaultNotifier.deleteEntry(id: entryId);
+    expect(rv, equals(RV.ok));
   });
 
   test('Verify deletion', () async {
@@ -278,8 +278,8 @@ void main() {
     entry.password = pwd;
     entry.notes = 'second notes';
     entry.uris = ['https://second.com'];
-    AppErr rv = await userVaultNotifier.createEntry(entry);
-    expect(rv, equals(AppErr.ok));
+    RV rv = await userVaultNotifier.createEntry(entry);
+    expect(rv, equals(RV.ok));
 
     UserVaultEntry entry2 = UserVaultEntry(id: '11', type: typeLogin);
     entry2.title = 'Unique title';
@@ -288,7 +288,7 @@ void main() {
     entry2.notes = 'second notes';
     entry2.uris = ['https://second.com'];
     rv = await userVaultNotifier.createEntry(entry2);
-    expect(rv, equals(AppErr.titleExists));
+    expect(rv, equals(RV.titleExists));
 
     UserVaultEntry entry3 = UserVaultEntry(id: '10', type: typeNote);
     entry3.title = 'Unique title';
@@ -297,7 +297,7 @@ void main() {
     entry3.notes = 'second notes';
     entry3.uris = ['https://second.com'];
     rv = await userVaultNotifier.createEntry(entry3);
-    expect(rv, equals(AppErr.entryExists));
+    expect(rv, equals(RV.entryExists));
 
     UserVaultEntry entry4 = UserVaultEntry(id: '12', type: typeNote);
     entry4.title = 'Unique title';
@@ -306,7 +306,7 @@ void main() {
     entry4.notes = 'second notes';
     entry4.uris = ['https://second.com'];
     rv = await userVaultNotifier.createEntry(entry4);
-    expect(rv, equals(AppErr.ok));
+    expect(rv, equals(RV.ok));
 
     UserVaultEntry entry5 = UserVaultEntry(id: '12', type: typeNote);
     entry5.title = 'Unique title';
@@ -315,7 +315,7 @@ void main() {
     entry5.notes = 'second notes';
     entry5.uris = ['https://second.com'];
     rv = await userVaultNotifier.createEntry(entry5);
-    expect(rv, equals(AppErr.entryExists));
+    expect(rv, equals(RV.entryExists));
 
     UserVaultEntry entry6 = UserVaultEntry(id: '13', type: typeNote);
     entry6.title = 'Unique title';
@@ -324,10 +324,10 @@ void main() {
     entry6.notes = 'second notes';
     entry6.uris = ['https://second.com'];
     rv = await userVaultNotifier.createEntry(entry6);
-    expect(rv, equals(AppErr.titleExists));
+    expect(rv, equals(RV.titleExists));
 
     entry6.type = typeLogin;
     rv = await userVaultNotifier.updateEntry(entry6);
-    expect(rv, equals(AppErr.notFound));
+    expect(rv, equals(RV.notFound));
   });
 }

@@ -9,3 +9,8 @@ final isVaultModifiedProvider = StateProvider<bool>((ref) {
 final searchQueryProvider = StateProvider<String>((ref) {
   return '';
 });
+
+// Selected tab index.
+final selectedTabProvider = StateProvider<int>((ref) {
+  return 0; // default tab
+});

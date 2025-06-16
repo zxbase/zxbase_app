@@ -21,4 +21,11 @@ void main() {
 
     expect(searchQuery == 'search', true);
   });
+
+  test('Selected tab provider', () async {
+    container.read(selectedTabProvider.notifier).state = 1;
+    var selectedIndex = container.read(selectedTabProvider);
+
+    expect(selectedIndex == 1, true);
+  });
 }

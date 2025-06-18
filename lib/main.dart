@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
-import 'package:zxbase_app/ui/desktop_page.dart';
+import 'package:zxbase_app/ui/desktop_widget.dart';
+import 'package:zxbase_app/ui/explorer_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 void main() {
@@ -23,7 +24,7 @@ class ZxbaseApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Zxbase',
       theme: theme,
-      home: const DesktopPage(),
+      home: UI.isDesktop ? DesktopWidget() : ExplorerWidget(),
     );
   }
 }

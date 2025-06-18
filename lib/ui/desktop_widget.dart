@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:zxbase_app/ui/explorer_widget.dart';
 
-class DesktopPage extends StatelessWidget {
-  const DesktopPage({super.key});
+class DesktopWidget extends StatelessWidget {
+  const DesktopWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -31,8 +31,8 @@ class _StartPageState extends ConsumerState<ExplorerWidget> {
           BottomNavigationBar(
             key: const Key('bottomBar'),
             elevation: 0,
-            selectedFontSize: UI.fontSizeXSmall, // 0,
-            unselectedFontSize: UI.fontSizeXSmall, // 0,
+            selectedFontSize: UI.fontSizeXSmall,
+            unselectedFontSize: UI.fontSizeXSmall,
             type: BottomNavigationBarType.fixed,
             unselectedItemColor: Colors.grey,
             iconSize: UI.isMobile ? 30 : IconTheme.of(context).size ?? 24,

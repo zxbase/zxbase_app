@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
+import 'package:zxbase_app/ui/vault_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class ExplorerWidget extends ConsumerStatefulWidget {
@@ -23,7 +24,7 @@ class _StartPageState extends ConsumerState<ExplorerWidget> {
     _selectedIndex = ref.watch(selectedTabProvider);
 
     return Scaffold(
-      body: Center(child: Container()),
+      body: Center(child: VaultWidget()),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

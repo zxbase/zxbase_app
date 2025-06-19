@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:zxbase_app/ui/explorer_widget.dart';
 
 class DesktopWidget extends StatelessWidget {
@@ -12,7 +11,7 @@ class DesktopWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.25,
+            width: MediaQuery.of(context).size.width * 0.38,
             child: const ExplorerWidget(),
           ),
           const VerticalDivider(width: 0),

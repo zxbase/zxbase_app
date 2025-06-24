@@ -45,8 +45,6 @@ class Config {
 
   // init to be called by startup sequence
   Future<void> init() async {
-    // In tests, default values are not overriden.
-    // Keep it alpha to prevent skewing user metrics by test suites.
     if (_state == ConfigState.ready) {
       // don't allow double init
       return;

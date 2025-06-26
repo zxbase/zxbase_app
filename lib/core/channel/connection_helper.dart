@@ -1,4 +1,8 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:zxbase_app/core/const.dart';
+import 'package:zxbase_app/providers/connections_provider.dart';
+import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
 
 const String messengerApp = 'messenger';
 const String locationApp = 'location';
@@ -28,4 +32,14 @@ bool isIdle(int seconds) {
 bool isIdleSince(DateTime date) {
   DateTime currTime = DateTime.now().toUtc();
   return isIdle(currTime.difference(date).inSeconds);
+}
+
+// Start negotiation with offline peers.
+Future<void> startConnections(Ref ref) async {
+  Connections connections = ref.read(connectionsProvider);
+  for (Peer peer in ref.read(peersProvider).peers.values) {
+    if (peer.status == peerStatusOffline) {
+      await connections.startNegotiation(peerId: peer.id);
+    }
+  }
 }

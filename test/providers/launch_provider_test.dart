@@ -25,12 +25,12 @@ void main() {
   cleanupDb();
   mockPathProvider();
 
-  test('Execute workflows', () async {
+  test('Execute launch stages', () async {
     // scope container to a single test
     final container = ProviderContainer();
     addTearDown(container.dispose);
 
-    // startup sequence
+    // launch sequence
     await container.read(configProvider).init();
     await container.read(blueVaultProvider.notifier).init();
     await container.read(initProvider.notifier).init();
@@ -49,7 +49,7 @@ void main() {
       keyPair: device.identityKeyPair,
     );
 
-    // execute registration workflow
+    // registration
     var wizardStageNotifier = container.read(launchProvider.notifier);
     await wizardStageNotifier.registerAnonymous();
     expect(
@@ -57,7 +57,7 @@ void main() {
       equals(LaunchStageEnum.acquiringRegularToken),
     );
 
-    // execute access workflow
+    // access
     await wizardStageNotifier.accessAnonymous();
     expect(
       container.read(launchProvider).stage,

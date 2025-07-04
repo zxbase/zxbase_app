@@ -14,3 +14,12 @@ final searchQueryProvider = StateProvider<String>((ref) {
 final selectedTabProvider = StateProvider<int>((ref) {
   return 0; // default tab
 });
+
+// vault providers
+final vaultCandidateProvider = StateProvider<Map<String, dynamic>>((ref) {
+  return {};
+});
+
+final vaultSyncWarningProvider = StateProvider<String>((ref) {
+  return '';
+});

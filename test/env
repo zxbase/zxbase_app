@@ -1,5 +1,5 @@
-RPS_HOST="rps.org"
-RPS_PORT=8001
+RPS_HOST="alpha.zxbase.com"
+RPS_PORT=7070
 SIGNALING_HOST='signaling.org'
 SIGNALIG_PORT=8002
 STUN_HOST='stun.org'

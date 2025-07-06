@@ -3,7 +3,8 @@
 ## Launch sequence
 ```mermaid
   graph TD;
-      A[main] --> B{Vault initiated?};
+      A[main] --> A1[Splash Widget];
+      A1 --> B{Vault initiated?};
       B -- No --> C;
       B -- Yes --> D;
       C[Init Vault Widget] --> E;

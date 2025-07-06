@@ -1,4 +1,4 @@
-// Show spinning wheel while executing workflows.
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +6,7 @@ import 'package:zxbase_api_client/zxbase_api_client.dart';
 import 'package:zxbase_app/core/mock_peers.dart';
 import 'package:zxbase_app/ui/desktop_widget.dart';
 import 'package:zxbase_app/ui/explorer_widget.dart';
+import 'package:zxbase_app/ui/launch/spin_widget.dart';
 import 'package:zxbase_app/providers/launch_provider.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/connections_provider.dart';
@@ -16,6 +17,8 @@ import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/rps_provider.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
+const _component = 'launchWidget'; // logging component
+
 class LaunchWidget extends ConsumerStatefulWidget {
   const LaunchWidget({super.key});
   @override
@@ -23,8 +26,6 @@ class LaunchWidget extends ConsumerStatefulWidget {
 }
 
 class WorkflowPageState extends ConsumerState<LaunchWidget> {
-  final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -38,35 +39,13 @@ class WorkflowPageState extends ConsumerState<LaunchWidget> {
 
   @override
   Widget build(BuildContext context) {
+    log('Launch widget build.', name: _component);
+
     LaunchStage stage = ref.watch(launchProvider);
 
     return Builder(
       builder: (context) {
-        return Scaffold(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Center(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 150,
-                            width: 150,
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
-                          Text(stage.err),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        return spinScaffold(stage.err);
       },
     );
   }

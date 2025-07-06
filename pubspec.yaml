@@ -12,9 +12,14 @@ dependencies:
     sdk: flutter
 
   flutter_riverpod: ^2.6.0
+  flutter_webrtc: ^0.14.0
   path_provider: ^2.0.0
+  socket_io_client: ^3.0.0
   uuid: ^4.0.0
+  zxcvbn: ^1.0.0
 
+  zxbase_api_client:
+    git: https://github.com/zxbase/zxbase_api_client
   zxbase_crypto:
     git: https://github.com/zxbase/zxbase_crypto
   zxbase_flutter_ui:

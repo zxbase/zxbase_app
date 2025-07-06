@@ -1,21 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/ui/launch/init_vault_widget.dart';
 import 'package:zxbase_app/ui/launch/open_vault_widget.dart';
+import 'package:zxbase_app/ui/launch/splash_widget.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
-void main() {
-  runApp(ProviderScope(child: const ZxbaseApp()));
-}
+const _component = 'main'; // logging component
 
 class ZxbaseApp extends ConsumerWidget {
   const ZxbaseApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var init = ref.read(initProvider);
+
+    log('Zxbase app build.', name: _component);
 
     // theme reloads from here
     final initProv = ref.watch(initProvider);
@@ -31,4 +33,17 @@ class ZxbaseApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
     );
   }
+}
+
+void startApp() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const ProviderScope(child: ZxbaseApp()));
+}
+
+void main() {
+  runApp(
+    ProviderScope(
+      child: SplashWidget(onInitializationComplete: () => startApp()),
+    ),
+  );
 }

@@ -4,7 +4,8 @@
 ```mermaid
   graph TD;
       A[main] --> A1[Splash Widget];
-      A1 --> B{Vault initiated?};
+      A1 --> A2[Zxbase App];
+      A2 --> B{Vault initiated?};
       B -- No --> C;
       B -- Yes --> D;
       C[Init Vault Widget] --> E;

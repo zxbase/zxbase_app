@@ -1,13 +1,19 @@
-// Serves launch widget.
+// Launch provider executes launch sequence.
 // Doesn't persist any data.
 
 import 'dart:developer';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_api_client/zxbase_api_client.dart';
+import 'package:zxbase_app/core/mock_peers.dart';
+import 'package:zxbase_app/providers/config_provider.dart';
+import 'package:zxbase_app/providers/connections_provider.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
+import 'package:zxbase_app/providers/green_vault/device_provider.dart';
+import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
+import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/rps_provider.dart';
 import 'package:zxbase_app/providers/ws_provider.dart';
+import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 const _component = 'launchProvider'; // logging component
 
@@ -36,13 +42,6 @@ class LaunchNotifier extends StateNotifier<LaunchStage> {
     : super(LaunchStage(stage: LaunchStageEnum.initializing, msg: ''));
   final Ref ref;
   static const retryInterval = 5;
-  bool hasContext = false;
-  late BuildContext context; // if set, toasts will be shown
-
-  void setContext(BuildContext context) {
-    this.context = context;
-    hasContext = true;
-  }
 
   Future<void> logAndWait(String msg) async {
     log(msg, name: _component);
@@ -150,5 +149,53 @@ class LaunchNotifier extends StateNotifier<LaunchStage> {
     // trigger notification
     state = LaunchStage(stage: LaunchStageEnum.success, msg: 'All set!');
     log('Access obtained.', name: _component);
+  }
+
+  Future<void> launch() async {
+    Config conf = ref.read(configProvider);
+    Device device = ref.read(deviceProvider);
+
+    // initialize RPS (API) client
+    RpsClient rps = ref.read(rpsProvider);
+    rps.init(
+      host: conf.rpsHost,
+      port: conf.rpsPort,
+      identity: device.identity,
+      keyPair: device.identityKeyPair,
+    );
+
+    // Initialize conections before ws connects, there are
+    // could be signaling messages coming immediately.
+    if (!UI.testEnvironment) {
+      Connections connections = ref.read(connectionsProvider);
+      for (Peer peer in ref.read(peersProvider).peers.values) {
+        await connections.initConnection(
+          peerId: peer.id,
+          vaultEnabled: ref
+              .read(peerGroupsProvider)
+              .memberOfVaultGroup(peerId: peer.id),
+        );
+      }
+    }
+
+    Init init = ref.read(initProvider);
+    switch (init.wizardStage) {
+      case Init.vaultInitialized:
+        // execute registration workflow
+        await registerAnonymous();
+        await accessAnonymous();
+        // development only - populate the vault with mock data
+        if (UI.testEnvironment) {
+          await mockPeers(ref.read(peersProvider.notifier));
+        }
+        break;
+      case Init.deviceRegistered:
+      case Init.completed:
+        // execute access workflow
+        await accessAnonymous();
+        break;
+      default:
+        throw Exception('Incorrect init stage ${init.wizardStage}.');
+    }
   }
 }

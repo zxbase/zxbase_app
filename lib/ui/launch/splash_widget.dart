@@ -23,8 +23,8 @@ class SplashWidget extends ConsumerStatefulWidget {
 class _SplashWidgetState extends ConsumerState<SplashWidget> {
   late Config confProvider;
 
-  void _startup() async {
-    log('Executing startup sequence.', name: component);
+  void _init() async {
+    log('Executing init sequence.', name: component);
 
     await confProvider.init();
     log('Configuration initialized.', name: component);
@@ -42,7 +42,7 @@ class _SplashWidgetState extends ConsumerState<SplashWidget> {
   void initState() {
     super.initState();
     confProvider = ref.read(configProvider);
-    _startup();
+    _init();
   }
 
   @override

@@ -55,6 +55,20 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
   static const String _validationMessageReq =
       'Password does not match the requirements.';
 
+  Future<bool> _initVault() async {
+    // initialize green vault
+    if (!await ref.read(greenVaultProvider.notifier).init(_password)) {
+      return false;
+    }
+
+    await ref.read(settingsProvider.notifier).init();
+    await ref.read(deviceProvider.notifier).init();
+    await ref.read(userVaultProvider.notifier).init();
+
+    await ref.read(initProvider.notifier).setWizardStage(Init.vaultInitialized);
+    return true;
+  }
+
   Color passIColor(bool val) => val ? Colors.green.shade600 : Colors.grey;
 
   TextStyle passIStyle(bool val) =>
@@ -306,10 +320,12 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                             ),
                                           ),
                                           const SizedBox(width: 10),
-                                          Text(
-                                            'Upper and lowercase letters.',
-                                            style: passIStyle(
-                                              _passwordStructure[ppUpLow],
+                                          Expanded(
+                                            child: Text(
+                                              'Upper and lowercase letters.',
+                                              style: passIStyle(
+                                                _passwordStructure[ppUpLow],
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -382,7 +398,7 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                     key: const Key('initVaultButton'),
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        if (await initializeVault()) {
+                                        if (await _initVault()) {
                                           ref
                                               .read(launchProvider.notifier)
                                               .launch();
@@ -421,19 +437,5 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
         );
       },
     );
-  }
-
-  Future<bool> initializeVault() async {
-    // initialize green vault
-    if (!await ref.read(greenVaultProvider.notifier).init(_password)) {
-      return false;
-    }
-
-    await ref.read(settingsProvider.notifier).init();
-    await ref.read(deviceProvider.notifier).init();
-    await ref.read(userVaultProvider.notifier).init();
-
-    await ref.read(initProvider.notifier).setWizardStage(Init.vaultInitialized);
-    return true;
   }
 }

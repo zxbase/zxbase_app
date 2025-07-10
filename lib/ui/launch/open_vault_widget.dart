@@ -33,6 +33,35 @@ class OpenVaultWidgetState extends ConsumerState<OpenVaultWidget> {
   bool _buttonEnabled = true;
   bool _capsLockOn = false;
 
+  Future<bool> _openVault() async {
+    if (!(await ref.read(greenVaultProvider.notifier).open(_password))) {
+      log('Wrong vault password.', name: _component);
+      _loginAttempts = (_loginAttempts + 1) >= delay.length
+          ? delay.length - 1
+          : _loginAttempts + 1;
+      _wrongPassword = true;
+      _formKey.currentState!.validate();
+
+      setState(() {
+        // rebuild widget to disable the button
+        _buttonEnabled = false;
+      });
+      await ref.read(initProvider.notifier).setAttempts(_loginAttempts);
+      scheduleToEnableLogin();
+      return false;
+    }
+
+    _loginAttempts = 0;
+    await ref.read(initProvider.notifier).setAttempts(_loginAttempts);
+
+    log('Green vault has been opened.', name: _component);
+    await ref.read(settingsProvider.notifier).open();
+    await ref.read(deviceProvider.notifier).open();
+    await ref.read(userVaultProvider.notifier).open();
+
+    return true;
+  }
+
   void scheduleToEnableLogin() {
     Future.delayed(Duration(seconds: delay[_loginAttempts]), () {
       setState(() {
@@ -181,7 +210,7 @@ class OpenVaultWidgetState extends ConsumerState<OpenVaultWidget> {
                                         ? () async {
                                             if (_formKey.currentState!
                                                 .validate()) {
-                                              if (await openVault()) {
+                                              if (await _openVault()) {
                                                 ref
                                                     .read(
                                                       launchProvider.notifier,
@@ -223,34 +252,5 @@ class OpenVaultWidgetState extends ConsumerState<OpenVaultWidget> {
         );
       },
     );
-  }
-
-  Future<bool> openVault() async {
-    if (!(await ref.read(greenVaultProvider.notifier).open(_password))) {
-      log('Wrong vault password.', name: _component);
-      _loginAttempts = (_loginAttempts + 1) >= delay.length
-          ? delay.length - 1
-          : _loginAttempts + 1;
-      _wrongPassword = true;
-      _formKey.currentState!.validate();
-
-      setState(() {
-        // rebuild widget in order to disable the button
-        _buttonEnabled = false;
-      });
-      await ref.read(initProvider.notifier).setAttempts(_loginAttempts);
-      scheduleToEnableLogin();
-      return false;
-    }
-
-    _loginAttempts = 0;
-    await ref.read(initProvider.notifier).setAttempts(_loginAttempts);
-
-    log('Green vault has been opened.', name: _component);
-    await ref.read(settingsProvider.notifier).open();
-    await ref.read(deviceProvider.notifier).open();
-    await ref.read(userVaultProvider.notifier).open();
-
-    return true;
   }
 }

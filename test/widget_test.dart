@@ -1,19 +1,23 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-// import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:zxbase_app/main.dart';
+import 'package:zxbase_app/ui/launch/splash_widget.dart';
+import 'helpers.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(ProviderScope(child: const ZxbaseApp()));
+  mockPathProvider();
+  cleanupDb();
+
+  testWidgets('Test first launch', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        ProviderScope(
+          child: SplashWidget(onInitializationComplete: () => startApp()),
+        ),
+      );
+
+      // allow some time for init sequence
+      await Future.delayed(const Duration(seconds: 3), () {});
+    });
   });
 }

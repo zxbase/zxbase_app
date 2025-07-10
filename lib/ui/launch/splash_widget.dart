@@ -1,3 +1,5 @@
+// Splash widget initializes async resources before main application starts.
+
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 const component = 'splashWidget'; // logging component
 
-// Splash widget is used to initialize async resources before main application starts.
 class SplashWidget extends ConsumerStatefulWidget {
   const SplashWidget({super.key, required this.onInitializationComplete});
 

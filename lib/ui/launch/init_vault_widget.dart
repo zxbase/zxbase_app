@@ -7,6 +7,7 @@ import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/green_vault_provider.dart';
 import 'package:zxbase_app/providers/green_vault/settings_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
+import 'package:zxbase_app/providers/launch_provider.dart';
 import 'package:zxbase_app/ui/launch/launch_widget.dart';
 import 'package:zxbase_crypto/zxbase_crypto.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
@@ -382,6 +383,9 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
                                         if (await initializeVault()) {
+                                          ref
+                                              .read(launchProvider.notifier)
+                                              .launch();
                                           if (context.mounted) {
                                             await Navigator.pushReplacement(
                                               context,

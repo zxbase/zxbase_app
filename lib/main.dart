@@ -17,7 +17,7 @@ class ZxbaseApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var init = ref.read(initProvider);
 
-    log('Zxbase app build.', name: _component);
+    log('Build Zxbase app.', name: _component);
 
     // theme reloads from here
     final initProv = ref.watch(initProvider);

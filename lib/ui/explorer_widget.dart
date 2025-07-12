@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
-import 'package:zxbase_app/ui/vault_widget.dart';
+import 'package:zxbase_app/ui/vault_entry_list_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class ExplorerWidget extends ConsumerStatefulWidget {
   const ExplorerWidget({super.key});
 
   @override
-  ConsumerState createState() => _StartPageState();
+  ConsumerState createState() => ExplorerWidgetState();
 }
 
-class _StartPageState extends ConsumerState<ExplorerWidget> {
+class ExplorerWidgetState extends ConsumerState<ExplorerWidget> {
   int _selectedIndex = 0;
 
   @override
@@ -24,7 +24,7 @@ class _StartPageState extends ConsumerState<ExplorerWidget> {
     _selectedIndex = ref.watch(selectedTabProvider);
 
     return Scaffold(
-      body: Center(child: VaultWidget()),
+      body: Center(child: VaultEntryListWidget()),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

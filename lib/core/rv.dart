@@ -10,6 +10,7 @@ enum RV {
   entryExists,
   titleExists,
   nameExists,
+  delete,
 }
 
 Map<RV, String> rvMsg = {
@@ -22,4 +23,5 @@ Map<RV, String> rvMsg = {
   RV.entryExists: 'Entry already exists.',
   RV.titleExists: 'The title is taken.',
   RV.nameExists: 'The name is taken.',
+  RV.delete: 'Delete the item.',
 };

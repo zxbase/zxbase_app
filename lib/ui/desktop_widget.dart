@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/ui/explorer_widget.dart';
-import 'package:zxbase_app/ui/vault_secret_widget.dart';
+import 'package:zxbase_app/ui/vault/vault_secret_widget.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 
 class DesktopWidget extends ConsumerWidget {

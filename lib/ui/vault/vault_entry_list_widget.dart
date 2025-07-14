@@ -5,8 +5,8 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/ui/app_bar.dart';
-import 'package:zxbase_app/ui/vault_entry_widget.dart';
-import 'package:zxbase_app/ui/vault_secret_widget.dart';
+import 'package:zxbase_app/ui/vault/vault_entry_widget.dart';
+import 'package:zxbase_app/ui/vault/vault_secret_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class VaultEntryListWidget extends ConsumerStatefulWidget {

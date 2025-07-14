@@ -7,7 +7,7 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/ui/app_bar.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
-import 'package:zxbase_app/ui/password_generation_widget.dart';
+import 'package:zxbase_app/ui/vault/password_generation_widget.dart';
 import 'package:zxbase_app/ui/scroll_column_widget.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';

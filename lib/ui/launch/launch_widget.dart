@@ -12,10 +12,10 @@ import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 class LaunchWidget extends ConsumerStatefulWidget {
   const LaunchWidget({super.key});
   @override
-  WorkflowPageState createState() => WorkflowPageState();
+  LaunchWidgetState createState() => LaunchWidgetState();
 }
 
-class WorkflowPageState extends ConsumerState<LaunchWidget> {
+class LaunchWidgetState extends ConsumerState<LaunchWidget> {
   @override
   void initState() {
     super.initState();

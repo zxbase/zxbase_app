@@ -1,3 +1,5 @@
+// Log helpers.
+
 String logUuid(String uuid) {
   return uuid.substring(0, 8);
 }

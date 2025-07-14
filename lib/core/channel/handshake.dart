@@ -1,11 +1,11 @@
 // Handshake
 
 import 'dart:developer';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/channel/channel_message.dart';
 import 'package:zxbase_app/core/log.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_crypto/zxbase_crypto.dart';
 
 const _comp = 'handshake'; // logging component

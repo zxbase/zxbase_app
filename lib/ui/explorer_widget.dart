@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
+import 'package:zxbase_app/ui/dialogs.dart';
 import 'package:zxbase_app/ui/vault_entry_list_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
+
+enum AppTab { convos, peers, locations, settings }
 
 class ExplorerWidget extends ConsumerStatefulWidget {
   const ExplorerWidget({super.key});
@@ -17,6 +21,32 @@ class ExplorerWidgetState extends ConsumerState<ExplorerWidget> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void _barItemTapped(int index) {
+    if (ref.read(isVaultEntryDirtyProvider) && index != AppTab.convos.index) {
+      showCustomDialog(
+        context,
+        Container(),
+        title: Const.discardWarn,
+        leftButtonText: 'Yes',
+        rightButtonText: 'No',
+        onLeftTap: () {
+          ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+          Navigator.pop(context);
+
+          setState(() {
+            ref.read(selectedTabProvider.notifier).state = index;
+            _selectedIndex = index;
+          });
+        },
+      );
+    } else {
+      setState(() {
+        ref.read(selectedTabProvider.notifier).state = index;
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -52,6 +82,7 @@ class ExplorerWidgetState extends ConsumerState<ExplorerWidget> {
               ),
             ],
             currentIndex: _selectedIndex,
+            onTap: _barItemTapped,
           ),
         ],
       ),

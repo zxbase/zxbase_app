@@ -3,58 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
+import 'package:zxbase_app/ui/settings/settings_widget.dart';
 import 'package:zxbase_app/ui/vault/vault_entry_list_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
-enum AppTab { convos, peers, locations, settings }
-
-class ExplorerWidget extends ConsumerStatefulWidget {
+class ExplorerWidget extends ConsumerWidget {
   const ExplorerWidget({super.key});
 
   @override
-  ConsumerState createState() => ExplorerWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    BarItem selectedTab = ref.watch(selectedTabProvider);
+    Widget explorerWidget;
 
-class ExplorerWidgetState extends ConsumerState<ExplorerWidget> {
-  int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _barItemTapped(int index) {
-    if (ref.read(isVaultEntryDirtyProvider) && index != AppTab.convos.index) {
-      showCustomDialog(
-        context,
-        Container(),
-        title: Const.discardWarn,
-        leftButtonText: 'Yes',
-        rightButtonText: 'No',
-        onLeftTap: () {
-          ref.read(isVaultEntryDirtyProvider.notifier).state = false;
-          Navigator.pop(context);
-
-          setState(() {
-            ref.read(selectedTabProvider.notifier).state = index;
-            _selectedIndex = index;
-          });
-        },
-      );
-    } else {
-      setState(() {
-        ref.read(selectedTabProvider.notifier).state = index;
-        _selectedIndex = index;
-      });
+    switch (selectedTab) {
+      case BarItem.vault:
+        explorerWidget = const VaultEntryListWidget();
+      case BarItem.devices:
+      case BarItem.settings:
+        explorerWidget = const SettingsWidget();
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _selectedIndex = ref.watch(selectedTabProvider);
 
     return Scaffold(
-      body: Center(child: VaultEntryListWidget()),
+      body: Center(child: explorerWidget),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -81,8 +51,28 @@ class ExplorerWidgetState extends ConsumerState<ExplorerWidget> {
                 icon: Icon(Icons.settings_rounded),
               ),
             ],
-            currentIndex: _selectedIndex,
-            onTap: _barItemTapped,
+            currentIndex: selectedTab.ind,
+            onTap: (int index) {
+              if (ref.read(isVaultEntryDirtyProvider) &&
+                  index != BarItem.vault.ind) {
+                showCustomDialog(
+                  context,
+                  Container(),
+                  title: Const.discardWarn,
+                  leftButtonText: 'Yes',
+                  rightButtonText: 'No',
+                  onLeftTap: () {
+                    ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+                    Navigator.pop(context);
+                    ref.read(selectedTabProvider.notifier).state =
+                        BarItem.values[index];
+                  },
+                );
+              } else {
+                ref.read(selectedTabProvider.notifier).state =
+                    BarItem.values[index];
+              }
+            },
           ),
         ],
       ),

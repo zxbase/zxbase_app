@@ -7,7 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:zxbase_app/core/channel/connection.dart';
 import 'package:zxbase_app/core/const.dart';
-import 'package:zxbase_app/ui/app_images.dart';
+import 'package:zxbase_app/ui/app_bar.dart';
+import 'package:zxbase_app/ui/assets.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
 import 'package:zxbase_app/core/version.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
@@ -17,7 +18,6 @@ import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
 import 'package:zxbase_app/providers/rps_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/providers/ws_provider.dart';
-import 'package:zxbase_app/ui/app_bar.dart';
 import 'package:zxbase_api_client/zxbase_api_client.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
@@ -191,7 +191,7 @@ class SettingsAboutWidgetState extends ConsumerState<SettingsAboutWidget> {
 
   Widget _buildLogo() {
     return GestureDetector(
-      child: const Image(image: AssetImage(AppImages.logo)),
+      child: const Image(image: AssetImage(Assets.logo)),
       onTap: () {
         _logoTapCounter++;
         if (_logoTapCounter >= 5) {

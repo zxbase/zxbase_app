@@ -30,16 +30,7 @@ class SettingsIdentityWidget extends ConsumerWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      // TODO: re-consider if camera permissions worth the QR code scanning machinery
-                      child: Container() /*QrCodeWidget(
-                        qrString: identity,
-                        maxWidth:
-                            constraints.maxWidth *
-                            (UI.isDesktop ? 0.8 : double.infinity),
-                        maxHeight:
-                            constraints.maxHeight *
-                            (UI.isDesktop ? 0.3 : double.infinity),
-                      ),*/,
+                      child: Container(),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),

@@ -9,14 +9,14 @@ import 'package:zxbase_app/ui/vault/vault_entry_widget.dart';
 import 'package:zxbase_app/ui/vault/vault_secret_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
-class VaultEntryListWidget extends ConsumerStatefulWidget {
-  const VaultEntryListWidget({super.key});
+class VaultWidget extends ConsumerStatefulWidget {
+  const VaultWidget({super.key});
 
   @override
   ConsumerState createState() => VaultEntryListState();
 }
 
-class VaultEntryListState extends ConsumerState<VaultEntryListWidget> {
+class VaultEntryListState extends ConsumerState<VaultWidget> {
   final TextEditingController _searchController = TextEditingController();
 
   @override

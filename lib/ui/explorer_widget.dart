@@ -4,7 +4,7 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
 import 'package:zxbase_app/ui/settings/settings_widget.dart';
-import 'package:zxbase_app/ui/vault/vault_entry_list_widget.dart';
+import 'package:zxbase_app/ui/vault/vault_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class ExplorerWidget extends ConsumerWidget {
@@ -17,7 +17,7 @@ class ExplorerWidget extends ConsumerWidget {
 
     switch (selectedTab) {
       case BarItem.vault:
-        explorerWidget = const VaultEntryListWidget();
+        explorerWidget = const VaultWidget();
       case BarItem.devices:
       case BarItem.settings:
         explorerWidget = const SettingsWidget();

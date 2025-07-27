@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
+import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/ui/devices/devices_widget.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
+import 'package:zxbase_app/ui/red_badge.dart';
 import 'package:zxbase_app/ui/settings/settings_widget.dart';
 import 'package:zxbase_app/ui/vault/vault_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
+
+List<Widget> buildVaultBarItem(PeerGroup vaultGroup, String warning) {
+  List<Widget> rv = <Widget>[const Icon(Icons.lock_rounded)];
+
+  if (vaultGroup.isEmpty || warning != '') {
+    rv.add(const Positioned(top: 0.0, right: 0.0, child: RedBadge()));
+  }
+
+  return rv;
+}
 
 class ExplorerWidget extends ConsumerWidget {
   const ExplorerWidget({super.key});
@@ -14,8 +26,10 @@ class ExplorerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     BarItem selectedTab = ref.watch(selectedTabProvider);
-    Widget explorerWidget;
+    String syncWarn = ref.watch(vaultSyncWarningProvider);
+    PeerGroup vaultGroup = ref.watch(peerGroupsProvider).vaultGroup;
 
+    Widget explorerWidget;
     switch (selectedTab) {
       case BarItem.vault:
         explorerWidget = const VaultWidget();
@@ -24,6 +38,8 @@ class ExplorerWidget extends ConsumerWidget {
       case BarItem.settings:
         explorerWidget = const SettingsWidget();
     }
+
+    List<Widget> devicesBarItem = buildVaultBarItem(vaultGroup, syncWarn);
 
     return Scaffold(
       body: Center(child: explorerWidget),
@@ -46,7 +62,7 @@ class ExplorerWidget extends ConsumerWidget {
               ),
               BottomNavigationBarItem(
                 label: 'Devices',
-                icon: Icon(Icons.devices_rounded),
+                icon: Stack(children: devicesBarItem),
               ),
               BottomNavigationBarItem(
                 label: 'Settings',

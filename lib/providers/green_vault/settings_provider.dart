@@ -59,14 +59,14 @@ class Settings {
 
   // doc deserialization
   Settings.fromJson(Map<String, dynamic> json) {
-    vaultUpdatePolicy = json['vaultUpdatePolicy'] ?? automatic;
+    vaultUpdatePolicy = json['vaultUpdatePolicy'] ?? manual;
   }
 
   // update policy
   static const automatic = 'automatic';
   static const manual = 'manual';
   static const ignore = 'ignore';
-  String vaultUpdatePolicy = automatic;
+  String vaultUpdatePolicy = manual;
 
   // doc serialization
   Map<String, dynamic> toJson() {

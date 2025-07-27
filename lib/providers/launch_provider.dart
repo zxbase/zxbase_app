@@ -7,6 +7,7 @@ import 'package:zxbase_api_client/zxbase_api_client.dart';
 import 'package:zxbase_app/core/mock_peers.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/connections_provider.dart';
+import 'package:zxbase_app/providers/dispatcher_provider.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
@@ -197,5 +198,8 @@ class LaunchNotifier extends StateNotifier<LaunchStage> {
       default:
         throw Exception('Incorrect init stage ${init.wizardStage}.');
     }
+
+    // start periodic jobs
+    await ref.read(dispatcherProvider).start();
   }
 }

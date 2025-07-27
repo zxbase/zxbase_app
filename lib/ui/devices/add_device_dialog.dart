@@ -6,9 +6,10 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
 import 'package:zxbase_app/providers/connections_provider.dart';
-// import 'package:zxbase_app/providers/dispatcher_provider.dart';
+import 'package:zxbase_app/providers/dispatcher_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
+import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/rps_provider.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxbase_model/zxbase_model.dart';
@@ -58,8 +59,11 @@ class _AddDeviceWidgetState extends ConsumerState<AddDeviceWidget> {
       peerId: newPeer.id,
       status: peerStatusPairing,
     );
-    // TODO: restore
-    // await ref.read(dispatcherProvider).pairPeer(peer: newPeer);
+    await ref.read(dispatcherProvider).pairPeer(peer: newPeer);
+    // automatically add the peer to the vault group
+    ref
+        .read(peerGroupsProvider.notifier)
+        .createVaultGroupPeer(peerId: newPeer.id);
     return true;
   }
 

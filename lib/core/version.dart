@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 const privacyPolicyUrl = 'https://zxbase.com/pages/privacy_policy/';
 const termsOfServicesUrl = 'https://zxbase.com/pages/terms_of_service/';
 const appStoreUrls = {
@@ -21,4 +24,15 @@ class Version {
   final String text;
   late String version;
   late int build;
+}
+
+Version getRecentVersion({required String motdNotes}) {
+  try {
+    Map<String, dynamic> parsedNotes = jsonDecode(motdNotes);
+    return Version(
+      text: parsedNotes['release'][Platform.operatingSystem]['version'],
+    );
+  } catch (e) {
+    return Version(text: '0.0.0 (0)');
+  }
 }

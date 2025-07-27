@@ -70,7 +70,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
               child: IconButton(
                 color: Theme.of(context).textTheme.bodySmall!.color,
                 icon: const Icon(Icons.add),
-                tooltip: 'Add a secret',
+                tooltip: 'Add secret',
                 onPressed: () async {
                   if (entriesAll.length >= Const.vaultEntriesMaxCount) {
                     UI.showSnackbar(context, 'Entries limit reached.');

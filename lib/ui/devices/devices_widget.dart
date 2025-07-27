@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
+import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/green_vault/settings_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/providers/vault_sync_provider.dart';
 import 'package:zxbase_app/ui/app_bar.dart';
+import 'package:zxbase_app/ui/devices/add_device_dialog.dart';
 import 'package:zxbase_app/ui/devices/devices_list_widget.dart';
 import 'package:zxbase_app/ui/devices/revision.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
@@ -55,6 +57,21 @@ class DevicesWidget extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Devices'),
+        actions: [
+          IconButton(
+            color: Theme.of(context).textTheme.bodySmall!.color,
+            icon: const Icon(Icons.add),
+            tooltip: 'Add device',
+            onPressed: () {
+              if (ref.read(peersProvider).peersList.length >=
+                  Const.peerMaxCount) {
+                UI.showSnackbar(context, 'Peers limit reached.');
+                return;
+              }
+              showAddDeviceDialog(context: context, title: 'Add device');
+            },
+          ),
+        ],
         bottom: preferredSizeDivider(height: 0.5),
       ),
       body: SafeArea(

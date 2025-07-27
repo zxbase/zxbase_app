@@ -69,7 +69,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
               padding: EdgeInsets.only(top: UI.isDesktop ? 12.0 : 4.0),
               child: IconButton(
                 color: Theme.of(context).textTheme.bodySmall!.color,
-                icon: const Icon(Icons.add_circle_outline),
+                icon: const Icon(Icons.add),
                 tooltip: 'Add a secret',
                 onPressed: () async {
                   if (entriesAll.length >= Const.vaultEntriesMaxCount) {

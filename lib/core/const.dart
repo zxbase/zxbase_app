@@ -28,7 +28,7 @@ class Const {
   static const notesLongWarn = 'Notes are too long';
   static const urlLongWarn = 'Url is too long';
   static final minDate = DateTime.utc(-271821, 04, 20);
-  static const vaultGroupWarn = 'Select peers to sync';
+  static const vaultGroupWarn = 'Add devices to sync the vault';
   static const vaultSyncWarn = 'Sync required';
   static const discardWarn = 'Are you sure you want to discard changes?';
   static const copyIdnt = 'Copy identity to clipboard';

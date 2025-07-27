@@ -5,6 +5,8 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/green_vault_provider.dart';
+import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
+import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/green_vault/settings_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/launch_provider.dart';
@@ -64,6 +66,8 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
     await ref.read(settingsProvider.notifier).init();
     await ref.read(deviceProvider.notifier).init();
     await ref.read(userVaultProvider.notifier).init();
+    await ref.read(peersProvider.notifier).init();
+    await ref.read(peerGroupsProvider.notifier).init();
 
     await ref.read(initProvider.notifier).setWizardStage(Init.vaultInitialized);
     return true;

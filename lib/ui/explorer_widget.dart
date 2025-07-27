@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
+import 'package:zxbase_app/ui/devices/devices_widget.dart';
 import 'package:zxbase_app/ui/dialogs.dart';
 import 'package:zxbase_app/ui/settings/settings_widget.dart';
 import 'package:zxbase_app/ui/vault/vault_widget.dart';
@@ -19,6 +20,7 @@ class ExplorerWidget extends ConsumerWidget {
       case BarItem.vault:
         explorerWidget = const VaultWidget();
       case BarItem.devices:
+        explorerWidget = const DevicesWidget();
       case BarItem.settings:
         explorerWidget = const SettingsWidget();
     }

@@ -24,6 +24,7 @@ class DesktopWidget extends ConsumerWidget {
             ? VaultSecretWidget()
             : Container();
       case BarItem.devices:
+        widget = Container();
       case BarItem.settings:
         switch (selectedSetting) {
           case SettingItem.identity:

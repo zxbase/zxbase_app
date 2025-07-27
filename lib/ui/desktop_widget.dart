@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/ui/explorer_widget.dart';
+import 'package:zxbase_app/ui/devices/device_details_widget.dart';
 import 'package:zxbase_app/ui/settings/settings_about_widget.dart';
 import 'package:zxbase_app/ui/settings/settings_appearance_widget.dart';
 import 'package:zxbase_app/ui/settings/settings_identity_widget.dart';
@@ -16,6 +17,7 @@ class DesktopWidget extends ConsumerWidget {
     bool isNewVaultEntry = ref.watch(newVaultEntryProvider);
     var selectedVaultEntryId = ref.watch(selectedVaultEntryProvider);
     SettingItem selectedSetting = ref.watch(selectedSettingProvider);
+    String selectedDeviceId = ref.watch(selectedDeviceProvider);
     Widget widget;
 
     switch (selectedTab) {
@@ -24,7 +26,11 @@ class DesktopWidget extends ConsumerWidget {
             ? VaultSecretWidget()
             : Container();
       case BarItem.devices:
-        widget = Container();
+        if (selectedDeviceId == '') {
+          widget = Container();
+        } else {
+          widget = DeviceDetailsWidget(peerId: selectedDeviceId);
+        }
       case BarItem.settings:
         switch (selectedSetting) {
           case SettingItem.identity:

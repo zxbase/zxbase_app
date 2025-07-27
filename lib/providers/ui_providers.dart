@@ -55,12 +55,6 @@ final vaultSearchQueryProvider = StateProvider<String>((ref) {
   return '';
 });
 
-// TODO: reconsider if it is required
-// If true - show vault search.
-final showVaultSearchProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
 // Selected setting.
 enum SettingItem {
   identity(0, 'Identity'),
@@ -88,4 +82,9 @@ final versionWarningProvider = StateProvider<String>((ref) {
 // Message of the day
 final motdProvider = StateProvider<MOTD?>((ref) {
   return null;
+});
+
+// Selected device Id.
+final selectedDeviceProvider = StateProvider<String>((ref) {
+  return '';
 });

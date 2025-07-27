@@ -11,6 +11,7 @@ import 'package:zxbase_app/ui/vault/password_generation_widget.dart';
 import 'package:zxbase_app/ui/scroll_column_widget.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
+import 'package:zxbase_app/providers/vault_sync_provider.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxcvbn/zxcvbn.dart';
 
@@ -38,7 +39,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
   TextEditingController _notesController = TextEditingController();
   final List<TextEditingController> _urlControllers = [];
 
-  String newEntryTitle = 'New Login';
+  String newEntryTitle = 'New Secret';
 
   final _zxcvbn = Zxcvbn();
   double _passwordScore = 0.0;
@@ -104,7 +105,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
     showCustomDialog(
       context,
       Container(),
-      title: 'Delete entry?',
+      title: 'Delete secret?',
       leftButtonText: 'Yes',
       rightButtonText: 'No',
       onLeftTap: _deleteEntry,
@@ -546,9 +547,8 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       return;
     }
 
-    // TODO: restore sync
-    // await ref.read(vaultSyncProvider).broadcastVault();
-    // ref.read(vaultSyncProvider).updateSyncWarning();
+    await ref.read(vaultSyncProvider).broadcastVault();
+    ref.read(vaultSyncProvider).updateSyncWarning();
 
     ref.read(isVaultEntryDirtyProvider.notifier).state = false;
     if (isNewEntry) {

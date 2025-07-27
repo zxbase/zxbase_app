@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
+import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/ui/avatar.dart';
+import 'package:zxbase_app/ui/devices/device_details_widget.dart';
 import 'package:zxbase_app/ui/devices/revision.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxbase_vault/zxbase_vault.dart';
@@ -117,7 +119,19 @@ class DeviceWidget extends ConsumerWidget {
                   tooltip: stateTooltip[syncState],
                   onPressed: () {},
                 ),
-                onTap: () {},
+                onTap: () async {
+                  if (UI.isDesktop) {
+                    ref.read(selectedDeviceProvider.notifier).state = peer.id;
+                  } else {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DeviceDetailsWidget(peerId: peer.id),
+                      ),
+                    );
+                  }
+                },
               ),
               Divider(indent: dividerIndent, height: 1),
             ],

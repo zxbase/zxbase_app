@@ -10,8 +10,18 @@ import 'package:zxbase_app/ui/settings/settings_widget.dart';
 import 'package:zxbase_app/ui/vault/vault_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
+List<Widget> buildSettingsBarItem(String warning) {
+  List<Widget> rv = <Widget>[const Icon(Icons.settings_rounded)];
+
+  if (warning.isNotEmpty) {
+    rv.add(const Positioned(top: 0.0, right: 0.0, child: RedBadge()));
+  }
+
+  return rv;
+}
+
 List<Widget> buildVaultBarItem(PeerGroup vaultGroup, String warning) {
-  List<Widget> rv = <Widget>[const Icon(Icons.lock_rounded)];
+  List<Widget> rv = <Widget>[const Icon(Icons.devices_rounded)];
 
   if (vaultGroup.isEmpty || warning != '') {
     rv.add(const Positioned(top: 0.0, right: 0.0, child: RedBadge()));
@@ -28,6 +38,7 @@ class ExplorerWidget extends ConsumerWidget {
     BarItem selectedTab = ref.watch(selectedTabProvider);
     String syncWarn = ref.watch(vaultSyncWarningProvider);
     PeerGroup vaultGroup = ref.watch(peerGroupsProvider).vaultGroup;
+    String versionWarn = ref.watch(versionWarningProvider);
 
     Widget explorerWidget;
     switch (selectedTab) {
@@ -40,6 +51,7 @@ class ExplorerWidget extends ConsumerWidget {
     }
 
     List<Widget> devicesBarItem = buildVaultBarItem(vaultGroup, syncWarn);
+    List<Widget> settingsBarItem = buildSettingsBarItem(versionWarn);
 
     return Scaffold(
       body: Center(child: explorerWidget),
@@ -66,7 +78,7 @@ class ExplorerWidget extends ConsumerWidget {
               ),
               BottomNavigationBarItem(
                 label: 'Settings',
-                icon: Icon(Icons.settings_rounded),
+                icon: Stack(children: settingsBarItem),
               ),
             ],
             currentIndex: selectedTab.ind,

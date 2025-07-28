@@ -23,14 +23,14 @@ void main() {
 
     // read the doc
     var settings = container.read(settingsProvider);
-    expect(settings.vaultUpdatePolicy, equals(Settings.automatic));
+    expect(settings.vaultUpdatePolicy, equals(Settings.manual));
 
-    // update the theme
+    // update the policy
     await container
         .read(settingsProvider.notifier)
-        .setVaultUpdatePolicy(Settings.manual);
+        .setVaultUpdatePolicy(Settings.automatic);
     settings = container.read(settingsProvider);
-    expect(settings.vaultUpdatePolicy, equals(Settings.manual));
+    expect(settings.vaultUpdatePolicy, equals(Settings.automatic));
 
     // update the doc
     Settings settingsCopy = Settings.copy(settings);

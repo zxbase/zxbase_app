@@ -3,6 +3,13 @@ import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// This is to allow real network calls
+// https://github.com/flutter/flutter/issues/77245
+class CustomBindings extends AutomatedTestWidgetsFlutterBinding {
+  @override
+  bool get overrideHttpClient => false;
+}
+
 void cleanupDb() {
   Config config = Config();
   // macOS cleanup

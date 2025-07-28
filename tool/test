@@ -1,1 +1,1 @@
-flutter test --coverage -j, --concurrency=1 --dart-define-from-file=test/env
+flutter test --coverage -j, --concurrency=1 --dart-define-from-file=test/.env

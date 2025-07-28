@@ -7,13 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zxbase_api_client/zxbase_api_client.dart';
 import '../helpers.dart';
 
-// This is to allow real network calls
-// https://github.com/flutter/flutter/issues/77245
-class CustomBindings extends AutomatedTestWidgetsFlutterBinding {
-  @override
-  bool get overrideHttpClient => false;
-}
-
 void main() {
   CustomBindings();
   final container = ProviderContainer();

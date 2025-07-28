@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
-import 'package:zxbase_app/ui/app_bar.dart';
+import 'package:zxbase_app/ui/common/app_bar.dart';
 import 'package:zxbase_app/ui/settings/settings_list_item_widget.dart';
 
 class SettingsWidget extends ConsumerWidget {

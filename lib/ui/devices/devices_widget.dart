@@ -7,7 +7,7 @@ import 'package:zxbase_app/providers/green_vault/settings_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/providers/vault_sync_provider.dart';
-import 'package:zxbase_app/ui/app_bar.dart';
+import 'package:zxbase_app/ui/common/app_bar.dart';
 import 'package:zxbase_app/ui/devices/add_device_dialog.dart';
 import 'package:zxbase_app/ui/devices/devices_list_widget.dart';
 import 'package:zxbase_app/ui/devices/revision.dart';

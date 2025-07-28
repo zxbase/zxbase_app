@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
-import 'package:zxbase_app/ui/dialogs.dart';
+import 'package:zxbase_app/ui/common/dialogs.dart';
 import 'package:zxbase_app/ui/vault/vault_secret_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 

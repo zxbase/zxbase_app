@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
-import 'package:zxbase_app/ui/app_bar.dart';
-import 'package:zxbase_app/ui/settings/device_id_widget.dart';
+import 'package:zxbase_app/ui/common/app_bar.dart';
+import 'package:zxbase_app/ui/common/device_id_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class SettingsIdentityWidget extends ConsumerWidget {

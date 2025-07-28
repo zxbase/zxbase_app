@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
-import 'package:zxbase_app/ui/app_bar.dart';
+import 'package:zxbase_app/ui/common/app_bar.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class SettingsAppearanceWidget extends ConsumerWidget {

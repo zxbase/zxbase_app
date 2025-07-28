@@ -4,7 +4,7 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
-import 'package:zxbase_app/ui/avatar.dart';
+import 'package:zxbase_app/ui/common/avatar.dart';
 import 'package:zxbase_app/ui/devices/device_details_widget.dart';
 import 'package:zxbase_app/ui/devices/revision.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';

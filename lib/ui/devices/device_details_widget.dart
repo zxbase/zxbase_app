@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
-import 'package:zxbase_app/ui/app_bar.dart';
-import 'package:zxbase_app/ui/avatar.dart';
-import 'package:zxbase_app/ui/dialogs.dart';
+import 'package:zxbase_app/ui/common/app_bar.dart';
+import 'package:zxbase_app/ui/common/avatar.dart';
+import 'package:zxbase_app/ui/common/dialogs.dart';
 import 'package:zxbase_app/ui/devices/delete_device_dialog.dart';
-import 'package:zxbase_app/ui/settings/device_id_widget.dart';
-import 'package:zxbase_app/ui/scroll_column_widget.dart';
+import 'package:zxbase_app/ui/common/device_id_widget.dart';
+import 'package:zxbase_app/ui/common/scroll_column_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class DeviceDetailsWidget extends ConsumerStatefulWidget {

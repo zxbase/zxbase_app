@@ -17,7 +17,6 @@ Widget appBarSearchTextField({
     children: [
       Expanded(
         child: TextField(
-          textAlignVertical: TextAlignVertical.center,
           controller: controller,
           textAlign: TextAlign.start,
           maxLines: 1,

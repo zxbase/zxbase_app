@@ -59,7 +59,6 @@ class DevicesWidget extends ConsumerWidget {
         title: const Text('Devices'),
         actions: [
           IconButton(
-            color: Theme.of(context).textTheme.bodySmall!.color,
             icon: const Icon(Icons.add),
             tooltip: 'Add device',
             onPressed: () {

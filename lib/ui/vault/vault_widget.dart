@@ -26,6 +26,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
 
   void clearSearch() {
     _searchController.text = '';
+    ref.read(vaultSearchQueryProvider.notifier).state = '';
   }
 
   Widget _searchTextField(WidgetRef ref) {
@@ -34,7 +35,9 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
       child: appBarSearchTextField(
         hint: 'Search secrets',
         controller: _searchController,
-        onChanged: (value) {},
+        onChanged: (value) {
+          ref.read(vaultSearchQueryProvider.notifier).state = value;
+        },
       ),
     );
   }
@@ -65,31 +68,27 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            Container(
-              padding: EdgeInsets.only(top: UI.isDesktop ? 12.0 : 4.0),
-              child: IconButton(
-                color: Theme.of(context).textTheme.bodySmall!.color,
-                icon: const Icon(Icons.add),
-                tooltip: 'Add secret',
-                onPressed: () async {
-                  if (entriesAll.length >= Const.vaultEntriesMaxCount) {
-                    UI.showSnackbar(context, 'Entries limit reached.');
-                    return;
-                  }
+            IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: 'Add secret',
+              onPressed: () async {
+                if (entriesAll.length >= Const.vaultEntriesMaxCount) {
+                  UI.showSnackbar(context, 'Entries limit reached.');
+                  return;
+                }
 
-                  ref.read(newVaultEntryProvider.notifier).state = true;
-                  ref.read(selectedVaultEntryProvider.notifier).state = '';
+                ref.read(newVaultEntryProvider.notifier).state = true;
+                ref.read(selectedVaultEntryProvider.notifier).state = '';
 
-                  if (UI.isMobile) {
-                    await Navigator.push(
-                      context,
-                      (MaterialPageRoute(
-                        builder: (context) => VaultSecretWidget(),
-                      )),
-                    );
-                  }
-                },
-              ),
+                if (UI.isMobile) {
+                  await Navigator.push(
+                    context,
+                    (MaterialPageRoute(
+                      builder: (context) => VaultSecretWidget(),
+                    )),
+                  );
+                }
+              },
             ),
           ],
           title: _searchTextField(ref),

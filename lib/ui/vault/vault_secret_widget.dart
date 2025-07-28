@@ -71,34 +71,38 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
     }
   }
 
-  Future<void> deleteVaultEntry({
+  void _clearSelectedEntry(WidgetRef ref) {
+    ref.read(selectedVaultEntryProvider.notifier).state = '';
+  }
+
+  Future<void> _deleteVaultEntry({
     required WidgetRef ref,
     required String entryId,
   }) async {
     if (UI.isMobile) {
-      _clearSelectedPeer(ref);
+      _clearSelectedEntry(ref);
     }
 
     await ref.read(userVaultProvider.notifier).deleteEntry(id: entryId);
 
-    if (UI.isDesktop) {
-      _clearSelectedPeer(ref);
-    }
-  }
+    await ref.read(vaultSyncProvider).broadcastVault();
+    ref.read(vaultSyncProvider).updateSyncWarning();
 
-  void _clearSelectedPeer(WidgetRef ref) {
-    ref.read(selectedVaultEntryProvider.notifier).state = '';
+    if (UI.isDesktop) {
+      _clearSelectedEntry(ref);
+    }
   }
 
   Future<void> _deleteEntry() async {
     if (UI.isMobile) {
       Navigator.of(context)
         ..pop()
-        ..pop(RV.delete);
+        ..pop();
     } else {
       Navigator.pop(context);
-      await deleteVaultEntry(ref: ref, entryId: entry!.id);
     }
+
+    await _deleteVaultEntry(ref: ref, entryId: entry!.id);
   }
 
   void _showDeleteDialog() {

@@ -1,31 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/core/const.dart';
-import 'package:zxbase_app/core/rv.dart';
-import 'package:zxbase_app/ui/dialogs.dart';
-import 'package:zxbase_app/ui/vault/vault_secret_widget.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
+import 'package:zxbase_app/ui/dialogs.dart';
+import 'package:zxbase_app/ui/vault/vault_secret_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
-
-Future<void> deleteVaultEntry({
-  required WidgetRef ref,
-  required String entryId,
-}) async {
-  if (UI.isMobile) {
-    _clearSelectedPeer(ref);
-  }
-
-  await ref.read(userVaultProvider.notifier).deleteEntry(id: entryId);
-
-  if (UI.isDesktop) {
-    _clearSelectedPeer(ref);
-  }
-}
-
-void _clearSelectedPeer(WidgetRef ref) {
-  ref.read(selectedVaultEntryProvider.notifier).state = '';
-}
 
 class VaultEntryWidget extends ConsumerWidget {
   const VaultEntryWidget({
@@ -108,15 +88,12 @@ class VaultEntryWidget extends ConsumerWidget {
                   } else {
                     ref.read(selectedVaultEntryProvider.notifier).state =
                         entry.id;
-                    var result = await Navigator.push(
+                    await Navigator.push(
                       context,
                       (MaterialPageRoute(
                         builder: (context) => VaultSecretWidget(),
                       )),
                     );
-                    if (result == RV.delete) {
-                      await deleteVaultEntry(ref: ref, entryId: entry.id);
-                    }
                   }
                 },
                 onLongPress: () {

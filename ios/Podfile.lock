@@ -2,9 +2,9 @@ PODS:
   - Flutter (1.0.0)
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
-  - flutter_webrtc (0.14.0):
+  - flutter_webrtc (1.0.0):
     - Flutter
-    - WebRTC-SDK (= 125.6422.07)
+    - WebRTC-SDK (= 137.7151.02)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -12,7 +12,7 @@ PODS:
     - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
-  - WebRTC-SDK (125.6422.07)
+  - WebRTC-SDK (137.7151.02)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -43,11 +43,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
-  flutter_webrtc: 90969010741a30ed57cb82ea3178e03306d87111
+  flutter_webrtc: 650df6cdb619eb2258592215152764a2f7ada422
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   pointer_interceptor_ios: 508241697ff0947f853c061945a8b822463947c1
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
-  WebRTC-SDK: dff00a3892bc570b6014e046297782084071657e
+  WebRTC-SDK: d20de357dcbf7c9696b124b39f3ff62125107e4b
 
 PODFILE CHECKSUM: ce2a4dd764e1c7aeed6a7cdc5e61d092b6dc6d32
 

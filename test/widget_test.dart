@@ -42,13 +42,13 @@ void main() {
 
       // Allow updates to propagate: init vault, complete launch.
       await Future.delayed(const Duration(seconds: 3), () {});
-      await tester.pump();
+      await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 3), () {});
-      await tester.pump();
+      await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 3), () {});
-      await tester.pump();
+      await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 3), () {});
-      await tester.pump();
+      await tester.pumpAndSettle();
       // debugDumpApp();
       expect(find.text('Vault', skipOffstage: false), findsNWidgets(1));
     });

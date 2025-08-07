@@ -22,7 +22,9 @@ Widget appBarSearchTextField({
           maxLines: 1,
           decoration: InputDecoration(hintText: hint, border: InputBorder.none),
           onChanged: onChanged,
-          autofocus: true,
+          autofocus: UI.isMobile
+              ? false
+              : true, // otherwise keyboard pops up immediately
         ),
       ),
     ],

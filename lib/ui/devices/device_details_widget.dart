@@ -46,9 +46,7 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
           bottom: preferredSizeDivider(height: 0.5),
           leading: editMode
               ? appBarTextButton(context, 'Cancel', _quitEditMode)
-              : UI.isMobile
-              ? appBarTextButton(context, 'Back', _back)
-              : Container(),
+              : null,
           leadingWidth: UI.appBarLeadWidth,
           title: Text(_nickname),
           centerTitle: true,
@@ -197,11 +195,5 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
     setState(() {
       editMode = false;
     });
-  }
-
-  Future<void> _back() async {
-    if (UI.isMobile) {
-      Navigator.pop(context);
-    }
   }
 }

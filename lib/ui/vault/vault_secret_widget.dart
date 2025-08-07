@@ -647,9 +647,9 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
               title: Text(isNewEntry ? newEntryTitle : entry!.title),
               centerTitle: true,
               actions: [
-                !editMode
-                    ? appBarTextButton(context, 'Edit', edit)
-                    : appBarTextButton(context, 'Save', save),
+                editMode
+                    ? appBarTextButton(context, 'Save', save)
+                    : appBarTextButton(context, 'Edit', edit),
               ],
             ),
             body: SafeArea(

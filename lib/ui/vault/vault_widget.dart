@@ -63,6 +63,11 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
       (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()),
     );
 
+    if (searchQuery.isNotEmpty && _searchController.text.isEmpty) {
+      // preserve value of search controller if the vault entry was popped up
+      _searchController.text = searchQuery;
+    }
+
     return FocusTraversalGroup(
       policy: OrderedTraversalPolicy(),
       child: Scaffold(

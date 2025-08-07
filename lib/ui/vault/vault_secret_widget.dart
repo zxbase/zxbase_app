@@ -269,7 +269,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
               Visibility(
                 visible: editMode,
                 child: IconButton(
-                  icon: const Icon(Icons.add_circle_outline),
+                  icon: const Icon(Icons.add_circle_outline_rounded),
                   tooltip: 'Generate',
                   onPressed: () {
                     setState(() {
@@ -641,15 +641,28 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
               titleSpacing: 8.0,
               bottom: preferredSizeDivider(height: 0.5),
               leading: editMode
-                  ? appBarTextButton(context, 'Cancel', cancel)
+                  ? IconButton(
+                      icon: Icon(Icons.cancel_rounded),
+                      tooltip: 'Cancel',
+                      onPressed: cancel,
+                    )
                   : null,
               leadingWidth: UI.appBarLeadWidth,
               title: Text(isNewEntry ? newEntryTitle : entry!.title),
               centerTitle: true,
               actions: [
                 editMode
-                    ? appBarTextButton(context, 'Save', save)
-                    : appBarTextButton(context, 'Edit', edit),
+                    ? IconButton(
+                        icon: Icon(Icons.save_rounded),
+                        tooltip: 'Save',
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        onPressed: save,
+                      )
+                    : IconButton(
+                        icon: Icon(Icons.edit_rounded),
+                        tooltip: 'Edit',
+                        onPressed: edit,
+                      ),
               ],
             ),
             body: SafeArea(

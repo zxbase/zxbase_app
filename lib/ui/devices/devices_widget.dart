@@ -59,7 +59,7 @@ class DevicesWidget extends ConsumerWidget {
         title: const Text('Devices'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_rounded),
             tooltip: 'Add device',
             onPressed: () {
               if (ref.read(peersProvider).peersList.length >=

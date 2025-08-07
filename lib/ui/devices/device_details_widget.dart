@@ -45,19 +45,27 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
           titleSpacing: 8.0,
           bottom: preferredSizeDivider(height: 0.5),
           leading: editMode
-              ? appBarTextButton(context, 'Cancel', _quitEditMode)
+              ? IconButton(
+                  icon: Icon(Icons.cancel_rounded),
+                  tooltip: 'Cancel',
+                  onPressed: _quitEditMode,
+                )
               : null,
           leadingWidth: UI.appBarLeadWidth,
           title: Text(_nickname),
           centerTitle: true,
           actions: [
-            !editMode
-                ? appBarTextButton(
-                    context,
-                    'Edit',
-                    () async => setState(() => editMode = true),
+            editMode
+                ? IconButton(
+                    icon: Icon(Icons.save_rounded),
+                    tooltip: 'Save',
+                    onPressed: _updatePeer,
                   )
-                : appBarTextButton(context, 'Save', _updatePeer),
+                : IconButton(
+                    icon: Icon(Icons.edit_rounded),
+                    tooltip: 'Edit',
+                    onPressed: () => setState(() => editMode = true),
+                  ),
           ],
         ),
         body: SafeArea(

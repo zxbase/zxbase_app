@@ -51,17 +51,14 @@ class PasswordGenerationWidgetState extends State<PasswordGenerationWidget> {
               child: SelectableText(_password, textAlign: TextAlign.center),
             ),
             IconButton(
-              icon: const Icon(
-                Icons.arrow_upward_rounded,
-                color: Color(0xFF898989),
-              ),
+              icon: const Icon(Icons.arrow_upward_rounded),
               tooltip: 'Set',
               onPressed: () {
                 widget.onSetPassword(_password);
               },
             ),
             IconButton(
-              icon: const Icon(Icons.sync_rounded, color: Color(0xFF898989)),
+              icon: const Icon(Icons.sync_rounded),
               tooltip: 'Regenerate',
               onPressed: () {
                 setState(() {
@@ -70,7 +67,7 @@ class PasswordGenerationWidgetState extends State<PasswordGenerationWidget> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.copy_rounded, color: Color(0xFF898989)),
+              icon: const Icon(Icons.copy_rounded),
               tooltip: 'Copy',
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: _password));

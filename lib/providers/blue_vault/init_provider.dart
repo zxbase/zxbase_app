@@ -1,10 +1,9 @@
 // Init provider implements startup stages.
 
 import 'dart:developer';
-
-import 'package:zxbase_app/providers/blue_vault/blue_vault_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
+import 'package:zxbase_app/providers/blue_vault/blue_vault_provider.dart';
+import 'package:zxbase_app/ui/common/theme.dart';
 import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _component = 'initProvider'; // logging component
@@ -99,7 +98,7 @@ class Init {
   static const completed = 'completed';
 
   String wizardStage = none;
-  String theme = AppTheme.light;
+  String theme = LocalTheme.light;
   int attempts = 0;
   int attemptDate = 0;
   bool cameraPermissionInfoShowed = false;

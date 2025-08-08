@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/blue_vault/blue_vault_provider.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
+import 'package:zxbase_app/ui/common/theme.dart';
 import 'package:zxbase_app/ui/launch/spin_widget.dart';
-import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 const component = 'splashWidget'; // logging component
 
@@ -51,7 +51,7 @@ class _SplashWidgetState extends ConsumerState<SplashWidget> {
 
     return MaterialApp(
       title: 'Zxbase',
-      theme: AppTheme.build(AppTheme.light),
+      theme: LocalTheme.build(LocalTheme.light),
       home: SpinWidget(),
       debugShowCheckedModeBanner: false,
     );

@@ -2,10 +2,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
+import 'package:zxbase_app/ui/common/theme.dart';
 import 'package:zxbase_app/ui/launch/init_vault_widget.dart';
 import 'package:zxbase_app/ui/launch/open_vault_widget.dart';
 import 'package:zxbase_app/ui/launch/splash_widget.dart';
-import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 const _component = 'main'; // logging component
 
@@ -20,8 +20,8 @@ class ZxbaseApp extends ConsumerWidget {
 
     // theme reloads from here
     final initProv = ref.watch(initProvider);
-    AppTheme.setOverlayStyle(initProv.theme);
-    var theme = AppTheme.build(initProv.theme);
+    LocalTheme.setOverlayStyle(initProv.theme);
+    var theme = LocalTheme.build(initProv.theme);
 
     return MaterialApp(
       title: 'Zxbase',

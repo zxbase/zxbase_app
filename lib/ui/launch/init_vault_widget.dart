@@ -184,7 +184,6 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                     prefixIcon: _capsLockOn
                                         ? const Icon(
                                             Icons.keyboard_capslock_rounded,
-                                            color: Colors.grey,
                                           )
                                         : null,
                                     suffixIcon: IconButton(
@@ -194,7 +193,6 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                           : const Icon(
                                               Icons.visibility_off_rounded,
                                             ),
-                                      color: Colors.grey,
                                       onPressed: () {
                                         setState(() {
                                           _obscure = !_obscure;
@@ -253,7 +251,6 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                     prefixIcon: _capsLockOn
                                         ? const Icon(
                                             Icons.keyboard_capslock_rounded,
-                                            color: Colors.grey,
                                           )
                                         : null,
                                     suffixIcon: IconButton(
@@ -265,7 +262,6 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                           : const Icon(
                                               Icons.visibility_off_rounded,
                                             ),
-                                      color: Colors.grey,
                                       onPressed: () {
                                         setState(() {
                                           _obscure = !_obscure;

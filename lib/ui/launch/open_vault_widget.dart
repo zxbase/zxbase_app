@@ -182,7 +182,6 @@ class OpenVaultWidgetState extends ConsumerState<OpenVaultWidget> {
                                     prefixIcon: _capsLockOn
                                         ? const Icon(
                                             Icons.keyboard_capslock_rounded,
-                                            color: Colors.grey,
                                           )
                                         : null,
                                     suffixIcon: IconButton(
@@ -191,7 +190,6 @@ class OpenVaultWidgetState extends ConsumerState<OpenVaultWidget> {
                                           : const Icon(
                                               Icons.visibility_off_rounded,
                                             ),
-                                      color: Colors.grey,
                                       onPressed: () {
                                         setState(() {
                                           _obscure = !_obscure;

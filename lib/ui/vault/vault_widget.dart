@@ -75,7 +75,6 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
           actions: [
             IconButton(
               icon: const Icon(Icons.add_rounded),
-              // color: Colors.grey,
               tooltip: 'Add secret',
               onPressed: () async {
                 if (entriesAll.length >= Const.vaultEntriesMaxCount) {

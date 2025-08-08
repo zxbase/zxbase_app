@@ -65,7 +65,6 @@ class ExplorerWidget extends ConsumerWidget {
             selectedFontSize: UI.fontSizeXSmall,
             unselectedFontSize: UI.fontSizeXSmall,
             type: BottomNavigationBarType.fixed,
-            unselectedItemColor: Colors.grey,
             iconSize: UI.isMobile ? 30 : IconTheme.of(context).size ?? 24,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(

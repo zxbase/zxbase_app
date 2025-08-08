@@ -121,10 +121,12 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       _passwordScore = _zxcvbn.evaluate(_passwordController.text).score!;
     }
 
+    Color secondaryColor = Theme.of(context).textTheme.bodySmall!.color!;
+
     return [
       Text(
         HumanTime.dateTime(entry!.updatedAt.toLocal()),
-        style: TextStyle(fontSize: UI.fontSizeXSmall, color: Colors.grey),
+        style: TextStyle(fontSize: UI.fontSizeXSmall, color: secondaryColor),
       ),
       TextFormField(
         controller: _titleController,
@@ -655,7 +657,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                     ? IconButton(
                         icon: Icon(Icons.save_rounded),
                         tooltip: 'Save',
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         onPressed: save,
                       )
                     : IconButton(

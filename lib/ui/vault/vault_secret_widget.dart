@@ -12,6 +12,7 @@ import 'package:zxbase_app/ui/common/scroll_column_widget.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/providers/vault_sync_provider.dart';
+import 'package:zxbase_app/ui/common/zero_trust_input.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxcvbn/zxcvbn.dart';
 
@@ -128,7 +129,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         HumanTime.dateTime(entry!.updatedAt.toLocal()),
         style: TextStyle(fontSize: UI.fontSizeXSmall, color: secondaryColor),
       ),
-      TextFormField(
+      ZTTextFormField(
         controller: _titleController,
         inputFormatters: [
           LengthLimitingTextInputFormatter(Const.vaultTitleMaxLength),
@@ -158,7 +159,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           ? TypeAheadField(
               controller: _usernameController,
               builder: (context, controller, focusNode) {
-                return TextFormField(
+                return ZTTextFormField(
                   controller: controller,
                   focusNode: focusNode,
                   inputFormatters: [
@@ -217,7 +218,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             )
           :
             // read only username
-            TextFormField(
+            ZTTextFormField(
               controller: _usernameController,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(Const.vaultUsernameMaxLength),
@@ -240,7 +241,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                 ),
               ),
             ),
-      TextFormField(
+      ZTTextFormField(
         controller: _passwordController,
         inputFormatters: [
           LengthLimitingTextInputFormatter(Const.vaultPasswordMaxLength),
@@ -339,7 +340,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       Focus(
         // helps to get focus for keyboard shortcut
         autofocus: true,
-        child: TextFormField(
+        child: ZTTextFormField(
           controller: _notesController,
           inputFormatters: [
             LengthLimitingTextInputFormatter(Const.vaultNotesMaxLength),
@@ -373,7 +374,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       TextEditingController controller = _urlControllers[i];
 
       widgets.add(
-        TextFormField(
+        ZTTextFormField(
           controller: controller,
           inputFormatters: [
             LengthLimitingTextInputFormatter(Const.vaultUsernameMaxLength),

@@ -10,6 +10,7 @@ import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/green_vault/settings_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/launch_provider.dart';
+import 'package:zxbase_app/ui/common/zero_trust_input.dart';
 import 'package:zxbase_app/ui/launch/launch_widget.dart';
 import 'package:zxbase_crypto/zxbase_crypto.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
@@ -136,7 +137,7 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                   right: 5,
                                   bottom: 0,
                                 ),
-                                child: TextFormField(
+                                child: ZTTextFormField(
                                   key: const Key('passwordInput'),
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(
@@ -212,7 +213,7 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                   right: 5,
                                   bottom: 5,
                                 ),
-                                child: TextFormField(
+                                child: ZTTextFormField(
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(
                                       Const.passwordMaxLength,

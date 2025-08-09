@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zxbase_app/main.dart';
 import 'package:zxbase_app/ui/launch/splash_widget.dart';
+import 'package:zxbase_app/ui/common/zero_trust_input.dart';
 import 'helpers.dart';
 
 void main() {
@@ -28,7 +29,7 @@ void main() {
 
       // put the password in
       expect(find.text('Confirm password'), findsOneWidget);
-      expect(find.byType(TextFormField), findsNWidgets(2));
+      expect(find.byType(ZTTextFormField), findsNWidgets(2));
       await tester.enterText(
         find.byKey(const Key('passwordInput')),
         '4bGd#9g123',

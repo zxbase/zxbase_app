@@ -9,6 +9,7 @@ import 'package:zxbase_app/ui/common/dialogs.dart';
 import 'package:zxbase_app/ui/devices/delete_device_dialog.dart';
 import 'package:zxbase_app/ui/common/device_id_widget.dart';
 import 'package:zxbase_app/ui/common/scroll_column_widget.dart';
+import 'package:zxbase_app/ui/common/zero_trust_input.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class DeviceDetailsWidget extends ConsumerStatefulWidget {
@@ -90,7 +91,7 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
                     ),
                     Form(
                       key: _formKey,
-                      child: TextFormField(
+                      child: ZTTextFormField(
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(
                             Const.nicknameMaxLength,

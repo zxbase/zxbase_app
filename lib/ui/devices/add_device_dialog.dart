@@ -11,6 +11,7 @@ import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/rps_provider.dart';
+import 'package:zxbase_app/ui/common/zero_trust_input.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxbase_model/zxbase_model.dart';
 
@@ -76,7 +77,7 @@ class _AddDeviceWidgetState extends ConsumerState<AddDeviceWidget> {
       child: Center(
         child: Column(
           children: [
-            TextFormField(
+            ZTTextFormField(
               controller: _identityController,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(Const.identityMaxLength),
@@ -106,7 +107,7 @@ class _AddDeviceWidgetState extends ConsumerState<AddDeviceWidget> {
                 }
               },
             ),
-            TextFormField(
+            ZTTextFormField(
               inputFormatters: [
                 LengthLimitingTextInputFormatter(Const.nicknameMaxLength),
               ],

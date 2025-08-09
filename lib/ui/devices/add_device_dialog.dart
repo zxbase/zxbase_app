@@ -83,8 +83,8 @@ class _AddDeviceWidgetState extends ConsumerState<AddDeviceWidget> {
                 LengthLimitingTextInputFormatter(Const.identityMaxLength),
               ],
               decoration: InputDecoration(
-                labelText: 'Identity',
-                hintText: 'Paste device\'s Identity.',
+                labelText: 'Identity Key',
+                hintText: 'Other device\'s Identity Key',
                 helperText: ' ', // prevent height change
               ),
               onSaved: (String? value) {

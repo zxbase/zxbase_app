@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
-Widget deviceIdWidget(BuildContext context, String deviceId) {
+Widget deviceIdWidget({
+  required BuildContext context,
+  required String deviceId,
+}) {
   return GestureDetector(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Text('Device ID:', style: TextStyle(fontSize: UI.fontSizeMedium)),
+          Text('Device ID', style: TextStyle(fontSize: UI.fontSizeMedium)),
           Padding(
             padding: const EdgeInsets.all(5),
             child: Text(
@@ -17,16 +21,12 @@ Widget deviceIdWidget(BuildContext context, String deviceId) {
               textAlign: TextAlign.center,
             ),
           ),
-          Text(
-            '(hold to copy to clipboard)',
-            style: TextStyle(fontSize: UI.fontSizeSmall),
-          ),
         ],
       ),
     ),
     onLongPress: () {
       Clipboard.setData(ClipboardData(text: deviceId));
-      UI.showSnackbar(context, 'Copied!');
+      UI.showSnackbar(context, Const.copyClip);
     },
   );
 }

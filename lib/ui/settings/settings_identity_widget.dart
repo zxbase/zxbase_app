@@ -12,7 +12,7 @@ class SettingsIdentityWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String identity = ref.read(deviceProvider).identity.toBase64Url();
+    String identityKey = ref.read(deviceProvider).identity.toBase64Url();
     String deviceId = ref.read(deviceProvider).id;
 
     return LayoutBuilder(
@@ -34,14 +34,17 @@ class SettingsIdentityWidget extends ConsumerWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
-                      child: deviceIdWidget(context, deviceId),
+                      child: deviceIdWidget(
+                        context: context,
+                        deviceId: deviceId,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 24.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Clipboard.setData(ClipboardData(text: identity));
-                          UI.showSnackbar(context, 'Copied!');
+                          Clipboard.setData(ClipboardData(text: identityKey));
+                          UI.showSnackbar(context, Const.copyClip);
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),

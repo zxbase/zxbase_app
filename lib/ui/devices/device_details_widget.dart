@@ -118,7 +118,7 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
                       ),
                     ),
                     const Spacer(),
-                    deviceIdWidget(context, widget.peerId),
+                    deviceIdWidget(context: context, deviceId: widget.peerId),
                     Visibility(
                       visible: !editMode,
                       child: SizedBox(
@@ -128,7 +128,7 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
                             Clipboard.setData(
                               ClipboardData(text: peer!.identityStr),
                             );
-                            UI.showSnackbar(context, 'Copied!');
+                            UI.showSnackbar(context, Const.copyClip);
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.0),

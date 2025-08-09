@@ -288,7 +288,7 @@ class SettingsAboutWidgetState extends ConsumerState<SettingsAboutWidget> {
       onRightTap: () {
         Navigator.pop(context);
         Clipboard.setData(ClipboardData(text: dump));
-        UI.showSnackbar(context, 'Copied!');
+        UI.showSnackbar(context, Const.copyClip);
       },
     );
   }

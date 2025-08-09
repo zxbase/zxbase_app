@@ -179,7 +179,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                         Clipboard.setData(
                           ClipboardData(text: _usernameController.text),
                         );
-                        UI.showSnackbar(context, 'Copied!');
+                        UI.showSnackbar(context, Const.copyClip);
                       },
                     ),
                   ),
@@ -236,7 +236,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                     Clipboard.setData(
                       ClipboardData(text: _usernameController.text),
                     );
-                    UI.showSnackbar(context, 'Copied!');
+                    UI.showSnackbar(context, Const.copyClip);
                   },
                 ),
               ),
@@ -288,7 +288,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                   Clipboard.setData(
                     ClipboardData(text: _passwordController.text),
                   );
-                  UI.showSnackbar(context, 'Copied!');
+                  UI.showSnackbar(context, Const.copyClip);
                 },
               ),
             ],
@@ -405,7 +405,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                   tooltip: 'Copy',
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: controller.text));
-                    UI.showSnackbar(context, 'Copied!');
+                    UI.showSnackbar(context, Const.copyClip);
                   },
                 ),
               ],

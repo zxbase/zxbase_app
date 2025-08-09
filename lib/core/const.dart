@@ -9,7 +9,7 @@ class Const {
   static const identityMaxLength = 512;
   static const nicknameEmptyWarn = 'Nickname can not be empty';
   static const nicknameLongWarn = 'Nickname is too long';
-  static const idntEmptyWarn = 'Identity can not be empty';
+  static const idntEmptyWarn = 'Identity Key can not be empty';
   static const passEmptyWant = 'Password can not be empty';
   static const connectionIdle = 20;
   static const msgMaxCount = 100;
@@ -31,7 +31,8 @@ class Const {
   static const vaultGroupWarn = 'Add devices to sync the vault';
   static const vaultSyncWarn = 'Sync required';
   static const discardWarn = 'Are you sure you want to discard changes?';
-  static const copyIdnt = 'Copy identity to clipboard';
+  static const copyIdnt = 'Get Identity Key';
+  static const copyClip = 'Copied to clipboard!';
   static const attentionWarn = 'Attention required';
   static const newVersionMsg = 'A newer version is available';
 }

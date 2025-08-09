@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_crypto/zxbase_crypto.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxcvbn/zxcvbn.dart';
@@ -71,7 +72,7 @@ class PasswordGenerationWidgetState extends State<PasswordGenerationWidget> {
               tooltip: 'Copy',
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: _password));
-                UI.showSnackbar(context, 'Copied!');
+                UI.showSnackbar(context, Const.copyClip);
               },
             ),
           ],

@@ -16,8 +16,8 @@ enum RV {
 Map<RV, String> rvMsg = {
   RV.ok: 'OK',
   RV.io: 'I/O error.',
-  RV.invalidIdentity: 'Invalid identity.',
-  RV.ownIdentity: 'My own identity.',
+  RV.invalidIdentity: 'Invalid Identity Key.',
+  RV.ownIdentity: 'Devices\' own Identity Key.',
   RV.notFound: 'Not found',
   RV.peerExists: 'Peer already exists.',
   RV.entryExists: 'Entry already exists.',

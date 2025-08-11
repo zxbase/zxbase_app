@@ -2,7 +2,8 @@ name: zxbase_app
 description: "Multiplatform Zxbase application."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.0.0+100
+# update also an environment, msix_config and snapcraft.yaml
+version: 4.0.0+109
 
 environment:
   sdk: ^3.8.0

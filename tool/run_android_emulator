@@ -1,0 +1,4 @@
+flutter emulators
+flutter emulators --launch Medium_Phone_API_36.0
+flutter devices
+flutter run -d emulator-5554 --dart-define-from-file=.env

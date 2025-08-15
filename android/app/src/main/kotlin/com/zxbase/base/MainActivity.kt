@@ -1,4 +1,4 @@
-package com.example.zxbase_app
+package com.zxbase.base
 
 import io.flutter.embedding.android.FlutterActivity
 

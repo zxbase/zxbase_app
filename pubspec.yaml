@@ -38,8 +38,19 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  msix: ^3.0.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
+
+msix_config:
+  display_name: Zxbase
+  publisher: CN=BBFD44F4-B953-4CCF-94AD-E605E12434CB
+  publisher_display_name: Zxbase LLC
+  identity_name: ZxbaseLLC.Zxbase
+  msix_version: 4.0.0.0
+  logo_path: misc\round_1024.png
+  capabilities: internetClient, location, webcam
+  output_name: zxbase_win_4.0.0.0

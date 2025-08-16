@@ -51,6 +51,12 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true // Enables code shrinking and obfuscation
+            isShrinkResources = true // Enables resource shrinking
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), // Default Android ProGuard rules
+                "proguard-rules.pro" // Zxbase rules
+            )
         }
     }
 }

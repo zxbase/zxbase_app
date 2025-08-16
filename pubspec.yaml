@@ -51,6 +51,6 @@ msix_config:
   publisher_display_name: Zxbase LLC
   identity_name: ZxbaseLLC.Zxbase
   msix_version: 4.0.0.0
-  logo_path: misc\round_1024.png
+  logo_path: assets\round_1024.png
   capabilities: internetClient, location, webcam
   output_name: zxbase_win_4.0.0.0

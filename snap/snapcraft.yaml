@@ -4,7 +4,7 @@ summary: Personal peer-to-peer vault.
 description: Zxbase is a free, open-source personal vault replacing legacy password managers and cloud solutions. Encrypts and syncs all your mobile and desktop devices peer-to-peer.
 
 confinement: strict
-base: core22
+base: core24
 grade: stable
 
 slots:
@@ -20,6 +20,7 @@ apps:
     plugs:
     - home
     - network
+    - audio-playback
     slots:
       - dbus-zxbase
 parts:

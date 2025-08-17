@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Zxbase
+Comment=Personal peer-to-peer vault.
+Exec=zxbase
+Icon=${SNAP}/meta/gui/zxbase.png
+Terminal=false
+Type=Application
+Categories=Productivity;

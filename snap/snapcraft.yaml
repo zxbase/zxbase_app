@@ -1,0 +1,29 @@
+name: zxbase
+version: 3.1.14
+summary: Personal peer-to-peer vault.
+description: Zxbase is a free, open-source personal vault replacing legacy password managers and cloud solutions. Encrypts and syncs all your mobile and desktop devices peer-to-peer.
+
+confinement: strict
+base: core22
+grade: stable
+
+slots:
+  dbus-zxbase:
+    interface: dbus
+    bus: session
+    name: com.zxbase.base
+    
+apps:
+  zxbase:
+    command: zxbase
+    extensions: [gnome]
+    plugs:
+    - home
+    - network
+    slots:
+      - dbus-zxbase
+parts:
+  zxbase:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application

@@ -4,7 +4,7 @@ class Const {
   static const peerMaxCount = 30;
   static const msgMaxLength = 512;
   static const passwordMinLength = 8;
-  static const passwordMaxLength = 32;
+  static const passwordMaxLength = 64;
   static const nicknameMaxLength = 32;
   static const identityMaxLength = 512;
   static const nicknameEmptyWarn = 'Nickname can not be empty';

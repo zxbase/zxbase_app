@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
 import 'package:zxbase_app/ui/common/app_bar.dart';
+import 'package:zxbase_app/ui/common/theme.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
 class SettingsAppearanceWidget extends ConsumerWidget {
@@ -26,37 +27,31 @@ class SettingsAppearanceWidget extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 0),
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      RadioListTile<String>(
-                        title: Text(
-                          'Light theme',
-                          style: TextStyle(fontSize: UI.fontSizeMedium),
+                  child: RadioGroup<String>(
+                    groupValue: theme,
+                    onChanged: (String? value) async {
+                      await ref.read(initProvider.notifier).setTheme(value!);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RadioListTile<String>(
+                          title: Text(
+                            'Light theme',
+                            style: TextStyle(fontSize: UI.fontSizeMedium),
+                          ),
+                          value: LocalTheme.light,
                         ),
-                        value: 'light',
-                        groupValue: theme,
-                        onChanged: (String? value) async {
-                          await ref
-                              .read(initProvider.notifier)
-                              .setTheme(value!);
-                        },
-                      ),
-                      RadioListTile<String>(
-                        title: Text(
-                          'Dark theme',
-                          style: TextStyle(fontSize: UI.fontSizeMedium),
+                        RadioListTile<String>(
+                          title: Text(
+                            'Dark theme',
+                            style: TextStyle(fontSize: UI.fontSizeMedium),
+                          ),
+                          value: LocalTheme.dark,
                         ),
-                        value: 'dark',
-                        groupValue: theme,
-                        onChanged: (String? value) async {
-                          await ref
-                              .read(initProvider.notifier)
-                              .setTheme(value!);
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

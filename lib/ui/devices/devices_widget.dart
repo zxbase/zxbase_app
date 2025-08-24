@@ -74,7 +74,6 @@ class DevicesWidget extends ConsumerWidget {
         bottom: preferredSizeDivider(height: 0.5),
       ),
       body: SafeArea(
-        //child: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [

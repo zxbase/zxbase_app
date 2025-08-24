@@ -13,35 +13,34 @@ class DesktopWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    BarItem selectedTab = ref.watch(selectedTabProvider);
+    int selectedTab = ref.watch(selectedTabProvider);
     bool isNewVaultEntry = ref.watch(newVaultEntryProvider);
     var selectedVaultEntryId = ref.watch(selectedVaultEntryProvider);
     SettingItem selectedSetting = ref.watch(selectedSettingProvider);
     String selectedDeviceId = ref.watch(selectedDeviceProvider);
     Widget widget;
 
-    switch (selectedTab) {
-      case BarItem.vault:
-        widget = (isNewVaultEntry || selectedVaultEntryId != '')
-            ? VaultSecretWidget()
-            : Container();
-      case BarItem.devices:
-        if (selectedDeviceId == '') {
+    if (selectedTab == BarItem.vault.index) {
+      widget = (isNewVaultEntry || selectedVaultEntryId != '')
+          ? VaultSecretWidget()
+          : Container();
+    } else if (selectedTab == BarItem.devices.index) {
+      if (selectedDeviceId == '') {
+        widget = Container();
+      } else {
+        widget = DeviceDetailsWidget(peerId: selectedDeviceId);
+      }
+    } else {
+      switch (selectedSetting) {
+        case SettingItem.identity:
+          widget = const SettingsIdentityWidget();
+        case SettingItem.appearance:
+          widget = const SettingsAppearanceWidget();
+        case SettingItem.about:
+          widget = const SettingsAboutWidget();
+        case SettingItem.none:
           widget = Container();
-        } else {
-          widget = DeviceDetailsWidget(peerId: selectedDeviceId);
-        }
-      case BarItem.settings:
-        switch (selectedSetting) {
-          case SettingItem.identity:
-            widget = const SettingsIdentityWidget();
-          case SettingItem.appearance:
-            widget = const SettingsAppearanceWidget();
-          case SettingItem.about:
-            widget = const SettingsAboutWidget();
-          case SettingItem.none:
-            widget = Container();
-        }
+      }
     }
 
     return Scaffold(

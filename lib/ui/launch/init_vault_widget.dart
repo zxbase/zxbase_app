@@ -56,7 +56,7 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
   static const String _validationMessageShort = 'The password is too short.';
   static const String _validationMessageLong = 'The password is too long.';
   static const String _validationMessageReq =
-      'Password does not match the requirements.';
+      'Password does not meet the requirements.';
 
   Future<bool> _initVault() async {
     // initialize green vault
@@ -169,7 +169,9 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                     } else if (value.length >
                                         Const.passwordMaxLength) {
                                       return _validationMessageLong;
-                                    } else if (!Password.okRE.hasMatch(value)) {
+                                    } else if (!Password.lengthRE.hasMatch(
+                                      value,
+                                    )) {
                                       return _validationMessageReq;
                                     } else {
                                       _password = value;
@@ -236,7 +238,9 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                     } else if (value.length >
                                         Const.passwordMaxLength) {
                                       return _validationMessageLong;
-                                    } else if (!Password.okRE.hasMatch(value)) {
+                                    } else if (!Password.lengthRE.hasMatch(
+                                      value,
+                                    )) {
                                       return _validationMessageReq;
                                     } else {
                                       _passwordConfirmation = value;
@@ -310,7 +314,7 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                           ),
                                         ],
                                       ),
-                                      Row(
+                                      /* Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
@@ -351,7 +355,7 @@ class InitVaultWidgetState extends ConsumerState<InitVaultWidget> {
                                             ),
                                           ),
                                         ],
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 ),

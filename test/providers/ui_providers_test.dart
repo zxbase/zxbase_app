@@ -23,9 +23,9 @@ void main() {
   });
 
   test('Selected tab provider', () async {
-    container.read(selectedTabProvider.notifier).state = BarItem.devices;
+    container.read(selectedTabProvider.notifier).state = 1;
     var selectedTab = container.read(selectedTabProvider);
 
-    expect(selectedTab == BarItem.devices, true);
+    expect(selectedTab == 1, true);
   });
 }

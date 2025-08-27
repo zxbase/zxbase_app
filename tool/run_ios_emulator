@@ -1,4 +1,4 @@
 flutter emulators
 flutter emulators --launch apple_ios_simulator
 flutter devices
-flutter run -d B3A51C0F-E29C-496C-8F6F-9F06085887D6 --dart-define-from-file=.env
+flutter run -d DF246F89-84B0-4D78-89FD-B926F4FBE636 --dart-define-from-file=.env

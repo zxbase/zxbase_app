@@ -10,6 +10,8 @@ import 'package:zxbase_app/ui/settings/settings_widget.dart';
 import 'package:zxbase_app/ui/vault/vault_widget.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
+enum BarItem { vault, devices, settings }
+
 List<Widget> buildSettingsBarItem(String warning) {
   List<Widget> rv = <Widget>[const Icon(Icons.settings_rounded)];
 
@@ -35,19 +37,18 @@ class ExplorerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    BarItem selectedTab = ref.watch(selectedTabProvider);
+    int selectedTab = ref.watch(selectedTabProvider);
     String syncWarn = ref.watch(vaultSyncWarningProvider);
     PeerGroup vaultGroup = ref.watch(peerGroupsProvider).vaultGroup;
     String versionWarn = ref.watch(versionWarningProvider);
 
     Widget explorerWidget;
-    switch (selectedTab) {
-      case BarItem.vault:
-        explorerWidget = const VaultWidget();
-      case BarItem.devices:
-        explorerWidget = const DevicesWidget();
-      case BarItem.settings:
-        explorerWidget = const SettingsWidget();
+    if (selectedTab == BarItem.vault.index) {
+      explorerWidget = const VaultWidget();
+    } else if (selectedTab == BarItem.devices.index) {
+      explorerWidget = const DevicesWidget();
+    } else {
+      explorerWidget = const SettingsWidget();
     }
 
     List<Widget> devicesBarItem = buildVaultBarItem(vaultGroup, syncWarn);
@@ -80,10 +81,10 @@ class ExplorerWidget extends ConsumerWidget {
                 icon: Stack(children: settingsBarItem),
               ),
             ],
-            currentIndex: selectedTab.ind,
+            currentIndex: selectedTab,
             onTap: (int index) {
               if (ref.read(isVaultEntryDirtyProvider) &&
-                  index != BarItem.vault.ind) {
+                  index != BarItem.vault.index) {
                 showCustomDialog(
                   context,
                   Container(),
@@ -93,13 +94,11 @@ class ExplorerWidget extends ConsumerWidget {
                   onLeftTap: () {
                     ref.read(isVaultEntryDirtyProvider.notifier).state = false;
                     Navigator.pop(context);
-                    ref.read(selectedTabProvider.notifier).state =
-                        BarItem.values[index];
+                    ref.read(selectedTabProvider.notifier).state = index;
                   },
                 );
               } else {
-                ref.read(selectedTabProvider.notifier).state =
-                    BarItem.values[index];
+                ref.read(selectedTabProvider.notifier).state = index;
               }
             },
           ),

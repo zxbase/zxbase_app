@@ -29,7 +29,7 @@ class LocalTheme {
 
     return base.copyWith(
       appBarTheme: AppBarTheme(
-        color: Colors.transparent,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.grey.shade400),
@@ -48,7 +48,9 @@ class LocalTheme {
 
     return base.copyWith(
       appBarTheme: AppBarTheme(
-        color: UI.isMobile ? Colors.grey.shade100 : Colors.transparent,
+        backgroundColor: UI.isMobile
+            ? Colors.grey.shade100
+            : Colors.transparent,
         elevation: 0,
         foregroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.grey.shade600),

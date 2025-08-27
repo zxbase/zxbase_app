@@ -13,17 +13,8 @@ final searchQueryProvider = StateProvider<String>((ref) {
 });
 
 // Selected bottom navigation bar item.
-enum BarItem {
-  vault(0),
-  devices(1),
-  settings(2);
-
-  const BarItem(this.ind);
-  final int ind;
-}
-
-final selectedTabProvider = StateProvider<BarItem>((ref) {
-  return BarItem.vault; // default tab
+final selectedTabProvider = StateProvider<int>((ref) {
+  return 0; // default tab
 });
 
 // vault providers

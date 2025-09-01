@@ -259,11 +259,12 @@ class Connection {
     connection = await createPeerConnection({
       'iceServers': [
         {'url': stunUrl},
+        // No TURN servers to assure the relay is not used.
       ],
       'sdpSemantics': sdpSemantics,
     }, constraints);
 
-    // Initialize callbacks
+    // Initialize callbacks.
     connection.onIceCandidate = onIceCandidate;
 
     connection.onRenegotiationNeeded = () {
@@ -368,7 +369,8 @@ class Connection {
     state = csInitialized;
   }
 
-  // signaling handlers
+  // Signaling handlers.
+
   Future<void> onOffer({required Map<String, dynamic> description}) async {
     log('${logPeer(peerId)}: received an offer, state $state.', name: _comp);
     await reset();
@@ -376,7 +378,6 @@ class Connection {
     await connection.setRemoteDescription(
       RTCSessionDescription(description['sdp'], description['type']),
     );
-    // send an answer when the signaling state changes
   }
 
   Future<void> onIceCandidate(RTCIceCandidate? candidate) async {
@@ -419,17 +420,6 @@ class Connection {
       remoteCandidates.add(iceCandidate);
     } else {
       await connection.addCandidate(iceCandidate);
-      // no functional issues so far with this crash
-      // [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: PlatformException(AddIceCandidateFailed, Error Error processing ICE candidate, null, null)
-      // #0      StandardMethodCodec.decodeEnvelope (package:flutter/src/services/message_codecs.dart:607:7)
-      // #1      MethodChannel._invokeMethod (package:flutter/src/services/platform_channel.dart:177:18)
-      // <asynchronous suspension>
-      // #2      RTCPeerConnectionNative.addCandidate (package:flutter_webrtc/src/native/rtc_peerconnection_impl.dart:361:5)
-      // <asynchronous suspension>
-      // #3      Connection.onRemoteCandidate (package:device/core/channels/connection.dart:359:7)
-      // <asynchronous suspension>
-      // #4      Connections._onSignalingMessage (package:device/providers/connections_provider.dart:205:9)
-      // <asynchronous suspension>
     }
   }
 
@@ -438,14 +428,6 @@ class Connection {
     await connection.setRemoteDescription(
       RTCSessionDescription(description['sdp'], description['type']),
     );
-    // no functional issues so far with this crash
-    // [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: Unable to RTCPeerConnection::setRemoteDescription: Error Failed to set remote answer sdp: Called in wrong state: stable
-    // #0      RTCPeerConnectionNative.setRemoteDescription (package:flutter_webrtc/src/native/rtc_peerconnection_impl.dart:317:7)
-    // <asynchronous suspension>
-    // #1      Connection.onAnswer (package:device/core/channels/connection.dart:371:5)
-    // <asynchronous suspension>
-    // #2      Connections._onSignalingMessage (package:device/providers/connections_provider.dart:202:9)
-    // <asynchronous suspension>
   }
 
   // channel handshake methods
@@ -542,7 +524,7 @@ class Connection {
 
   // To prepare for next negotiation, we have to close the connection.
   // After connection is closed, it has to be initialized again.
-  // Otherwise WRTC can't find it and throws an exception.
+  // Otherwise WebRTC can't find it and throws an exception.
   Future<void> reset() async {
     if ({csInitialized, csReady}.contains(state)) {
       log('${logPeer(peerId)}: no need to reset $state.', name: _comp);
@@ -620,8 +602,7 @@ class Connection {
       return;
     }
 
-    // If from either peer's perspective the other peer is offline
-    // and no change in state happened recently - restart negotiation.
+    // If either peer is offline for too long - restart the negotiation.
     Set offlineStates = {peerStatusOffline, peerStatusStaged};
 
     if (offlineStates.contains(hb['status'])) {

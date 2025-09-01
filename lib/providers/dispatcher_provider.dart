@@ -143,7 +143,7 @@ class Dispatcher {
 
   Future<void> pairPeer({required Peer peer}) async {
     RpsClient rps = ref.read(rpsProvider);
-    String channelId = await rps.channel(peerId: peer.id, app: messageApp);
+    String channelId = await rps.channel(peerId: peer.id, app: defaultApp);
     if (channelId == '') {
       // the peer is not paired yet
       return;
@@ -199,7 +199,7 @@ class Dispatcher {
       Connection peerConnection = connections.getConnection(peer.id)!;
       SignalingMessage msg = SignalingMessage(
         type: sigHB,
-        app: messageApp,
+        app: defaultApp,
         from: ref.read(deviceProvider).id,
         to: peer.id,
         channelId: peer.channel,

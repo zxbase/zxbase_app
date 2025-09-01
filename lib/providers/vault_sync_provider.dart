@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:zxbase_app/core/channel/channel_message.dart';
 import 'package:zxbase_app/core/channel/connection.dart';
 import 'package:zxbase_app/core/const.dart';
@@ -44,7 +43,6 @@ class VaultSync {
     for (RemotePeer remotePeer in vaultGroup.peers.values) {
       Peer? peer = ref.read(peersProvider).peers[remotePeer.id];
       if (peer == null) {
-        // can happen if an old peer stuck in vault sync group due to a bug
         continue;
       }
 
@@ -75,8 +73,6 @@ class VaultSync {
     PeerGroup vaultGroup = ref
         .read(peerGroupsProvider.notifier)
         .copyVaultGroup();
-    // vaultGroup.peers[peerId]!.rev = revMap['hash'];
-    // vaultGroup.peers[peerId]!.revDate = revMap['date'];
     vaultGroup.peers[peerId]!.revision = peerRev;
     vaultGroup.peers[peerId]!.updatedAt = DateTime.now().toUtc();
 
@@ -91,7 +87,6 @@ class VaultSync {
     for (String peerId in ref.read(peerGroupsProvider).vaultGroup.peerIds) {
       Connection? peerConnection = connections.getConnection(peerId);
       if (peerConnection == null) {
-        // can happen if an old peer stuck in vault sync group due to a bug
         return;
       }
 
@@ -103,7 +98,7 @@ class VaultSync {
           'data': ref.read(userVaultProvider.notifier).export(),
         },
       );
-      await peerConnection.sendDirectMessage(doc);
+      await peerConnection.sendMessage(doc);
     }
   }
 
@@ -149,10 +144,7 @@ class VaultSync {
         'data': ref.read(userVaultProvider.notifier).currentRevision.export(),
       },
     );
-    await ref
-        .read(connectionsProvider)
-        .getConnection(peerId)!
-        .sendDirectMessage(ack);
+    await ref.read(connectionsProvider).getConnection(peerId)!.sendMessage(ack);
     ref.read(vaultCandidateProvider.notifier).state = {};
   }
 }

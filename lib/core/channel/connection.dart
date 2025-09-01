@@ -1,4 +1,4 @@
-// Direct channel to the peer.
+// Peer connection.
 
 // References:
 //   - https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Perfect_negotiation
@@ -55,9 +55,9 @@ class Connection {
 
   DateTime hbReceived = DateTime.utc(-271821, 04, 20);
 
-  // Direct messages channel.
-  bool dmChannelInitialized = false;
-  late RTCDataChannel dmChannel;
+  // Default channel.
+  bool defaultChannelInitialized = false;
+  late RTCDataChannel defaultChannel;
 
   // Vault channel. Not enabled by default.
   bool vaultEnabled = false;
@@ -70,7 +70,7 @@ class Connection {
   List<RTCIceCandidate> remoteCandidates = [];
 
   // callbacks
-  Future<void> Function(String peerId, ChannelMessage msg)? onDirectMessage;
+  Future<void> Function(String peerId, ChannelMessage msg)? onMessage;
   Future<void> Function(String peerId, ChannelMessage msg)? onReceipt;
   Future<void> Function(String peerId, ChannelMessage msg)? onHeartbeat;
   Future<void> Function(String peerId, ChannelMessage msg)? onVaultMessage;
@@ -86,7 +86,7 @@ class Connection {
   }) {
     return SignalingMessage(
       type: type,
-      app: messageApp,
+      app: defaultApp,
       from: ref.read(deviceProvider).id,
       to: peerId,
       // message channel is used for the connection setup
@@ -126,10 +126,10 @@ class Connection {
         name: _comp,
       );
       if (s == RTCDataChannelState.RTCDataChannelOpen) {
-        if (channel == dmChannel) {
+        if (channel == defaultChannel) {
           // Be sure to wait for 'open' before starting handshake.
           log(
-            '${logPeer(peerId)}: DM channel is open, starting handshake.',
+            '${logPeer(peerId)}: default channel is open, starting handshake.',
             name: _comp,
           );
           await _sendChallenge();
@@ -152,11 +152,11 @@ class Connection {
           log('${logPeer(peerId)}: received handshake response.', name: _comp);
           await _handleResponse(msg);
           break;
-        case cmDirectMessage:
-          log('${logPeer(peerId)}: received direct message.', name: _comp);
-          await onDirectMessage?.call(peerId, msg);
+        case cmMessage:
+          log('${logPeer(peerId)}: received message.', name: _comp);
+          await onMessage?.call(peerId, msg);
           break;
-        case cmDirectReceipt:
+        case cmReceipt:
           log('${logPeer(peerId)}: received receipt.', name: _comp);
           await onReceipt?.call(peerId, msg);
           break;
@@ -192,15 +192,18 @@ class Connection {
       ..maxRetransmits = 30;
     String label = '$app:$channelId';
     switch (app) {
-      case messageApp:
+      case defaultApp:
         log(
-          '${logPeer(peerId)}: creating DM data channel $label.',
+          '${logPeer(peerId)}: creating default data channel $label.',
           name: _comp,
         );
-        dmChannel = await connection.createDataChannel(label, dataChannelDict);
-        dmChannelInitialized = true;
-        log('${logPeer(peerId)}: created DM channel.', name: _comp);
-        _setupDataChannel(dmChannel);
+        defaultChannel = await connection.createDataChannel(
+          label,
+          dataChannelDict,
+        );
+        defaultChannelInitialized = true;
+        log('${logPeer(peerId)}: default channel created.', name: _comp);
+        _setupDataChannel(defaultChannel);
         break;
     }
   }
@@ -305,7 +308,7 @@ class Connection {
       Peer peer = getPeer?.call(peerId);
 
       switch (label[0]) {
-        case messageApp:
+        case defaultApp:
           if (peer.channel != label[1]) {
             log(
               'Error: channel is ${peer.channel}, got ${label[1]}.',
@@ -313,9 +316,9 @@ class Connection {
             );
             return;
           }
-          dmChannel = channel;
-          _setupDataChannel(dmChannel);
-          dmChannelInitialized = true;
+          defaultChannel = channel;
+          _setupDataChannel(defaultChannel);
+          defaultChannelInitialized = true;
           break;
         case vaultApp:
           if (peer.vaultChannel != label[1]) {
@@ -400,7 +403,7 @@ class Connection {
   Future<void> _sendChallenge() async {
     state = csVerifying;
     _issuedChallenge = await ref.read(handshakeProvider).buildChallenge(peerId);
-    await dmChannel.send(RTCDataChannelMessage(_issuedChallenge.str));
+    await defaultChannel.send(RTCDataChannelMessage(_issuedChallenge.str));
     log('${logPeer(peerId)}: challenge sent.', name: _comp);
   }
 
@@ -411,7 +414,7 @@ class Connection {
     if (responseMsg == null) {
       return;
     }
-    await dmChannel.send(RTCDataChannelMessage(responseMsg.str));
+    await defaultChannel.send(RTCDataChannelMessage(responseMsg.str));
     log('${logPeer(peerId)}: challenge response sent.', name: _comp);
   }
 
@@ -426,14 +429,14 @@ class Connection {
     await onHandshakeCompletion?.call(peerId);
   }
 
-  Future<bool> sendDirectMessage(ChannelMessage msg) async {
+  Future<bool> sendMessage(ChannelMessage msg) async {
     // to send a message, handshake has to be completed
-    if ((state == csOn) && dmChannelInitialized) {
+    if ((state == csOn) && defaultChannelInitialized) {
       log(
-        '${logPeer(peerId)}: send direct message, state: ${dmChannel.state}.',
+        '${logPeer(peerId)}: send message, state: ${defaultChannel.state}.',
         name: _comp,
       );
-      await dmChannel.send(RTCDataChannelMessage(msg.str));
+      await defaultChannel.send(RTCDataChannelMessage(msg.str));
       return true;
     } else {
       return false;
@@ -442,20 +445,20 @@ class Connection {
 
   Future<void> _closeDataChannel({required String app}) async {
     switch (app) {
-      case messageApp:
-        if (!dmChannelInitialized) {
+      case defaultApp:
+        if (!defaultChannelInitialized) {
           return;
         }
-        log('closing DM channel', name: _comp);
-        await dmChannel.close();
-        dmChannelInitialized = false;
+        log('closing default channel', name: _comp);
+        await defaultChannel.close();
+        defaultChannelInitialized = false;
         break;
     }
   }
 
   Future<void> close() async {
     log('${logPeer(peerId)}: close connection.', name: _comp);
-    await _closeDataChannel(app: messageApp);
+    await _closeDataChannel(app: defaultApp);
     await connection.close();
     state = csOff;
   }
@@ -474,9 +477,9 @@ class Connection {
     await init();
   }
 
-  Future<void> _createDMChannel() async {
+  Future<void> _createDefaultChannel() async {
     await _createDataChannel(
-      app: messageApp,
+      app: defaultApp,
       channelId: getPeer?.call(peerId).channel,
     );
   }
@@ -505,11 +508,11 @@ class Connection {
       return;
     }
 
-    log('ICE restart. DM:$dmChannelInitialized', name: _comp);
+    log('ICE restart. default:$defaultChannelInitialized', name: _comp);
     state = csNegotiating;
-    if (!dmChannelInitialized) {
-      log('${logPeer(peerId)}: create DM channel', name: _comp);
-      await _createDMChannel();
+    if (!defaultChannelInitialized) {
+      log('${logPeer(peerId)}: create default channel', name: _comp);
+      await _createDefaultChannel();
     }
     if (vaultEnabled && !vaultChannelInitialized) {
       log('${logPeer(peerId)}: create vault channel', name: _comp);
@@ -549,6 +552,6 @@ class Connection {
       return;
     }
     ChannelMessage cMsg = ChannelMessage(type: cmHeartbeat, data: hbData);
-    await dmChannel.send(RTCDataChannelMessage(cMsg.str));
+    await defaultChannel.send(RTCDataChannelMessage(cMsg.str));
   }
 }

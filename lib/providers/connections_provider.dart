@@ -1,7 +1,5 @@
 // Connections:
-//   Peer Id -> Connection:
-//                - Peer connection.
-//                - DM channel.
+//   Peer Id -> Connection
 
 import 'dart:developer';
 import 'package:zxbase_app/core/channel/channel_message.dart';
@@ -68,7 +66,7 @@ class Connections {
       type: cmVault,
       data: {'type': queryMsg},
     );
-    await getConnection(peerId)!.sendDirectMessage(query);
+    await getConnection(peerId)!.sendMessage(query);
   }
 
   Future<void> _onVaultMessage(String peerId, ChannelMessage msg) async {
@@ -90,7 +88,7 @@ class Connections {
             'data': ref.read(userVaultProvider.notifier).export(),
           },
         );
-        await getConnection(peerId)!.sendDirectMessage(doc);
+        await getConnection(peerId)!.sendMessage(doc);
         break;
       case docMsg:
         if (!await ref
@@ -116,7 +114,7 @@ class Connections {
                 .export(),
           },
         );
-        await getConnection(peerId)!.sendDirectMessage(ack);
+        await getConnection(peerId)!.sendMessage(ack);
         break;
       case ackMsg:
         Revision peerRev = Revision.fromJson(msg.data['data']);
@@ -134,7 +132,7 @@ class Connections {
     }
     log('${logPeer(peerId)}: flushing egress queue.', name: _comp);
     for (ChannelMessage msg in [...dmEgressQueue[peerId]!.values]) {
-      await getConnection(peerId)!.sendDirectMessage(msg);
+      await getConnection(peerId)!.sendMessage(msg);
     }
   }
 

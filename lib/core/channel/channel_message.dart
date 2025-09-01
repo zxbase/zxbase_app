@@ -2,8 +2,8 @@ import 'dart:convert';
 
 const String cmHsChallenge = 'hsChallenge';
 const String cmHsResponse = 'hsResponse';
-const String cmDirectMessage = 'directMessage';
-const String cmDirectReceipt = 'directReceipt';
+const String cmMessage = 'directMessage';
+const String cmReceipt = 'directReceipt';
 const String cmHeartbeat = 'hb';
 const String cmVault = 'vault';
 

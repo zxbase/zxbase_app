@@ -4,7 +4,6 @@ const String cmHsChallenge = 'hsChallenge';
 const String cmHsResponse = 'hsResponse';
 const String cmDirectMessage = 'directMessage';
 const String cmDirectReceipt = 'directReceipt';
-const String cmLocation = 'location';
 const String cmHeartbeat = 'hb';
 const String cmVault = 'vault';
 

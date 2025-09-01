@@ -1,8 +1,9 @@
-RPS_HOST="alpha.zxbase.com"
-RPS_PORT=7070
-SIGNALING_HOST='signaling.org'
-SIGNALING_PORT=8002
-STUN_HOST='stun.org'
-STUN_PORT=8003
+# Sample environment file
+RPS_HOST='rps.example.com'
+RPS_PORT=1234
+SIGNALING_HOST='signaling.example.com'
+SIGNALING_PORT=5678
+STUN_HOST='stun.example.com'
+STUN_PORT=90
 BLUE_VAULT_PWD='test.pwd'
-VERSION='3.1.14 (90)'
+VERSION='4.1.0 (120)'

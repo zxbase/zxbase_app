@@ -13,7 +13,7 @@ Future<void> deletePeer({
     _clearSelectedPeer(ref);
   }
 
-  // close connection, delete convos, location, vault group
+  // delete connection, peer, vault group
   await ref.read(connectionsProvider).deleteConnection(peerId: peerId);
   await ref.read(peersProvider.notifier).deletePeer(peerId: peerId);
   await ref

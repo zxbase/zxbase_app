@@ -2,7 +2,6 @@
 //   Peer Id -> Connection:
 //                - Peer connection.
 //                - DM channel.
-//                - Locations channel.
 
 import 'dart:developer';
 import 'package:zxbase_app/core/channel/channel_message.dart';
@@ -129,64 +128,6 @@ class Connections {
     }
   }
 
-  /*
-  Future<void> sendDirectMessage({
-    required peerId,
-    required DirectMessage msg,
-  }) async {
-    ChannelMessage cMsg = ChannelMessage(type: cmDirectMessage, data: msg);
-    if (dmEgressQueue[peerId] == null) {
-      dmEgressQueue[peerId] = {};
-    }
-    dmEgressQueue[peerId]![msg.id] = cMsg;
-    if (await getConnection(peerId)!.sendDirectMessage(cMsg)) {
-      await ref
-          .read(convosProvider.notifier)
-          .setMessageState(peerId: peerId, msgId: msg.id, msgState: dmSent);
-    }
-  }
-  */
-
-  /*
-  Future<void> _onLocationMessage(String peerId, ChannelMessage msg) async {
-    if (msg.data == null) {
-      // peer stopped sharing
-      await ref
-          .read(locationsProvider.notifier)
-          .deleteIngressPeer(peerId: peerId);
-    } else {
-      Location location = Location.fromJson(msg.data);
-      location.updated = DateTime.now().toUtc();
-      await ref
-          .read(locationsProvider.notifier)
-          .updatePeerLocation(peerId: peerId, location: location);
-    }
-  }
-
-  Future<void> sendLocation({
-    required String peerId,
-    required Location? location,
-  }) async {
-    await getConnection(
-      peerId,
-    )!.sendLocationMessage(ChannelMessage(type: cmLocation, data: location));
-  }
-
-  Future<void> shareLocation({required String peerId}) async {
-    if (!ref.read(locationsProvider).sharedWithPeer(peerId: peerId)) {
-      log('${logPeer(peerId)}: stop sharing location.', name: _comp);
-      await sendLocation(peerId: peerId, location: null);
-      return;
-    }
-
-    Location location = await ref.read(myLocationProvider.notifier).update();
-    if (location.isMocked) {
-      return;
-    }
-    await sendLocation(peerId: peerId, location: location);
-  }
-  */
-
   Future<void> flushEgressQueue(String peerId) async {
     if (dmEgressQueue[peerId] == null) {
       return;
@@ -211,7 +152,6 @@ class Connections {
 
   Future<void> _onHandshakeCompletion(String peerId) async {
     await flushEgressQueue(peerId);
-    // await shareLocation(peerId: peerId);
     await sendHeartbeat(peerId: peerId);
 
     // update peer status
@@ -243,10 +183,7 @@ class Connections {
   }) async {
     log('${logPeer(peerId)}: init connection.', name: _comp);
     connections[peerId] = Connection(ref, peerId);
-    // connections[peerId]!.onDirectMessage = _onDirectMessage;
-    // connections[peerId]!.onReceipt = _onReceipt;
     connections[peerId]!.onHeartbeat = _onHeartbeat;
-    // connections[peerId]!.onLocationMessage = _onLocationMessage;
     connections[peerId]!.onVaultMessage = _onVaultMessage;
     connections[peerId]!.onHandshakeCompletion = _onHandshakeCompletion;
     connections[peerId]!.onConnectionClose = _onConnectionClose;

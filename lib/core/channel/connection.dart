@@ -55,13 +55,9 @@ class Connection {
 
   DateTime hbReceived = DateTime.utc(-271821, 04, 20);
 
-  // Direct messages channel. State is tracked by locChannelInitialized.
+  // Direct messages channel.
   bool dmChannelInitialized = false;
   late RTCDataChannel dmChannel;
-
-  // Locations channel. State is tracked by locChannelInitialized.
-  bool locChannelInitialized = false;
-  late RTCDataChannel locChannel;
 
   // Vault channel. Not enabled by default.
   bool vaultEnabled = false;
@@ -76,7 +72,6 @@ class Connection {
   // callbacks
   Future<void> Function(String peerId, ChannelMessage msg)? onDirectMessage;
   Future<void> Function(String peerId, ChannelMessage msg)? onReceipt;
-  Future<void> Function(String peerId, ChannelMessage msg)? onLocationMessage;
   Future<void> Function(String peerId, ChannelMessage msg)? onHeartbeat;
   Future<void> Function(String peerId, ChannelMessage msg)? onVaultMessage;
   Future<void> Function(String peerId)? onHandshakeCompletion;
@@ -91,10 +86,10 @@ class Connection {
   }) {
     return SignalingMessage(
       type: type,
-      app: messengerApp,
+      app: messageApp,
       from: ref.read(deviceProvider).id,
       to: peerId,
-      // messenger channel is used for the connection setup
+      // message channel is used for the connection setup
       channelId: getPeer?.call(peerId).channel,
       data: data,
     );
@@ -108,12 +103,9 @@ class Connection {
       await connection.setLocalDescription(sdp);
     } catch (e) {
       log(
-        '${logPeer(peerId)}: exception when setting local description $e.',
+        '${logPeer(peerId)}: exception setting local description $e.',
         name: _comp,
       );
-      // This exception seems to be harmless, single offer is still sent out on startup.
-      // Single offer can produce multiple exceptions like this:
-      // Error Failed to set local offer sdp: The order of m-lines in subsequent offer doesn't match order from previous offer/answer
     }
     // Send offer here rather than on signaling state change.
     SignalingMessage msg = buildSignalingMessage(
@@ -141,8 +133,6 @@ class Connection {
             name: _comp,
           );
           await _sendChallenge();
-        } else if (channel == locChannel) {
-          log('Locations channel is open.', name: _comp);
         }
       }
     };
@@ -169,10 +159,6 @@ class Connection {
         case cmDirectReceipt:
           log('${logPeer(peerId)}: received receipt.', name: _comp);
           await onReceipt?.call(peerId, msg);
-          break;
-        case cmLocation:
-          log('${logPeer(peerId)}: received location', name: _comp);
-          await onLocationMessage?.call(peerId, msg);
           break;
         case cmHeartbeat:
           log('${logPeer(peerId)}: received channel heartbeat.', name: _comp);
@@ -206,7 +192,7 @@ class Connection {
       ..maxRetransmits = 30;
     String label = '$app:$channelId';
     switch (app) {
-      case messengerApp:
+      case messageApp:
         log(
           '${logPeer(peerId)}: creating DM data channel $label.',
           name: _comp,
@@ -215,14 +201,6 @@ class Connection {
         dmChannelInitialized = true;
         log('${logPeer(peerId)}: created DM channel.', name: _comp);
         _setupDataChannel(dmChannel);
-        break;
-      case locationApp:
-        log('${logPeer(peerId)}: creating loc channel $label.', name: _comp);
-        dataChannelDict.id = 1;
-        locChannel = await connection.createDataChannel(label, dataChannelDict);
-        locChannelInitialized = true;
-        log('${logPeer(peerId)}: created loc channel.', name: _comp);
-        _setupDataChannel(locChannel);
         break;
     }
   }
@@ -327,7 +305,7 @@ class Connection {
       Peer peer = getPeer?.call(peerId);
 
       switch (label[0]) {
-        case messengerApp:
+        case messageApp:
           if (peer.channel != label[1]) {
             log(
               'Error: channel is ${peer.channel}, got ${label[1]}.',
@@ -338,18 +316,6 @@ class Connection {
           dmChannel = channel;
           _setupDataChannel(dmChannel);
           dmChannelInitialized = true;
-          break;
-        case locationApp:
-          if (peer.locationChannel != label[1]) {
-            log(
-              'Error: location channel is ${peer.locationChannel}, got ${label[1]}.',
-              name: _comp,
-            );
-            return;
-          }
-          locChannel = channel;
-          _setupDataChannel(locChannel);
-          locChannelInitialized = true;
           break;
         case vaultApp:
           if (peer.vaultChannel != label[1]) {
@@ -474,24 +440,9 @@ class Connection {
     }
   }
 
-  Future<void> sendLocationMessage(ChannelMessage msg) async {
-    if ((state == csOn) && locChannelInitialized) {
-      log(
-        '${logPeer(peerId)}: send location, channel state: ${locChannel.state}.',
-        name: _comp,
-      );
-      await locChannel.send(RTCDataChannelMessage(msg.str));
-    } else {
-      log(
-        '${logPeer(peerId)}: send location: channel is not ready.',
-        name: _comp,
-      );
-    }
-  }
-
   Future<void> _closeDataChannel({required String app}) async {
     switch (app) {
-      case messengerApp:
+      case messageApp:
         if (!dmChannelInitialized) {
           return;
         }
@@ -499,25 +450,12 @@ class Connection {
         await dmChannel.close();
         dmChannelInitialized = false;
         break;
-      case locationApp:
-        if (!locChannelInitialized) {
-          return;
-        }
-        log('closing locations channel', name: _comp);
-        try {
-          await locChannel.close();
-        } catch (e) {
-          // it may throw on windows
-        }
-        locChannelInitialized = false;
-        break;
     }
   }
 
   Future<void> close() async {
     log('${logPeer(peerId)}: close connection.', name: _comp);
-    await _closeDataChannel(app: messengerApp);
-    await _closeDataChannel(app: locationApp);
+    await _closeDataChannel(app: messageApp);
     await connection.close();
     state = csOff;
   }
@@ -538,15 +476,8 @@ class Connection {
 
   Future<void> _createDMChannel() async {
     await _createDataChannel(
-      app: messengerApp,
+      app: messageApp,
       channelId: getPeer?.call(peerId).channel,
-    );
-  }
-
-  Future<void> _createLocationsChannel() async {
-    await _createDataChannel(
-      app: locationApp,
-      channelId: getPeer?.call(peerId).locationChannel,
     );
   }
 
@@ -565,8 +496,6 @@ class Connection {
   // Peer A sends an offer.
   // Peer B sends hello message, asking to start negotiation.
   Future<void> startNegotiation() async {
-    // Prepare connection. In ready state, no changes to connection
-    // have been done yet, it is ok to not reset when ready.
     await reset();
 
     if (!peerA) {
@@ -576,15 +505,8 @@ class Connection {
       return;
     }
 
-    log(
-      'ICE restart. DM:$dmChannelInitialized Loc:$locChannelInitialized',
-      name: _comp,
-    );
+    log('ICE restart. DM:$dmChannelInitialized', name: _comp);
     state = csNegotiating;
-    if (!locChannelInitialized) {
-      log('${logPeer(peerId)}: create locations channel', name: _comp);
-      await _createLocationsChannel();
-    }
     if (!dmChannelInitialized) {
       log('${logPeer(peerId)}: create DM channel', name: _comp);
       await _createDMChannel();

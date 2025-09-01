@@ -293,24 +293,28 @@ class Connections {
     }
 
     Connection connection = getConnection(peerId)!;
-    switch (msg.type) {
-      case sigOfferMsg:
-        await connection.onOffer(description: msg.data['description']);
-        break;
-      case sigHelloMsg:
-        await connection.startNegotiation();
-        break;
-      case sigHB:
-        await connection.onSignalHeartbeat(msg.data);
-        break;
-      case sigAnswerMsg:
-        await connection.onAnswer(description: msg.data['description']);
-        break;
-      case sigCandidateMsg:
-        await connection.onRemoteCandidate(candidate: msg.data['candidate']);
-        break;
-      default:
-        break;
+    try {
+      switch (msg.type) {
+        case sigOfferMsg:
+          await connection.onOffer(description: msg.data['description']);
+          break;
+        case sigHelloMsg:
+          await connection.startNegotiation();
+          break;
+        case sigHB:
+          await connection.onSignalHeartbeat(msg.data);
+          break;
+        case sigAnswerMsg:
+          await connection.onAnswer(description: msg.data['description']);
+          break;
+        case sigCandidateMsg:
+          await connection.onRemoteCandidate(candidate: msg.data['candidate']);
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      log('${logPeer(peerId)}: connection exception: $e.', name: _comp);
     }
   }
 }

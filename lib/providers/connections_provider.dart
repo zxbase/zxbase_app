@@ -175,10 +175,7 @@ class Connections {
     }
   }
 
-  Future<void> initConnection({
-    required String peerId,
-    bool vaultEnabled = false,
-  }) async {
+  Future<void> initConnection({required String peerId}) async {
     log('${logPeer(peerId)}: init connection.', name: _comp);
     connections[peerId] = Connection(ref, peerId);
     connections[peerId]!.onHeartbeat = _onHeartbeat;
@@ -187,7 +184,6 @@ class Connections {
     connections[peerId]!.onConnectionClose = _onConnectionClose;
     connections[peerId]!.sendSignalingMessage = _sendSignalingMessage;
     connections[peerId]!.getPeer = getPeer;
-    connections[peerId]!.vaultEnabled = vaultEnabled;
     await connections[peerId]!.init();
   }
 

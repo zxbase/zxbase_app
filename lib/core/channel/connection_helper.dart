@@ -4,7 +4,6 @@ import 'package:zxbase_app/providers/connections_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
 
 const String defaultApp = 'messenger';
-const String vaultApp = 'vault';
 
 const String csOff = 'off'; // connection is not created yet
 const String csInitializing = 'initializing'; // started to execute init method

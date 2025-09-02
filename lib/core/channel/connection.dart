@@ -55,14 +55,8 @@ class Connection {
 
   DateTime hbReceived = DateTime.utc(-271821, 04, 20);
 
-  // Default channel.
   bool defaultChannelInitialized = false;
   late RTCDataChannel defaultChannel;
-
-  // Vault channel. Not enabled by default.
-  bool vaultEnabled = false;
-  bool vaultChannelInitialized = false;
-  late RTCDataChannel vaultChannel;
 
   String get sdpSemantics =>
       WebRTC.platformIsWindows ? 'plan-b' : 'unified-plan';
@@ -320,18 +314,6 @@ class Connection {
           _setupDataChannel(defaultChannel);
           defaultChannelInitialized = true;
           break;
-        case vaultApp:
-          if (peer.vaultChannel != label[1]) {
-            log(
-              'Error: vault channel is ${peer.vaultChannel}, got ${label[1]}.',
-              name: _comp,
-            );
-            return;
-          }
-          vaultChannel = channel;
-          _setupDataChannel(vaultChannel);
-          vaultChannelInitialized = true;
-          break;
       }
     };
 
@@ -484,13 +466,6 @@ class Connection {
     );
   }
 
-  Future<void> _createVaultChannel() async {
-    await _createDataChannel(
-      app: vaultApp,
-      channelId: getPeer?.call(peerId).vaultChannel,
-    );
-  }
-
   void _sendHello() {
     SignalingMessage msg = buildSignalingMessage(type: sigHelloMsg, data: {});
     sendSignalingMessage?.call(msg);
@@ -513,10 +488,6 @@ class Connection {
     if (!defaultChannelInitialized) {
       log('${logPeer(peerId)}: create default channel', name: _comp);
       await _createDefaultChannel();
-    }
-    if (vaultEnabled && !vaultChannelInitialized) {
-      log('${logPeer(peerId)}: create vault channel', name: _comp);
-      await _createVaultChannel();
     }
     await _sendOffer();
   }

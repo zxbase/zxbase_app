@@ -117,7 +117,6 @@ class Peers {
     });
   }
 
-  // deserialization
   Peers.fromJson(Map<String, dynamic> parsedJson, {bool firstLoad = false}) {
     Map parsedPeers = json.decode(parsedJson['peers']);
     parsedPeers.forEach((k, v) {

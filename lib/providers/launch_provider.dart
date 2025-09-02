@@ -11,7 +11,6 @@ import 'package:zxbase_app/providers/dispatcher_provider.dart';
 import 'package:zxbase_app/providers/blue_vault/init_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/peers_provider.dart';
-import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/rps_provider.dart';
 import 'package:zxbase_app/providers/ws_provider.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
@@ -170,12 +169,7 @@ class LaunchNotifier extends StateNotifier<LaunchStage> {
     if (!UI.testEnvironment) {
       Connections connections = ref.read(connectionsProvider);
       for (Peer peer in ref.read(peersProvider).peers.values) {
-        await connections.initConnection(
-          peerId: peer.id,
-          vaultEnabled: ref
-              .read(peerGroupsProvider)
-              .memberOfVaultGroup(peerId: peer.id),
-        );
+        await connections.initConnection(peerId: peer.id);
       }
     }
 

@@ -26,7 +26,7 @@ class Connections {
   }
   final Ref ref;
   Map<String, Connection> connections = {};
-  Map<String, Map<String, ChannelMessage>> dmEgressQueue = {};
+  Map<String, Map<String, ChannelMessage>> egressQueue = {};
 
   Connection? getConnection(String peerId) {
     return connections[peerId];
@@ -127,11 +127,11 @@ class Connections {
   }
 
   Future<void> flushEgressQueue(String peerId) async {
-    if (dmEgressQueue[peerId] == null) {
+    if (egressQueue[peerId] == null) {
       return;
     }
     log('${logPeer(peerId)}: flushing egress queue.', name: _comp);
-    for (ChannelMessage msg in [...dmEgressQueue[peerId]!.values]) {
+    for (ChannelMessage msg in [...egressQueue[peerId]!.values]) {
       await getConnection(peerId)!.sendMessage(msg);
     }
   }
@@ -192,11 +192,16 @@ class Connections {
       '${logPeer(peerId)}: start negotiation, connected: ${ref.read(wsProvider).socket.connected}.',
       name: _comp,
     );
-    await connections[peerId]!.startNegotiation();
+
+    try {
+      await connections[peerId]!.startNegotiation();
+    } catch (e) {
+      log('${logPeer(peerId)}: offer exception: $e.', name: _comp);
+    }
   }
 
   Future<void> deleteConnection({required String peerId}) async {
-    dmEgressQueue.remove(peerId);
+    egressQueue.remove(peerId);
     if (!connections.containsKey(peerId)) {
       return;
     }
@@ -209,7 +214,6 @@ class Connections {
     String peerId = msg.from;
 
     if (ref.read(peersProvider).peers[peerId] == null) {
-      // it can happen in debug environment when swapping vaults
       log('WARN: ${logPeer(peerId)}: unknown peer.', name: _comp);
       return;
     }

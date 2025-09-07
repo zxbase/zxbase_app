@@ -2,7 +2,6 @@
 //   - on startup:
 //     - setup connections
 //   - slow worker:
-//     - send locations
 //     - update peers last seen
 //   - fast worker:
 //     - refresh token
@@ -38,8 +37,6 @@ const _slowWorkerInterval = 60;
 const tokenRefreshThreshold = 3;
 // start refreshing 17 minutes after receiving token
 const tokenLocalRefreshThreshold = 17;
-// location disabled threshold
-const locationDisabledThreshold = 3;
 
 enum JobState { stopped, started }
 
@@ -146,19 +143,15 @@ class Dispatcher {
 
   Future<void> pairPeer({required Peer peer}) async {
     RpsClient rps = ref.read(rpsProvider);
-    String channelId = await rps.channel(peerId: peer.id, app: messengerApp);
+    String channelId = await rps.channel(peerId: peer.id, app: defaultApp);
     if (channelId == '') {
       // the peer is not paired yet
       return;
     }
     log('Peer ${peer.id} paired, $channelId.', name: _comp);
 
-    String locChannelId = await rps.channel(peerId: peer.id, app: locationApp);
-    log('Peer ${peer.id}: locations channel $channelId.', name: _comp);
-
     Peer newPeer = Peer.copy(peer);
     newPeer.channel = channelId;
-    newPeer.locationChannel = locChannelId;
     newPeer.status = peerStatusStaged;
     await ref.read(peersProvider.notifier).updatePeer(peer: newPeer);
     await ref.read(connectionsProvider).startNegotiation(peerId: peer.id);
@@ -206,7 +199,7 @@ class Dispatcher {
       Connection peerConnection = connections.getConnection(peer.id)!;
       SignalingMessage msg = SignalingMessage(
         type: sigHB,
-        app: messengerApp,
+        app: defaultApp,
         from: ref.read(deviceProvider).id,
         to: peer.id,
         channelId: peer.channel,

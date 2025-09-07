@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "zxbase_app" "\0"
+            VALUE "CompanyName", "com.zxbase" "\0"
+            VALUE "FileDescription", "Zxbase" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "zxbase_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "zxbase_app.exe" "\0"
-            VALUE "ProductName", "zxbase_app" "\0"
+            VALUE "InternalName", "Zxbase" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 Zxbase LLC. All rights reserved." "\0"
+            VALUE "OriginalFilename", "zxbase.exe" "\0"
+            VALUE "ProductName", "Zxbase" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

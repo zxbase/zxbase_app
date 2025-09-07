@@ -6,10 +6,6 @@
 // by the whole application. It handles single connection and re-uses
 // connection token.
 //
-// API client is a repository, representing RPS REST endpoint.
-// If new functionality is required, don't change this
-// provider, ask for changes in API client package.
-//
 // Refrain from wrapping the client or provider.
 // Check rps_provider_test for usage example.
 

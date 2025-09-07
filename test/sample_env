@@ -1,0 +1,9 @@
+# Sample environment file
+RPS_HOST='rps.example.com'
+RPS_PORT=1234
+SIGNALING_HOST='signaling.example.com'
+SIGNALING_PORT=5678
+STUN_HOST='stun.example.com'
+STUN_PORT=90
+BLUE_VAULT_PWD='test.pwd'
+VERSION='4.1.0 (120)'

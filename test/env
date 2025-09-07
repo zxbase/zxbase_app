@@ -1,8 +1,0 @@
-RPS_HOST="alpha.zxbase.com"
-RPS_PORT=7070
-SIGNALING_HOST='signaling.org'
-SIGNALING_PORT=8002
-STUN_HOST='stun.org'
-STUN_PORT=8003
-BLUE_VAULT_PWD='test.pwd'
-VERSION='3.1.14 (90)'

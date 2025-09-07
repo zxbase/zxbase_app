@@ -1,8 +1,5 @@
 // Connections:
-//   Peer Id -> Connection:
-//                - Peer connection.
-//                - DM channel.
-//                - Locations channel.
+//   Peer Id -> Connection
 
 import 'dart:developer';
 import 'package:zxbase_app/core/channel/channel_message.dart';
@@ -29,7 +26,7 @@ class Connections {
   }
   final Ref ref;
   Map<String, Connection> connections = {};
-  Map<String, Map<String, ChannelMessage>> dmEgressQueue = {};
+  Map<String, Map<String, ChannelMessage>> egressQueue = {};
 
   Connection? getConnection(String peerId) {
     return connections[peerId];
@@ -69,7 +66,7 @@ class Connections {
       type: cmVault,
       data: {'type': queryMsg},
     );
-    await getConnection(peerId)!.sendDirectMessage(query);
+    await getConnection(peerId)!.sendMessage(query);
   }
 
   Future<void> _onVaultMessage(String peerId, ChannelMessage msg) async {
@@ -91,7 +88,7 @@ class Connections {
             'data': ref.read(userVaultProvider.notifier).export(),
           },
         );
-        await getConnection(peerId)!.sendDirectMessage(doc);
+        await getConnection(peerId)!.sendMessage(doc);
         break;
       case docMsg:
         if (!await ref
@@ -117,7 +114,7 @@ class Connections {
                 .export(),
           },
         );
-        await getConnection(peerId)!.sendDirectMessage(ack);
+        await getConnection(peerId)!.sendMessage(ack);
         break;
       case ackMsg:
         Revision peerRev = Revision.fromJson(msg.data['data']);
@@ -129,71 +126,13 @@ class Connections {
     }
   }
 
-  /*
-  Future<void> sendDirectMessage({
-    required peerId,
-    required DirectMessage msg,
-  }) async {
-    ChannelMessage cMsg = ChannelMessage(type: cmDirectMessage, data: msg);
-    if (dmEgressQueue[peerId] == null) {
-      dmEgressQueue[peerId] = {};
-    }
-    dmEgressQueue[peerId]![msg.id] = cMsg;
-    if (await getConnection(peerId)!.sendDirectMessage(cMsg)) {
-      await ref
-          .read(convosProvider.notifier)
-          .setMessageState(peerId: peerId, msgId: msg.id, msgState: dmSent);
-    }
-  }
-  */
-
-  /*
-  Future<void> _onLocationMessage(String peerId, ChannelMessage msg) async {
-    if (msg.data == null) {
-      // peer stopped sharing
-      await ref
-          .read(locationsProvider.notifier)
-          .deleteIngressPeer(peerId: peerId);
-    } else {
-      Location location = Location.fromJson(msg.data);
-      location.updated = DateTime.now().toUtc();
-      await ref
-          .read(locationsProvider.notifier)
-          .updatePeerLocation(peerId: peerId, location: location);
-    }
-  }
-
-  Future<void> sendLocation({
-    required String peerId,
-    required Location? location,
-  }) async {
-    await getConnection(
-      peerId,
-    )!.sendLocationMessage(ChannelMessage(type: cmLocation, data: location));
-  }
-
-  Future<void> shareLocation({required String peerId}) async {
-    if (!ref.read(locationsProvider).sharedWithPeer(peerId: peerId)) {
-      log('${logPeer(peerId)}: stop sharing location.', name: _comp);
-      await sendLocation(peerId: peerId, location: null);
-      return;
-    }
-
-    Location location = await ref.read(myLocationProvider.notifier).update();
-    if (location.isMocked) {
-      return;
-    }
-    await sendLocation(peerId: peerId, location: location);
-  }
-  */
-
   Future<void> flushEgressQueue(String peerId) async {
-    if (dmEgressQueue[peerId] == null) {
+    if (egressQueue[peerId] == null) {
       return;
     }
     log('${logPeer(peerId)}: flushing egress queue.', name: _comp);
-    for (ChannelMessage msg in [...dmEgressQueue[peerId]!.values]) {
-      await getConnection(peerId)!.sendDirectMessage(msg);
+    for (ChannelMessage msg in [...egressQueue[peerId]!.values]) {
+      await getConnection(peerId)!.sendMessage(msg);
     }
   }
 
@@ -211,7 +150,6 @@ class Connections {
 
   Future<void> _onHandshakeCompletion(String peerId) async {
     await flushEgressQueue(peerId);
-    // await shareLocation(peerId: peerId);
     await sendHeartbeat(peerId: peerId);
 
     // update peer status
@@ -237,22 +175,15 @@ class Connections {
     }
   }
 
-  Future<void> initConnection({
-    required String peerId,
-    bool vaultEnabled = false,
-  }) async {
+  Future<void> initConnection({required String peerId}) async {
     log('${logPeer(peerId)}: init connection.', name: _comp);
     connections[peerId] = Connection(ref, peerId);
-    // connections[peerId]!.onDirectMessage = _onDirectMessage;
-    // connections[peerId]!.onReceipt = _onReceipt;
     connections[peerId]!.onHeartbeat = _onHeartbeat;
-    // connections[peerId]!.onLocationMessage = _onLocationMessage;
     connections[peerId]!.onVaultMessage = _onVaultMessage;
     connections[peerId]!.onHandshakeCompletion = _onHandshakeCompletion;
     connections[peerId]!.onConnectionClose = _onConnectionClose;
     connections[peerId]!.sendSignalingMessage = _sendSignalingMessage;
     connections[peerId]!.getPeer = getPeer;
-    connections[peerId]!.vaultEnabled = vaultEnabled;
     await connections[peerId]!.init();
   }
 
@@ -261,11 +192,16 @@ class Connections {
       '${logPeer(peerId)}: start negotiation, connected: ${ref.read(wsProvider).socket.connected}.',
       name: _comp,
     );
-    await connections[peerId]!.startNegotiation();
+
+    try {
+      await connections[peerId]!.startNegotiation();
+    } catch (e) {
+      log('${logPeer(peerId)}: offer exception: $e.', name: _comp);
+    }
   }
 
   Future<void> deleteConnection({required String peerId}) async {
-    dmEgressQueue.remove(peerId);
+    egressQueue.remove(peerId);
     if (!connections.containsKey(peerId)) {
       return;
     }
@@ -278,7 +214,6 @@ class Connections {
     String peerId = msg.from;
 
     if (ref.read(peersProvider).peers[peerId] == null) {
-      // it can happen in debug environment when swapping vaults
       log('WARN: ${logPeer(peerId)}: unknown peer.', name: _comp);
       return;
     }
@@ -293,24 +228,28 @@ class Connections {
     }
 
     Connection connection = getConnection(peerId)!;
-    switch (msg.type) {
-      case sigOfferMsg:
-        await connection.onOffer(description: msg.data['description']);
-        break;
-      case sigHelloMsg:
-        await connection.startNegotiation();
-        break;
-      case sigHB:
-        await connection.onSignalHeartbeat(msg.data);
-        break;
-      case sigAnswerMsg:
-        await connection.onAnswer(description: msg.data['description']);
-        break;
-      case sigCandidateMsg:
-        await connection.onRemoteCandidate(candidate: msg.data['candidate']);
-        break;
-      default:
-        break;
+    try {
+      switch (msg.type) {
+        case sigOfferMsg:
+          await connection.onOffer(description: msg.data['description']);
+          break;
+        case sigHelloMsg:
+          await connection.startNegotiation();
+          break;
+        case sigHB:
+          await connection.onSignalHeartbeat(msg.data);
+          break;
+        case sigAnswerMsg:
+          await connection.onAnswer(description: msg.data['description']);
+          break;
+        case sigCandidateMsg:
+          await connection.onRemoteCandidate(candidate: msg.data['candidate']);
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      log('${logPeer(peerId)}: connection exception: $e.', name: _comp);
     }
   }
 }

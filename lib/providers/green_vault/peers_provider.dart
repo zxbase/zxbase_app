@@ -1,8 +1,6 @@
 // Peers provider.
 // Stored in green vault.
 // Map of peers: peer Id -> Peer.
-// Make sure every update writes the doc.
-// Otherwise it corrupts the state.
 
 import 'dart:convert';
 import 'dart:developer';
@@ -119,7 +117,6 @@ class Peers {
     });
   }
 
-  // deserialization
   Peers.fromJson(Map<String, dynamic> parsedJson, {bool firstLoad = false}) {
     Map parsedPeers = json.decode(parsedJson['peers']);
     parsedPeers.forEach((k, v) {
@@ -154,7 +151,6 @@ class Peer {
     id = identity.deviceId;
     metadata = '';
     channel = '';
-    locationChannel = '';
     vaultChannel = '';
   }
 
@@ -165,7 +161,6 @@ class Peer {
     nickname = copy.nickname;
     metadata = copy.metadata;
     channel = copy.channel;
-    locationChannel = copy.locationChannel;
     vaultChannel = copy.vaultChannel;
     status = copy.status;
     lastSeen = copy.lastSeen;
@@ -179,7 +174,6 @@ class Peer {
     nickname = parsedJson['nickname'] ?? '';
     metadata = parsedJson['metadata'];
     channel = parsedJson['channel'];
-    locationChannel = parsedJson['locationChannel'];
     vaultChannel = parsedJson['vaultChannel'] ?? '';
     if (firstLoad) {
       status = (channel == '') ? peerStatusPairing : peerStatusOffline;
@@ -196,8 +190,7 @@ class Peer {
   late String metadata; // for future use, shared with a service
 
   // channels
-  String channel = ''; // messenger channel
-  String locationChannel = '';
+  String channel = ''; // messages channel
   String vaultChannel = '';
 
   String status = peerStatusCreated;
@@ -214,7 +207,6 @@ class Peer {
       'nickname': nickname,
       'metadata': metadata,
       'channel': channel,
-      'locationChannel': locationChannel,
       'vaultChannel': vaultChannel,
       'status': status,
       'lastSeen': lastSeen.toIso8601String(),

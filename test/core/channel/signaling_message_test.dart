@@ -6,7 +6,7 @@ void main() {
   test('construct signaling message', () {
     SignalingMessage msg = SignalingMessage(
       type: sigHelloMsg,
-      app: messengerApp,
+      app: defaultApp,
       from: 'A',
       to: 'B',
       channelId: '1',

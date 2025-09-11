@@ -2,8 +2,8 @@
 // No sensitive data to be stored here.
 
 import 'dart:developer';
-import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _component = 'blueVaultProvider'; // logging component

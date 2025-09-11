@@ -12,7 +12,7 @@ import 'package:zxbase_app/providers/green_vault/peer_group_provider.dart';
 import 'package:zxbase_app/providers/green_vault/settings_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/launch_provider.dart';
-import 'package:zxbase_app/ui/common/zero_trust_input.dart';
+import 'package:zxbase_app/ui/common/zx_input.dart';
 import 'package:zxbase_app/ui/launch/launch_widget.dart';
 
 const _component = 'openVaultWidget'; // logging component
@@ -149,7 +149,7 @@ class OpenVaultWidgetState extends ConsumerState<OpenVaultWidget> {
                                   right: 5,
                                   bottom: 5,
                                 ),
-                                child: ZTTextFormField(
+                                child: ZXTextFormField(
                                   key: const Key('passwordInput'),
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(

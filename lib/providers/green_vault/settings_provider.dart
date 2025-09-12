@@ -7,14 +7,13 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _comp = 'settingsProvider'; // logging component
 
-final settingsProvider = StateNotifierProvider<SettingsNotifier, Settings>(
-  (ref) => SettingsNotifier(ref),
-);
-
-class SettingsNotifier extends StateNotifier<Settings> {
-  SettingsNotifier(this.ref) : super(Settings());
-  final Ref ref;
+class SettingsNotifier extends Notifier<Settings> {
   static const _docName = 'settings';
+
+  @override
+  build() {
+    return Settings();
+  }
 
   // called only during initialization
   Future init() async {
@@ -73,3 +72,7 @@ class Settings {
     return {'vaultUpdatePolicy': vaultUpdatePolicy};
   }
 }
+
+final settingsProvider = NotifierProvider<SettingsNotifier, Settings>(
+  SettingsNotifier.new,
+);

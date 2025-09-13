@@ -174,9 +174,9 @@ class Dispatcher {
       ref.read(motdProvider.notifier).state = motd;
       if (getRecentVersion(motdNotes: motd.notes).build >
           ref.read(configProvider).version.build) {
-        ref.read(versionWarningProvider.notifier).state = Const.newVersionMsg;
+        ref.read(versionWarningProvider.notifier).set(Const.newVersionMsg);
       } else {
-        ref.read(versionWarningProvider.notifier).state = '';
+        ref.read(versionWarningProvider.notifier).set('');
       }
     }
   }

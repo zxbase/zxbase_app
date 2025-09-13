@@ -27,7 +27,7 @@ class VaultSync {
   void _updateWarningProvider(String val) {
     String currentVal = ref.read(vaultSyncWarningProvider);
     if (currentVal != val) {
-      ref.read(vaultSyncWarningProvider.notifier).state = val;
+      ref.read(vaultSyncWarningProvider.notifier).set(val);
     }
   }
 

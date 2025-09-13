@@ -73,7 +73,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
   }
 
   void _clearSelectedEntry(WidgetRef ref) {
-    ref.read(selectedVaultEntryProvider.notifier).state = '';
+    ref.read(selectedVaultEntryProvider.notifier).set('');
   }
 
   Future<void> _deleteVaultEntry({
@@ -482,7 +482,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
     if (UI.isDesktop) {
       if (isNewEntry) {
         ref.read(newVaultEntryProvider.notifier).state = false;
-        ref.read(selectedVaultEntryProvider.notifier).state = '';
+        ref.read(selectedVaultEntryProvider.notifier).set('');
       } else {
         setState(() {
           editMode = false;
@@ -566,7 +566,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       editMode = false;
       showPasswordGenerator = false;
     });
-    ref.read(selectedVaultEntryProvider.notifier).state = entry!.id;
+    ref.read(selectedVaultEntryProvider.notifier).set(entry!.id);
   }
 
   Future<void> edit() async {

@@ -26,7 +26,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
 
   void clearSearch() {
     _searchController.text = '';
-    ref.read(vaultSearchQueryProvider.notifier).state = '';
+    ref.read(searchQueryProvider.notifier).set('');
   }
 
   Widget _searchTextField(WidgetRef ref) {
@@ -36,7 +36,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
         hint: 'Search secrets',
         controller: _searchController,
         onChanged: (value) {
-          ref.read(vaultSearchQueryProvider.notifier).state = value;
+          ref.read(searchQueryProvider.notifier).set(value);
         },
       ),
     );
@@ -45,7 +45,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
   @override
   Widget build(BuildContext context) {
     String selectedEntry = ref.watch(selectedVaultEntryProvider);
-    String searchQuery = ref.watch(vaultSearchQueryProvider);
+    String searchQuery = ref.watch(searchQueryProvider);
     List<UserVaultEntry> entriesAll = ref
         .watch(userVaultProvider)
         .entries
@@ -83,7 +83,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
                 }
 
                 ref.read(newVaultEntryProvider.notifier).state = true;
-                ref.read(selectedVaultEntryProvider.notifier).state = '';
+                ref.read(selectedVaultEntryProvider.notifier).set('');
 
                 if (UI.isMobile) {
                   await Navigator.push(

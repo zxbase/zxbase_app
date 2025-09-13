@@ -26,5 +26,5 @@ Future<void> deletePeer({
 }
 
 void _clearSelectedPeer(WidgetRef ref) {
-  ref.read(selectedDeviceProvider.notifier).state = '';
+  ref.read(selectedDeviceProvider.notifier).set('');
 }

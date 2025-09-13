@@ -94,11 +94,11 @@ class ExplorerWidget extends ConsumerWidget {
                   onLeftTap: () {
                     ref.read(isVaultEntryDirtyProvider.notifier).set(false);
                     Navigator.pop(context);
-                    ref.read(selectedTabProvider.notifier).state = index;
+                    ref.read(selectedTabProvider.notifier).set(index);
                   },
                 );
               } else {
-                ref.read(selectedTabProvider.notifier).state = index;
+                ref.read(selectedTabProvider.notifier).set(index);
               }
             },
           ),

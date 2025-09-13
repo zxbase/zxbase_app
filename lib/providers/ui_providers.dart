@@ -64,10 +64,19 @@ final selectedDeviceProvider = NotifierProvider<StringNotifier, String>(
   StringNotifier.new,
 );
 
+class IntNotifier extends Notifier<int> {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void set(int value) {
+    state = value;
+  }
+}
+
 // Selected bottom navigation bar item.
-final selectedTabProvider = StateProvider<int>((ref) {
-  return 0; // default tab
-});
+final selectedTabProvider = NotifierProvider<IntNotifier, int>(IntNotifier.new);
 
 // vault providers
 final vaultCandidateProvider = StateProvider<Map<String, dynamic>>((ref) {

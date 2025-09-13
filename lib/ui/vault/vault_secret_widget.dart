@@ -152,7 +152,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           }
         },
         onChanged: (text) {
-          ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+          ref.read(isVaultEntryDirtyProvider.notifier).set(true);
         },
       ),
       editMode
@@ -184,7 +184,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                     ),
                   ),
                   onChanged: (text) {
-                    ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+                    ref.read(isVaultEntryDirtyProvider.notifier).set(true);
                   },
                   validator: (value) {
                     if (value!.length > Const.vaultUsernameMaxLength) {
@@ -303,7 +303,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           }
         },
         onChanged: (text) {
-          ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+          ref.read(isVaultEntryDirtyProvider.notifier).set(true);
           setState(() {});
         },
       ),
@@ -361,7 +361,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             }
           },
           onChanged: (text) {
-            ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+            ref.read(isVaultEntryDirtyProvider.notifier).set(true);
           },
         ),
       ),
@@ -423,7 +423,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             }
           },
           onChanged: (text) {
-            ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+            ref.read(isVaultEntryDirtyProvider.notifier).set(true);
           },
         ),
       );
@@ -436,7 +436,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {
-                ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+                ref.read(isVaultEntryDirtyProvider.notifier).set(true);
                 setState(() {
                   _urlControllers.add(TextEditingController());
                 });
@@ -464,7 +464,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       leftButtonText: 'Yes',
       rightButtonText: 'No',
       onLeftTap: () {
-        ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+        ref.read(isVaultEntryDirtyProvider.notifier).set(true);
         _deleteUrl(index);
         Navigator.pop(context);
       },
@@ -481,7 +481,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
   Future<void> _cancelConfirmed() async {
     if (UI.isDesktop) {
       if (isNewEntry) {
-        ref.read(newVaultEntryProvider.notifier).state = false;
+        ref.read(newVaultEntryProvider.notifier).set(false);
         ref.read(selectedVaultEntryProvider.notifier).set('');
       } else {
         setState(() {
@@ -496,7 +496,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       });
       if (isNewEntry) {
         Navigator.pop(context);
-        ref.read(newVaultEntryProvider.notifier).state = false;
+        ref.read(newVaultEntryProvider.notifier).set(false);
       }
     }
   }
@@ -513,7 +513,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           entry = ref.read(userVaultProvider.notifier).copyEntry(id: entry!.id);
           setFields(entry!);
         }
-        ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+        ref.read(isVaultEntryDirtyProvider.notifier).set(false);
         Navigator.pop(context);
         _cancelConfirmed();
       },
@@ -557,9 +557,9 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
     await ref.read(vaultSyncProvider).broadcastVault();
     ref.read(vaultSyncProvider).updateSyncWarning();
 
-    ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+    ref.read(isVaultEntryDirtyProvider.notifier).set(false);
     if (isNewEntry) {
-      ref.read(newVaultEntryProvider.notifier).state = false;
+      ref.read(newVaultEntryProvider.notifier).set(false);
     }
     setState(() {
       // set state to quit edit mode
@@ -618,11 +618,11 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         editMode = false;
         obscure = true;
         setFields(vaultEntry);
-        ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+        ref.read(isVaultEntryDirtyProvider.notifier).set(false);
       } else if (!editMode) {
         // Same entry was changed by sync.
         setFields(vaultEntry);
-        ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+        ref.read(isVaultEntryDirtyProvider.notifier).set(false);
       }
       entry = vaultEntry;
     }

@@ -82,7 +82,7 @@ class VaultEntryListState extends ConsumerState<VaultWidget> {
                   return;
                 }
 
-                ref.read(newVaultEntryProvider.notifier).state = true;
+                ref.read(newVaultEntryProvider.notifier).set(true);
                 ref.read(selectedVaultEntryProvider.notifier).set('');
 
                 if (UI.isMobile) {

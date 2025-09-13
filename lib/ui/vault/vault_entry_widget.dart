@@ -28,14 +28,14 @@ class VaultEntryWidget extends ConsumerWidget {
         rightButtonText: 'No',
         onLeftTap: () {
           ref.read(selectedVaultEntryProvider.notifier).set(entryId);
-          ref.read(newVaultEntryProvider.notifier).state = false;
-          ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+          ref.read(newVaultEntryProvider.notifier).set(false);
+          ref.read(isVaultEntryDirtyProvider.notifier).set(false);
           Navigator.pop(context);
         },
       );
     } else {
       ref.read(selectedVaultEntryProvider.notifier).set(entryId);
-      ref.read(newVaultEntryProvider.notifier).state = false;
+      ref.read(newVaultEntryProvider.notifier).set(false);
     }
   }
 

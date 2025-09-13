@@ -2,15 +2,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_api_client/zxbase_api_client.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
-// Applicable to desktop only. True if an entry was modified and not saved.
 class BoolNotifier extends Notifier<bool> {
   @override
   build() {
     return false;
   }
+
+  void set(bool value) {
+    state = value;
+  }
 }
 
+// Applicable to desktop only. True if an entry was modified and not saved.
 final isVaultModifiedProvider = NotifierProvider<BoolNotifier, bool>(
+  BoolNotifier.new,
+);
+
+// Triggers rendering of the new vault entry widget.
+final newVaultEntryProvider = NotifierProvider<BoolNotifier, bool>(
+  BoolNotifier.new,
+);
+
+// Applicable to desktop only. True if the entry was changed.
+final isVaultEntryDirtyProvider = NotifierProvider<BoolNotifier, bool>(
   BoolNotifier.new,
 );
 
@@ -58,16 +72,6 @@ final selectedTabProvider = StateProvider<int>((ref) {
 // vault providers
 final vaultCandidateProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {};
-});
-
-// Triggers rendering of the new vault entry widget.
-final newVaultEntryProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
-// Applicable to desktop only. True if the entry was changed.
-final isVaultEntryDirtyProvider = StateProvider<bool>((ref) {
-  return false;
 });
 
 // Selected setting.

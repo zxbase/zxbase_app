@@ -92,7 +92,7 @@ class ExplorerWidget extends ConsumerWidget {
                   leftButtonText: 'Yes',
                   rightButtonText: 'No',
                   onLeftTap: () {
-                    ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+                    ref.read(isVaultEntryDirtyProvider.notifier).set(false);
                     Navigator.pop(context);
                     ref.read(selectedTabProvider.notifier).state = index;
                   },

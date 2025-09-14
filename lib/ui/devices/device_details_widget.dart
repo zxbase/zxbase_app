@@ -92,18 +92,18 @@ class DeviceDetailsWidgetState extends ConsumerState<DeviceDetailsWidget> {
                     Form(
                       key: _formKey,
                       child: ZXTextFormField(
+                        key: Key(_nickname),
+                        initialValue: _nickname,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(
                             Const.nicknameMaxLength,
                           ),
                         ],
                         textAlign: TextAlign.center,
-                        initialValue: _nickname,
                         maxLines: 1,
                         enabled: editMode,
                         decoration: const InputDecoration(
                           label: Center(child: Text('Nickname')),
-                          hintText: 'Nickname',
                         ),
                         validator: (value) {
                           if (value!.trim().isEmpty) {

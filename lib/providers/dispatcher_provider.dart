@@ -171,7 +171,7 @@ class Dispatcher {
     RpsClient rps = ref.read(rpsProvider);
     var motd = await rps.getMotd();
     if (motd != null) {
-      ref.read(motdProvider.notifier).state = motd;
+      ref.read(motdProvider.notifier).set(motd);
       if (getRecentVersion(motdNotes: motd.notes).build >
           ref.read(configProvider).version.build) {
         ref.read(versionWarningProvider.notifier).set(Const.newVersionMsg);

@@ -20,7 +20,7 @@ class SettingsListItemWidget extends ConsumerWidget {
 
   void _onTap(BuildContext context, WidgetRef ref) {
     if (UI.isDesktop) {
-      ref.read(selectedSettingProvider.notifier).state = item;
+      ref.read(selectedSettingProvider.notifier).set(item);
     } else {
       switch (item) {
         case (SettingItem.identity):

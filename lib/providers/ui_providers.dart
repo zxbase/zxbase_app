@@ -104,15 +104,35 @@ enum SettingItem {
   final String title;
 }
 
-final selectedSettingProvider = StateProvider<SettingItem>((ref) {
-  if (UI.isDesktop) {
-    return SettingItem.identity; // default page on desktop
-  } else {
-    return SettingItem.none;
+class SettingNotifier extends Notifier<SettingItem> {
+  @override
+  SettingItem build() {
+    if (UI.isDesktop) {
+      return SettingItem.identity; // default page on desktop
+    } else {
+      return SettingItem.none;
+    }
   }
-});
 
-// Message of the day
-final motdProvider = StateProvider<MOTD?>((ref) {
-  return null;
-});
+  void set(SettingItem value) {
+    state = value;
+  }
+}
+
+final selectedSettingProvider = NotifierProvider<SettingNotifier, SettingItem>(
+  SettingNotifier.new,
+);
+
+// Message of the day.
+class MOTDNotifier extends Notifier<MOTD?> {
+  @override
+  MOTD? build() {
+    return null;
+  }
+
+  void set(MOTD value) {
+    state = value;
+  }
+}
+
+final motdProvider = NotifierProvider<MOTDNotifier, MOTD?>(MOTDNotifier.new);

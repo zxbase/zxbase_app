@@ -78,10 +78,19 @@ class IntNotifier extends Notifier<int> {
 // Selected bottom navigation bar item.
 final selectedTabProvider = NotifierProvider<IntNotifier, int>(IntNotifier.new);
 
-// vault providers
-final vaultCandidateProvider = StateProvider<Map<String, dynamic>>((ref) {
-  return {};
-});
+class JSONNotifier extends Notifier<Map<String, dynamic>> {
+  @override
+  Map<String, dynamic> build() {
+    return {};
+  }
+
+  void set(Map<String, dynamic> value) {
+    state = value;
+  }
+}
+
+final vaultCandidateProvider =
+    NotifierProvider<JSONNotifier, Map<String, dynamic>>(JSONNotifier.new);
 
 // Selected setting.
 enum SettingItem {

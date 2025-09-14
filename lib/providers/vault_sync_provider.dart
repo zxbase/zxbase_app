@@ -115,7 +115,7 @@ class VaultSync {
         }
         snapshot['_rev'] = revs.current;
         snapshot['_peerId'] = peerId;
-        ref.read(vaultCandidateProvider.notifier).state = snapshot;
+        ref.read(vaultCandidateProvider.notifier).set(snapshot);
         _updateWarningProvider(Const.vaultSyncWarn);
         return false;
       case Settings.ignore:
@@ -145,6 +145,6 @@ class VaultSync {
       },
     );
     await ref.read(connectionsProvider).getConnection(peerId)!.sendMessage(ack);
-    ref.read(vaultCandidateProvider.notifier).state = {};
+    ref.read(vaultCandidateProvider.notifier).set({});
   }
 }

@@ -137,10 +137,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         textAlign: TextAlign.start,
         maxLines: 1,
         readOnly: !editMode,
-        decoration: const InputDecoration(
-          labelText: 'Title',
-          hintText: 'Title',
-        ),
+        decoration: const InputDecoration(labelText: 'Title'),
         validator: (value) {
           if (value!.trim().isEmpty) {
             return Const.titleEmptyWarn;
@@ -171,7 +168,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                   maxLines: 1,
                   decoration: InputDecoration(
                     labelText: 'Username',
-                    hintText: 'Username',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.copy_rounded),
                       tooltip: 'Copy',
@@ -228,7 +224,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
               readOnly: true,
               decoration: InputDecoration(
                 labelText: 'Username',
-                hintText: 'Username',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.copy_rounded),
                   tooltip: 'Copy',
@@ -253,7 +248,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           labelText: 'Password',
-          hintText: 'Password',
           suffixIcon: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
@@ -348,10 +342,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           textAlign: TextAlign.start,
           maxLines: null,
           readOnly: !editMode,
-          decoration: const InputDecoration(
-            labelText: 'Notes',
-            hintText: 'Notes',
-          ),
+          decoration: const InputDecoration(labelText: 'Notes'),
           validator: (value) {
             if (value!.length > Const.vaultNotesMaxLength) {
               return Const.notesLongWarn;
@@ -384,7 +375,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           readOnly: !editMode,
           decoration: InputDecoration(
             labelText: 'URL',
-            hintText: 'URL',
             suffixIcon: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,

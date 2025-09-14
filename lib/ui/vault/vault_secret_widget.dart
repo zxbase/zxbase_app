@@ -618,11 +618,9 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         editMode = false;
         obscure = true;
         setFields(vaultEntry);
-        ref.read(isVaultEntryDirtyProvider.notifier).set(false);
       } else if (!editMode) {
         // Same entry was changed by sync.
         setFields(vaultEntry);
-        ref.read(isVaultEntryDirtyProvider.notifier).set(false);
       }
       entry = vaultEntry;
     }

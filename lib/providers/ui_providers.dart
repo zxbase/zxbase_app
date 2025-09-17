@@ -2,49 +2,95 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zxbase_api_client/zxbase_api_client.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 
+class BoolNotifier extends Notifier<bool> {
+  @override
+  build() {
+    return false;
+  }
+
+  void set(bool value) {
+    state = value;
+  }
+}
+
 // Applicable to desktop only. True if an entry was modified and not saved.
-final isVaultModifiedProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
-// Search query string.
-final searchQueryProvider = StateProvider<String>((ref) {
-  return '';
-});
-
-// Selected bottom navigation bar item.
-final selectedTabProvider = StateProvider<int>((ref) {
-  return 0; // default tab
-});
-
-// vault providers
-final vaultCandidateProvider = StateProvider<Map<String, dynamic>>((ref) {
-  return {};
-});
-
-final vaultSyncWarningProvider = StateProvider<String>((ref) {
-  return '';
-});
+final isVaultModifiedProvider = NotifierProvider<BoolNotifier, bool>(
+  BoolNotifier.new,
+);
 
 // Triggers rendering of the new vault entry widget.
-final newVaultEntryProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
-// Vault Entry Id.
-final selectedVaultEntryProvider = StateProvider<String>((ref) {
-  return '';
-});
+final newVaultEntryProvider = NotifierProvider<BoolNotifier, bool>(
+  BoolNotifier.new,
+);
 
 // Applicable to desktop only. True if the entry was changed.
-final isVaultEntryDirtyProvider = StateProvider<bool>((ref) {
-  return false;
-});
+final isVaultEntryDirtyProvider = NotifierProvider<BoolNotifier, bool>(
+  BoolNotifier.new,
+);
 
-// Search vault query string.
-final vaultSearchQueryProvider = StateProvider<String>((ref) {
-  return '';
-});
+class StringNotifier extends Notifier<String> {
+  @override
+  build() {
+    return '';
+  }
+
+  void set(String value) {
+    state = value;
+  }
+}
+
+// Search query string.
+final searchQueryProvider = NotifierProvider<StringNotifier, String>(
+  StringNotifier.new,
+);
+
+// Sync warning.
+final vaultSyncWarningProvider = NotifierProvider<StringNotifier, String>(
+  StringNotifier.new,
+);
+
+// Vault Entry Id.
+final selectedVaultEntryProvider = NotifierProvider<StringNotifier, String>(
+  StringNotifier.new,
+);
+
+// Version warning.
+final versionWarningProvider = NotifierProvider<StringNotifier, String>(
+  StringNotifier.new,
+);
+
+// Selected device Id.
+final selectedDeviceProvider = NotifierProvider<StringNotifier, String>(
+  StringNotifier.new,
+);
+
+class IntNotifier extends Notifier<int> {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void set(int value) {
+    state = value;
+  }
+}
+
+// Selected bottom navigation bar item.
+final selectedTabProvider = NotifierProvider<IntNotifier, int>(IntNotifier.new);
+
+class JSONNotifier extends Notifier<Map<String, dynamic>> {
+  @override
+  Map<String, dynamic> build() {
+    return {};
+  }
+
+  void set(Map<String, dynamic> value) {
+    state = value;
+  }
+}
+
+final vaultCandidateProvider =
+    NotifierProvider<JSONNotifier, Map<String, dynamic>>(JSONNotifier.new);
 
 // Selected setting.
 enum SettingItem {
@@ -58,24 +104,35 @@ enum SettingItem {
   final String title;
 }
 
-final selectedSettingProvider = StateProvider<SettingItem>((ref) {
-  if (UI.isDesktop) {
-    return SettingItem.identity; // default page on desktop
-  } else {
-    return SettingItem.none;
+class SettingNotifier extends Notifier<SettingItem> {
+  @override
+  SettingItem build() {
+    if (UI.isDesktop) {
+      return SettingItem.identity; // default page on desktop
+    } else {
+      return SettingItem.none;
+    }
   }
-});
 
-final versionWarningProvider = StateProvider<String>((ref) {
-  return '';
-});
+  void set(SettingItem value) {
+    state = value;
+  }
+}
 
-// Message of the day
-final motdProvider = StateProvider<MOTD?>((ref) {
-  return null;
-});
+final selectedSettingProvider = NotifierProvider<SettingNotifier, SettingItem>(
+  SettingNotifier.new,
+);
 
-// Selected device Id.
-final selectedDeviceProvider = StateProvider<String>((ref) {
-  return '';
-});
+// Message of the day.
+class MOTDNotifier extends Notifier<MOTD?> {
+  @override
+  MOTD? build() {
+    return null;
+  }
+
+  void set(MOTD value) {
+    state = value;
+  }
+}
+
+final motdProvider = NotifierProvider<MOTDNotifier, MOTD?>(MOTDNotifier.new);

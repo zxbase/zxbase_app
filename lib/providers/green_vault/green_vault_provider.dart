@@ -8,14 +8,11 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 
 const component = 'greenVaultProvider'; // logging component
 
-final greenVaultProvider = StateNotifierProvider<GreenVaultNotifier, Vault>(
-  (ref) => GreenVaultNotifier(ref),
-);
-
-class GreenVaultNotifier extends StateNotifier<Vault> {
-  GreenVaultNotifier(this.ref)
-    : super(Vault(path: ref.read(configProvider).greenVaultPath));
-  final Ref ref;
+class GreenVaultNotifier extends Notifier<Vault> {
+  @override
+  build() {
+    return Vault(path: ref.read(configProvider).greenVaultPath);
+  }
 
   // called only once during initialization
   Future<bool> init(String pwd) async {
@@ -45,3 +42,7 @@ class GreenVaultNotifier extends StateNotifier<Vault> {
     return true;
   }
 }
+
+final greenVaultProvider = NotifierProvider<GreenVaultNotifier, Vault>(
+  GreenVaultNotifier.new,
+);

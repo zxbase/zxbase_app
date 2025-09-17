@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-// Zero trust text form field,
+// Zero exposure text form field,
 // preventing OS from reading the content.
-class ZTTextFormField extends TextFormField {
-  ZTTextFormField({
+class ZXTextFormField extends TextFormField {
+  ZXTextFormField({
     super.key,
     super.autocorrect = false,
     super.enableSuggestions = false,

@@ -12,101 +12,6 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _component = 'peersProvider'; // logging component
 
-final peersProvider = StateNotifierProvider<PeersNotifier, Peers>(
-  (ref) => PeersNotifier(ref),
-);
-
-class PeersNotifier extends StateNotifier<Peers> {
-  PeersNotifier(this.ref) : super(Peers());
-  final Ref ref;
-  static const _docName = 'peers';
-
-  // called only once during initialization
-  Future init() async {
-    log('Create doc.', name: _component);
-    await ref
-        .read(greenVaultProvider)
-        .updateDoc(name: _docName, content: state.toJson(), annotation: {});
-  }
-
-  Future open() async {
-    Doc? doc = await ref.read(greenVaultProvider).getDoc(name: _docName);
-    state = Peers.fromJson(doc!.content, firstLoad: true);
-    log('Loaded doc from the vault.', name: _component);
-  }
-
-  Future<bool> _updateDoc(Peers newState) async {
-    Doc? doc = await ref
-        .read(greenVaultProvider)
-        .updateDoc(name: _docName, content: newState.toJson(), annotation: {});
-    if (doc == null) {
-      return false;
-    }
-    return true;
-  }
-
-  Future<RV> addPeer(Peer peer) async {
-    if (state.peers.containsKey(peer.id)) {
-      return RV.peerExists;
-    }
-    log('Adding peer ${peer.id}.', name: _component);
-    Peers stateCopy = Peers.copy(state);
-    stateCopy.peers[peer.id] = peer;
-    state = stateCopy; // trigger notification
-    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
-  }
-
-  Future<RV> deletePeer({required String peerId}) async {
-    if (!state.peers.containsKey(peerId)) {
-      return RV.notFound;
-    }
-    log('Deleting peer $peerId.', name: _component);
-    Peers stateCopy = Peers.copy(state);
-    stateCopy.peers.remove(peerId);
-    state = stateCopy; // trigger notification
-    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
-  }
-
-  Future<RV> updatePeer({required Peer peer}) async {
-    if (!state.peers.containsKey(peer.id)) {
-      return RV.notFound;
-    }
-    log('Updating peer ${peer.id}.', name: _component);
-    Peers stateCopy = Peers.copy(state);
-    stateCopy.peers[peer.id] = peer;
-    state = stateCopy; // trigger notification
-    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
-  }
-
-  // Every updater needs to write the doc,
-  // otherwise this update will be lost when other queued update resumes.
-  Future<RV> setStatus({required String peerId, required String status}) async {
-    if (!state.peers.containsKey(peerId)) {
-      return RV.notFound;
-    }
-    log('Peer $peerId: set status $status.', name: _component);
-    Peers stateCopy = Peers.copy(state);
-    stateCopy.peers[peerId]!.status = status;
-    state = stateCopy; // trigger notification
-    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
-  }
-
-  Future<RV> setLastSeen({
-    required String peerId,
-    required String status,
-  }) async {
-    if (!state.peers.containsKey(peerId)) {
-      return RV.notFound;
-    }
-    log('Peer $peerId: set last seen, status $status.', name: _component);
-    Peers stateCopy = Peers.copy(state);
-    stateCopy.peers[peerId]!.status = status;
-    stateCopy.peers[peerId]!.lastSeen = DateTime.now().toUtc();
-    state = stateCopy; // trigger notification
-    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
-  }
-}
-
 class Peers {
   Peers();
 
@@ -223,3 +128,99 @@ class Peer {
     }
   }
 }
+
+class PeersNotifier extends Notifier<Peers> {
+  static const _docName = 'peers';
+
+  @override
+  build() {
+    return Peers();
+  }
+
+  // called only once during initialization
+  Future init() async {
+    log('Create doc.', name: _component);
+    await ref
+        .read(greenVaultProvider)
+        .updateDoc(name: _docName, content: state.toJson(), annotation: {});
+  }
+
+  Future open() async {
+    Doc? doc = await ref.read(greenVaultProvider).getDoc(name: _docName);
+    state = Peers.fromJson(doc!.content, firstLoad: true);
+    log('Loaded doc from the vault.', name: _component);
+  }
+
+  Future<bool> _updateDoc(Peers newState) async {
+    Doc? doc = await ref
+        .read(greenVaultProvider)
+        .updateDoc(name: _docName, content: newState.toJson(), annotation: {});
+    if (doc == null) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<RV> addPeer(Peer peer) async {
+    if (state.peers.containsKey(peer.id)) {
+      return RV.peerExists;
+    }
+    log('Adding peer ${peer.id}.', name: _component);
+    Peers stateCopy = Peers.copy(state);
+    stateCopy.peers[peer.id] = peer;
+    state = stateCopy; // trigger notification
+    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
+  }
+
+  Future<RV> deletePeer({required String peerId}) async {
+    if (!state.peers.containsKey(peerId)) {
+      return RV.notFound;
+    }
+    log('Deleting peer $peerId.', name: _component);
+    Peers stateCopy = Peers.copy(state);
+    stateCopy.peers.remove(peerId);
+    state = stateCopy; // trigger notification
+    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
+  }
+
+  Future<RV> updatePeer({required Peer peer}) async {
+    if (!state.peers.containsKey(peer.id)) {
+      return RV.notFound;
+    }
+    log('Updating peer ${peer.id}.', name: _component);
+    Peers stateCopy = Peers.copy(state);
+    stateCopy.peers[peer.id] = peer;
+    state = stateCopy; // trigger notification
+    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
+  }
+
+  // Every updater needs to write the doc,
+  // otherwise this update will be lost when other queued update resumes.
+  Future<RV> setStatus({required String peerId, required String status}) async {
+    if (!state.peers.containsKey(peerId)) {
+      return RV.notFound;
+    }
+    log('Peer $peerId: set status $status.', name: _component);
+    Peers stateCopy = Peers.copy(state);
+    stateCopy.peers[peerId]!.status = status;
+    state = stateCopy; // trigger notification
+    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
+  }
+
+  Future<RV> setLastSeen({
+    required String peerId,
+    required String status,
+  }) async {
+    if (!state.peers.containsKey(peerId)) {
+      return RV.notFound;
+    }
+    log('Peer $peerId: set last seen, status $status.', name: _component);
+    Peers stateCopy = Peers.copy(state);
+    stateCopy.peers[peerId]!.status = status;
+    stateCopy.peers[peerId]!.lastSeen = DateTime.now().toUtc();
+    state = stateCopy; // trigger notification
+    return await _updateDoc(stateCopy) ? RV.ok : RV.io;
+  }
+}
+
+final peersProvider = NotifierProvider<PeersNotifier, Peers>(PeersNotifier.new);

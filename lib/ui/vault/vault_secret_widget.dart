@@ -12,7 +12,7 @@ import 'package:zxbase_app/ui/common/scroll_column_widget.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/providers/vault_sync_provider.dart';
-import 'package:zxbase_app/ui/common/zero_trust_input.dart';
+import 'package:zxbase_app/ui/common/zx_input.dart';
 import 'package:zxbase_flutter_ui/zxbase_flutter_ui.dart';
 import 'package:zxcvbn/zxcvbn.dart';
 
@@ -73,7 +73,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
   }
 
   void _clearSelectedEntry(WidgetRef ref) {
-    ref.read(selectedVaultEntryProvider.notifier).state = '';
+    ref.read(selectedVaultEntryProvider.notifier).set('');
   }
 
   Future<void> _deleteVaultEntry({
@@ -129,7 +129,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         HumanTime.dateTime(entry!.updatedAt.toLocal()),
         style: TextStyle(fontSize: UI.fontSizeXSmall, color: secondaryColor),
       ),
-      ZTTextFormField(
+      ZXTextFormField(
         controller: _titleController,
         inputFormatters: [
           LengthLimitingTextInputFormatter(Const.vaultTitleMaxLength),
@@ -137,10 +137,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         textAlign: TextAlign.start,
         maxLines: 1,
         readOnly: !editMode,
-        decoration: const InputDecoration(
-          labelText: 'Title',
-          hintText: 'Title',
-        ),
+        decoration: const InputDecoration(labelText: 'Title'),
         validator: (value) {
           if (value!.trim().isEmpty) {
             return Const.titleEmptyWarn;
@@ -152,14 +149,14 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           }
         },
         onChanged: (text) {
-          ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+          ref.read(isVaultEntryDirtyProvider.notifier).set(true);
         },
       ),
       editMode
           ? TypeAheadField(
               controller: _usernameController,
               builder: (context, controller, focusNode) {
-                return ZTTextFormField(
+                return ZXTextFormField(
                   controller: controller,
                   focusNode: focusNode,
                   inputFormatters: [
@@ -171,7 +168,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                   maxLines: 1,
                   decoration: InputDecoration(
                     labelText: 'Username',
-                    hintText: 'Username',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.copy_rounded),
                       tooltip: 'Copy',
@@ -184,7 +180,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                     ),
                   ),
                   onChanged: (text) {
-                    ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+                    ref.read(isVaultEntryDirtyProvider.notifier).set(true);
                   },
                   validator: (value) {
                     if (value!.length > Const.vaultUsernameMaxLength) {
@@ -218,7 +214,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             )
           :
             // read only username
-            ZTTextFormField(
+            ZXTextFormField(
               controller: _usernameController,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(Const.vaultUsernameMaxLength),
@@ -228,7 +224,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
               readOnly: true,
               decoration: InputDecoration(
                 labelText: 'Username',
-                hintText: 'Username',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.copy_rounded),
                   tooltip: 'Copy',
@@ -241,7 +236,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
                 ),
               ),
             ),
-      ZTTextFormField(
+      ZXTextFormField(
         controller: _passwordController,
         inputFormatters: [
           LengthLimitingTextInputFormatter(Const.vaultPasswordMaxLength),
@@ -253,7 +248,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           labelText: 'Password',
-          hintText: 'Password',
           suffixIcon: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
@@ -303,7 +297,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           }
         },
         onChanged: (text) {
-          ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+          ref.read(isVaultEntryDirtyProvider.notifier).set(true);
           setState(() {});
         },
       ),
@@ -340,7 +334,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       Focus(
         // helps to get focus for keyboard shortcut
         autofocus: true,
-        child: ZTTextFormField(
+        child: ZXTextFormField(
           controller: _notesController,
           inputFormatters: [
             LengthLimitingTextInputFormatter(Const.vaultNotesMaxLength),
@@ -348,10 +342,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           textAlign: TextAlign.start,
           maxLines: null,
           readOnly: !editMode,
-          decoration: const InputDecoration(
-            labelText: 'Notes',
-            hintText: 'Notes',
-          ),
+          decoration: const InputDecoration(labelText: 'Notes'),
           validator: (value) {
             if (value!.length > Const.vaultNotesMaxLength) {
               return Const.notesLongWarn;
@@ -361,7 +352,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             }
           },
           onChanged: (text) {
-            ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+            ref.read(isVaultEntryDirtyProvider.notifier).set(true);
           },
         ),
       ),
@@ -374,7 +365,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       TextEditingController controller = _urlControllers[i];
 
       widgets.add(
-        ZTTextFormField(
+        ZXTextFormField(
           controller: controller,
           inputFormatters: [
             LengthLimitingTextInputFormatter(Const.vaultUsernameMaxLength),
@@ -384,7 +375,6 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           readOnly: !editMode,
           decoration: InputDecoration(
             labelText: 'URL',
-            hintText: 'URL',
             suffixIcon: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
@@ -423,7 +413,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             }
           },
           onChanged: (text) {
-            ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+            ref.read(isVaultEntryDirtyProvider.notifier).set(true);
           },
         ),
       );
@@ -436,7 +426,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {
-                ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+                ref.read(isVaultEntryDirtyProvider.notifier).set(true);
                 setState(() {
                   _urlControllers.add(TextEditingController());
                 });
@@ -464,7 +454,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       leftButtonText: 'Yes',
       rightButtonText: 'No',
       onLeftTap: () {
-        ref.read(isVaultEntryDirtyProvider.notifier).state = true;
+        ref.read(isVaultEntryDirtyProvider.notifier).set(true);
         _deleteUrl(index);
         Navigator.pop(context);
       },
@@ -481,8 +471,8 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
   Future<void> _cancelConfirmed() async {
     if (UI.isDesktop) {
       if (isNewEntry) {
-        ref.read(newVaultEntryProvider.notifier).state = false;
-        ref.read(selectedVaultEntryProvider.notifier).state = '';
+        ref.read(newVaultEntryProvider.notifier).set(false);
+        ref.read(selectedVaultEntryProvider.notifier).set('');
       } else {
         setState(() {
           editMode = false;
@@ -496,7 +486,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       });
       if (isNewEntry) {
         Navigator.pop(context);
-        ref.read(newVaultEntryProvider.notifier).state = false;
+        ref.read(newVaultEntryProvider.notifier).set(false);
       }
     }
   }
@@ -513,7 +503,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           entry = ref.read(userVaultProvider.notifier).copyEntry(id: entry!.id);
           setFields(entry!);
         }
-        ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+        ref.read(isVaultEntryDirtyProvider.notifier).set(false);
         Navigator.pop(context);
         _cancelConfirmed();
       },
@@ -557,16 +547,16 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
     await ref.read(vaultSyncProvider).broadcastVault();
     ref.read(vaultSyncProvider).updateSyncWarning();
 
-    ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+    ref.read(isVaultEntryDirtyProvider.notifier).set(false);
     if (isNewEntry) {
-      ref.read(newVaultEntryProvider.notifier).state = false;
+      ref.read(newVaultEntryProvider.notifier).set(false);
     }
     setState(() {
       // set state to quit edit mode
       editMode = false;
       showPasswordGenerator = false;
     });
-    ref.read(selectedVaultEntryProvider.notifier).state = entry!.id;
+    ref.read(selectedVaultEntryProvider.notifier).set(entry!.id);
   }
 
   Future<void> edit() async {
@@ -618,11 +608,9 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         editMode = false;
         obscure = true;
         setFields(vaultEntry);
-        ref.read(isVaultEntryDirtyProvider.notifier).state = false;
       } else if (!editMode) {
         // Same entry was changed by sync.
         setFields(vaultEntry);
-        ref.read(isVaultEntryDirtyProvider.notifier).state = false;
       }
       entry = vaultEntry;
     }

@@ -121,7 +121,7 @@ class DeviceWidget extends ConsumerWidget {
                 ),
                 onTap: () async {
                   if (UI.isDesktop) {
-                    ref.read(selectedDeviceProvider.notifier).state = peer.id;
+                    ref.read(selectedDeviceProvider.notifier).set(peer.id);
                   } else {
                     await Navigator.push(
                       context,

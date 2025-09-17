@@ -1,20 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'helpers.dart';
 import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
 import 'package:zxbase_app/providers/green_vault/green_vault_provider.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_vault/zxbase_vault.dart';
-import 'helpers.dart';
 
-final userVaultBProvider = StateNotifierProvider<UserVaultNotifier, UserVault>(
-  (ref) => UserVaultNotifier(
-    ref: ref,
-    docName: 'vaultB',
-    deviceId: 'B',
-    version: 'old',
-  ),
+final userVaultBProvider = NotifierProvider<UserVaultNotifier, UserVault>(
+  UserVaultNotifier.new,
 );
 
 void main() {
@@ -45,6 +40,11 @@ void main() {
     // init second vault
     UserVaultNotifier userVaultBNotifier = container.read(
       userVaultBProvider.notifier,
+    );
+    userVaultBNotifier.setupForTesting(
+      docName: 'vaultB',
+      deviceId: 'B',
+      version: 'old',
     );
     await userVaultBNotifier.init();
 

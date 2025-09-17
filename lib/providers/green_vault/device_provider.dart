@@ -11,14 +11,13 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _component = 'deviceProvider'; // logging component
 
-final deviceProvider = StateNotifierProvider<DeviceNotifier, Device>(
-  (ref) => DeviceNotifier(ref),
-);
-
-class DeviceNotifier extends StateNotifier<Device> {
-  DeviceNotifier(this.ref) : super(Device(owner: '', name: ''));
-  final Ref ref;
+class DeviceNotifier extends Notifier<Device> {
   static const _docName = 'device';
+
+  @override
+  build() {
+    return Device(owner: '', name: '');
+  }
 
   // called only during vault initialization
   Future<void> init() async {
@@ -108,3 +107,7 @@ class Device {
     metadata = parsedJson['metadata'];
   }
 }
+
+final deviceProvider = NotifierProvider<DeviceNotifier, Device>(
+  DeviceNotifier.new,
+);

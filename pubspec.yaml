@@ -3,7 +3,7 @@ description: "Multiplatform Zxbase application."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # update also an environment, msix_config and snapcraft.yaml
-version: 4.2.1+122
+version: 4.3.0+123
 
 environment:
   sdk: ^3.8.0
@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   flutter_linkify: ^6.0.0
-  flutter_riverpod: ^2.6.0
+  flutter_riverpod: ^3.0.0
   flutter_typeahead: ^5.0.0
   flutter_webrtc: ^1.0.0
   path_provider: ^2.0.0
@@ -50,7 +50,7 @@ msix_config:
   publisher: CN=BBFD44F4-B953-4CCF-94AD-E605E12434CB
   publisher_display_name: Zxbase LLC
   identity_name: ZxbaseLLC.Zxbase
-  msix_version: 4.2.1.0
+  msix_version: 4.3.0.0
   logo_path: assets\round_1024.png
   capabilities: internetClient, location, webcam
-  output_name: zxbase_win_4.2.1.0
+  output_name: zxbase_win_4.3.0.0

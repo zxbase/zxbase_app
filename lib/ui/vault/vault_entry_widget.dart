@@ -27,15 +27,15 @@ class VaultEntryWidget extends ConsumerWidget {
         leftButtonText: 'Yes',
         rightButtonText: 'No',
         onLeftTap: () {
-          ref.read(selectedVaultEntryProvider.notifier).state = entryId;
-          ref.read(newVaultEntryProvider.notifier).state = false;
-          ref.read(isVaultEntryDirtyProvider.notifier).state = false;
+          ref.read(selectedVaultEntryProvider.notifier).set(entryId);
+          ref.read(newVaultEntryProvider.notifier).set(false);
+          ref.read(isVaultEntryDirtyProvider.notifier).set(false);
           Navigator.pop(context);
         },
       );
     } else {
-      ref.read(selectedVaultEntryProvider.notifier).state = entryId;
-      ref.read(newVaultEntryProvider.notifier).state = false;
+      ref.read(selectedVaultEntryProvider.notifier).set(entryId);
+      ref.read(newVaultEntryProvider.notifier).set(false);
     }
   }
 
@@ -86,8 +86,7 @@ class VaultEntryWidget extends ConsumerWidget {
                   if (UI.isDesktop) {
                     _switchOnDesktop(context, ref, entry.id);
                   } else {
-                    ref.read(selectedVaultEntryProvider.notifier).state =
-                        entry.id;
+                    ref.read(selectedVaultEntryProvider.notifier).set(entry.id);
                     await Navigator.push(
                       context,
                       (MaterialPageRoute(

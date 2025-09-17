@@ -2,20 +2,17 @@
 // No sensitive data to be stored here.
 
 import 'dart:developer';
-import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _component = 'blueVaultProvider'; // logging component
 
-final blueVaultProvider = StateNotifierProvider<BlueVaultNotifier, Vault>(
-  (ref) => BlueVaultNotifier(ref),
-);
-
-class BlueVaultNotifier extends StateNotifier<Vault> {
-  BlueVaultNotifier(this.ref)
-    : super(Vault(path: ref.read(configProvider).blueVaultPath));
-  final Ref ref;
+class BlueVaultNotifier extends Notifier<Vault> {
+  @override
+  build() {
+    return Vault(path: ref.read(configProvider).blueVaultPath);
+  }
 
   Future<void> init() async {
     log('Initializing blue vault.', name: _component);
@@ -31,3 +28,7 @@ class BlueVaultNotifier extends StateNotifier<Vault> {
     log('Initialized, state ${state.state}.', name: _component);
   }
 }
+
+final blueVaultProvider = NotifierProvider<BlueVaultNotifier, Vault>(
+  BlueVaultNotifier.new,
+);

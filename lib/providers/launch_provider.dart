@@ -33,15 +33,13 @@ class LaunchStage {
   final String err;
 }
 
-final launchProvider = StateNotifierProvider<LaunchNotifier, LaunchStage>(
-  (ref) => LaunchNotifier(ref),
-);
-
-class LaunchNotifier extends StateNotifier<LaunchStage> {
-  LaunchNotifier(this.ref)
-    : super(LaunchStage(stage: LaunchStageEnum.initializing, msg: ''));
-  final Ref ref;
+class LaunchNotifier extends Notifier<LaunchStage> {
   static const retryInterval = 5;
+
+  @override
+  build() {
+    return LaunchStage(stage: LaunchStageEnum.initializing, msg: '');
+  }
 
   Future<void> logAndWait(String msg) async {
     log(msg, name: _component);
@@ -197,3 +195,7 @@ class LaunchNotifier extends StateNotifier<LaunchStage> {
     await ref.read(dispatcherProvider).start();
   }
 }
+
+final launchProvider = NotifierProvider<LaunchNotifier, LaunchStage>(
+  LaunchNotifier.new,
+);

@@ -16,33 +16,124 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 
 const _comp = 'userVaultProvider'; // logging component
 
-final userVaultProvider = StateNotifierProvider<UserVaultNotifier, UserVault>(
-  (ref) => UserVaultNotifier(
-    ref: ref,
-    deviceId: ref.read(deviceProvider).id,
-    version: ref.read(configProvider).version.text,
-  ),
-);
+class UserVault {
+  UserVault();
 
-class UserVaultNotifier extends StateNotifier<UserVault> {
-  UserVaultNotifier({
-    required this.ref,
-    required this.deviceId,
-    required this.version,
-    this.docName = 'vault',
-  }) : super(UserVault());
-  final Ref ref;
-  final String docName;
-  final String deviceId;
-  final String version;
+  // deep copy constructor
+  UserVault.copy(UserVault copy) {
+    json.decode(json.encode(copy.entries)).forEach((k, v) {
+      entries[k] = UserVaultEntry.fromJson(v);
+    });
+    populateUsernames();
+  }
+
+  // serialization constructor
+  UserVault.fromJson(Map<String, dynamic> parsedJson) {
+    Map parsedEntries = json.decode(parsedJson['entries']);
+    parsedEntries.forEach((k, v) {
+      entries[k] = UserVaultEntry.fromJson(v);
+    });
+    populateUsernames();
+  }
+
+  Map<String, UserVaultEntry> entries = {};
+
+  // in-memory case-insensitively sorted list of usernames for autocomplete
+  List<String> usernames = [];
+
+  // serialization
+  Map<String, dynamic> toJson() {
+    return {'entries': json.encode(entries)};
+  }
+
+  void populateUsernames() {
+    Set<String> userSet = {};
+
+    entries.forEach((key, value) {
+      if ((value.type == typeLogin) &&
+          value.username.isNotEmpty &&
+          !userSet.contains(value.username)) {
+        userSet.add(value.username);
+      }
+    });
+
+    usernames = userSet.toList()
+      ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+  }
+}
+
+const String typeLogin = 'login';
+const String typeNote = 'note';
+
+class UserVaultEntry {
+  UserVaultEntry({required this.id, required this.type});
+
+  UserVaultEntry.fromJson(Map<String, dynamic> parsedJson) {
+    id = parsedJson['id'];
+    type = parsedJson['type'];
+
+    title = parsedJson['title'];
+    username = parsedJson['username'];
+    password = parsedJson['password'];
+    notes = parsedJson['notes'];
+
+    parsedJson['uris'].forEach((v) {
+      uris.add(v);
+    });
+
+    hidden = parsedJson['hidden'] ?? false;
+    updatedAt = DateTime.parse(parsedJson['updatedAt']);
+  }
+
+  late String id;
+  late String type;
+
+  late String title;
+  late String username;
+  late String password;
+  late String notes;
+  List<String> uris = [];
+  bool hidden = false;
+  DateTime updatedAt = DateTime.now().toUtc();
+
+  // serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'title': title,
+      'username': username,
+      'password': password,
+      'notes': notes,
+      'uris': uris,
+      'hidden': hidden,
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+}
+
+class UserVaultNotifier extends Notifier<UserVault> {
   DocMeta? meta;
+
+  // mutable for test purposes
+  String? docName;
+  String? deviceId;
+  String? version;
+
+  @override
+  build() {
+    docName = 'vault';
+    deviceId = ref.read(deviceProvider).id;
+    version = ref.read(configProvider).version.text;
+    return UserVault();
+  }
 
   Future<void> init() async {
     log('Create doc.', name: _comp);
     Doc? doc = await ref
         .read(greenVaultProvider)
         .updateDoc(
-          name: docName,
+          name: docName!,
           content: state.toJson(),
           annotation: {'author': deviceId, 'authorVersion': version},
         );
@@ -50,7 +141,7 @@ class UserVaultNotifier extends StateNotifier<UserVault> {
   }
 
   Future<void> open() async {
-    Doc? doc = await ref.read(greenVaultProvider).getDoc(name: docName);
+    Doc? doc = await ref.read(greenVaultProvider).getDoc(name: docName!);
     if (doc == null) {
       await init();
     } else {
@@ -67,7 +158,7 @@ class UserVaultNotifier extends StateNotifier<UserVault> {
     Doc? doc = await ref
         .read(greenVaultProvider)
         .updateDoc(
-          name: docName,
+          name: docName!,
           content: newState.toJson(),
           annotation:
               annotation ?? {'author': deviceId, 'authorVersion': version},
@@ -210,100 +301,19 @@ class UserVaultNotifier extends StateNotifier<UserVault> {
   Revision get currentRevision {
     return meta!.revs.current;
   }
-}
 
-class UserVault {
-  UserVault();
-
-  // deep copy constructor
-  UserVault.copy(UserVault copy) {
-    json.decode(json.encode(copy.entries)).forEach((k, v) {
-      entries[k] = UserVaultEntry.fromJson(v);
-    });
-    populateUsernames();
-  }
-
-  // serialization constructor
-  UserVault.fromJson(Map<String, dynamic> parsedJson) {
-    Map parsedEntries = json.decode(parsedJson['entries']);
-    parsedEntries.forEach((k, v) {
-      entries[k] = UserVaultEntry.fromJson(v);
-    });
-    populateUsernames();
-  }
-
-  Map<String, UserVaultEntry> entries = {};
-
-  // in-memory case-insensitively sorted list of usernames for autocomplete
-  List<String> usernames = [];
-
-  // serialization
-  Map<String, dynamic> toJson() {
-    return {'entries': json.encode(entries)};
-  }
-
-  void populateUsernames() {
-    Set<String> userSet = {};
-
-    entries.forEach((key, value) {
-      if ((value.type == typeLogin) &&
-          value.username.isNotEmpty &&
-          !userSet.contains(value.username)) {
-        userSet.add(value.username);
-      }
-    });
-
-    usernames = userSet.toList()
-      ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+  // used in tests only
+  void setupForTesting({
+    required String docName,
+    required String deviceId,
+    required String version,
+  }) {
+    this.docName = docName;
+    this.deviceId = deviceId;
+    this.version = version;
   }
 }
 
-const String typeLogin = 'login';
-const String typeNote = 'note';
-
-class UserVaultEntry {
-  UserVaultEntry({required this.id, required this.type});
-
-  UserVaultEntry.fromJson(Map<String, dynamic> parsedJson) {
-    id = parsedJson['id'];
-    type = parsedJson['type'];
-
-    title = parsedJson['title'];
-    username = parsedJson['username'];
-    password = parsedJson['password'];
-    notes = parsedJson['notes'];
-
-    parsedJson['uris'].forEach((v) {
-      uris.add(v);
-    });
-
-    hidden = parsedJson['hidden'] ?? false;
-    updatedAt = DateTime.parse(parsedJson['updatedAt']);
-  }
-
-  late String id;
-  late String type;
-
-  late String title;
-  late String username;
-  late String password;
-  late String notes;
-  List<String> uris = [];
-  bool hidden = false;
-  DateTime updatedAt = DateTime.now().toUtc();
-
-  // serialization
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'type': type,
-      'title': title,
-      'username': username,
-      'password': password,
-      'notes': notes,
-      'uris': uris,
-      'hidden': hidden,
-      'updatedAt': updatedAt.toIso8601String(),
-    };
-  }
-}
+final userVaultProvider = NotifierProvider<UserVaultNotifier, UserVault>(
+  UserVaultNotifier.new,
+);

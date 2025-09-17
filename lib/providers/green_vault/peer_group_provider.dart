@@ -19,16 +19,135 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 const _comp = 'peerGroupsProvider'; // logging component
 const vaultGroupId = '_vault'; // internal names start with _
 
-final peerGroupsProvider =
-    StateNotifierProvider<PeerGroupsNotifier, PeerGroups>(
-      (ref) => PeerGroupsNotifier(ref),
-    );
+class PeerGroups {
+  PeerGroups();
 
-class PeerGroupsNotifier extends StateNotifier<PeerGroups> {
-  PeerGroupsNotifier(this.ref) : super(PeerGroups());
-  final Ref ref;
+  // deep copy constructor
+  PeerGroups.copy(PeerGroups copy) {
+    json.decode(json.encode(copy.groups)).forEach((k, v) {
+      groups[k] = PeerGroup.fromJson(v);
+    });
+  }
+
+  // deser constructor
+  PeerGroups.fromJson(Map<String, dynamic> parsedJson) {
+    Map parsedgroups = json.decode(parsedJson['groups']);
+    parsedgroups.forEach((k, v) {
+      PeerGroup entry = PeerGroup.fromJson(v);
+      groups[k] = entry;
+    });
+  }
+
+  Map<String, PeerGroup> groups = {};
+
+  // serialization
+  Map<String, dynamic> toJson() {
+    return {'groups': json.encode(groups)};
+  }
+
+  PeerGroup get vaultGroup {
+    return groups[vaultGroupId]!; // created during init
+  }
+
+  bool memberOf({required String peerId, required String groupId}) {
+    PeerGroup? g = groups[groupId];
+    if (g == null) {
+      return false;
+    }
+
+    if (g.peers.containsKey(peerId)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool memberOfVaultGroup({required String peerId}) {
+    return memberOf(peerId: peerId, groupId: vaultGroupId);
+  }
+}
+
+const String typeVault = 'vault';
+const String typeMsg = 'msg';
+
+class PeerGroup {
+  PeerGroup({required this.id, required this.type});
+
+  PeerGroup.fromJson(Map<String, dynamic> parsedJson) {
+    id = parsedJson['id'];
+    type = parsedJson['type'];
+
+    name = parsedJson['name'];
+    policy = parsedJson['policy'];
+    managed = parsedJson['managed'];
+
+    parsedJson['peers'].forEach((k, v) {
+      peers[k] = RemotePeer.fromJson(v);
+    });
+
+    updatedAt = DateTime.parse(parsedJson['updatedAt']);
+  }
+
+  late String id;
+  late String type;
+
+  String name = '';
+  String policy = '';
+  String managed = '';
+  Map<String, RemotePeer> peers = {};
+  DateTime updatedAt = Const.minDate;
+
+  List<String> get peerIds {
+    return peers.keys.toList();
+  }
+
+  bool get isEmpty => peers.isEmpty;
+
+  // serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'name': name,
+      'policy': policy,
+      'managed': managed,
+      'peers': peers,
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+}
+
+class RemotePeer {
+  RemotePeer({required this.id});
+
+  RemotePeer.fromJson(Map<String, dynamic> parsedJson) {
+    id = parsedJson['id'];
+    revision = Revision.fromJson(parsedJson['revision']);
+    updatedAt = DateTime.parse(parsedJson['updatedAt']);
+  }
+
+  late String id;
+  DateTime updatedAt = Const.minDate;
+  Revision revision = Revision(seq: 1, hash: '', annotation: {});
+
+  // serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'updatedAt': updatedAt.toIso8601String(),
+      'revision': revision,
+    };
+  }
+}
+
+class PeerGroupsNotifier extends Notifier<PeerGroups> {
   DocMeta? meta;
   static const _docName = 'peerGroups';
+
+  @override
+  build() {
+    return PeerGroups();
+  }
 
   Future<void> init() async {
     log('Create doc.', name: _comp);
@@ -156,123 +275,6 @@ class PeerGroupsNotifier extends StateNotifier<PeerGroups> {
   }
 }
 
-class PeerGroups {
-  PeerGroups();
-
-  // deep copy constructor
-  PeerGroups.copy(PeerGroups copy) {
-    json.decode(json.encode(copy.groups)).forEach((k, v) {
-      groups[k] = PeerGroup.fromJson(v);
-    });
-  }
-
-  // deser constructor
-  PeerGroups.fromJson(Map<String, dynamic> parsedJson) {
-    Map parsedgroups = json.decode(parsedJson['groups']);
-    parsedgroups.forEach((k, v) {
-      PeerGroup entry = PeerGroup.fromJson(v);
-      groups[k] = entry;
-    });
-  }
-
-  Map<String, PeerGroup> groups = {};
-
-  // serialization
-  Map<String, dynamic> toJson() {
-    return {'groups': json.encode(groups)};
-  }
-
-  PeerGroup get vaultGroup {
-    return groups[vaultGroupId]!; // created during init
-  }
-
-  bool memberOf({required String peerId, required String groupId}) {
-    PeerGroup? g = groups[groupId];
-    if (g == null) {
-      return false;
-    }
-
-    if (g.peers.containsKey(peerId)) {
-      return true;
-    }
-
-    return false;
-  }
-
-  bool memberOfVaultGroup({required String peerId}) {
-    return memberOf(peerId: peerId, groupId: vaultGroupId);
-  }
-}
-
-const String typeVault = 'vault';
-const String typeMsg = 'msg';
-
-class PeerGroup {
-  PeerGroup({required this.id, required this.type});
-
-  PeerGroup.fromJson(Map<String, dynamic> parsedJson) {
-    id = parsedJson['id'];
-    type = parsedJson['type'];
-
-    name = parsedJson['name'];
-    policy = parsedJson['policy'];
-    managed = parsedJson['managed'];
-
-    parsedJson['peers'].forEach((k, v) {
-      peers[k] = RemotePeer.fromJson(v);
-    });
-
-    updatedAt = DateTime.parse(parsedJson['updatedAt']);
-  }
-
-  late String id;
-  late String type;
-
-  String name = '';
-  String policy = '';
-  String managed = '';
-  Map<String, RemotePeer> peers = {};
-  DateTime updatedAt = Const.minDate;
-
-  List<String> get peerIds {
-    return peers.keys.toList();
-  }
-
-  bool get isEmpty => peers.isEmpty;
-
-  // serialization
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'type': type,
-      'name': name,
-      'policy': policy,
-      'managed': managed,
-      'peers': peers,
-      'updatedAt': updatedAt.toIso8601String(),
-    };
-  }
-}
-
-class RemotePeer {
-  RemotePeer({required this.id});
-
-  RemotePeer.fromJson(Map<String, dynamic> parsedJson) {
-    id = parsedJson['id'];
-    revision = Revision.fromJson(parsedJson['revision']);
-    updatedAt = DateTime.parse(parsedJson['updatedAt']);
-  }
-
-  late String id;
-  DateTime updatedAt = Const.minDate;
-  Revision revision = Revision(seq: 1, hash: '', annotation: {});
-
-  // serialization
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'updatedAt': updatedAt.toIso8601String(),
-      'revision': revision,
-    };
-  }
-}
+final peerGroupsProvider = NotifierProvider<PeerGroupsNotifier, PeerGroups>(
+  PeerGroupsNotifier.new,
+);

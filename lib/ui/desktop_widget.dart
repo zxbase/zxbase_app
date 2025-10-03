@@ -21,11 +21,11 @@ class DesktopWidget extends ConsumerWidget {
     Widget widget;
 
     if (selectedTab == BarItem.vault.index) {
-      widget = (isNewVaultEntry || selectedVaultEntryId != '')
+      widget = (isNewVaultEntry || selectedVaultEntryId.isNotEmpty)
           ? VaultSecretWidget()
           : Container();
     } else if (selectedTab == BarItem.devices.index) {
-      if (selectedDeviceId == '') {
+      if (selectedDeviceId.isEmpty) {
         widget = Container();
       } else {
         widget = DeviceDetailsWidget(peerId: selectedDeviceId);

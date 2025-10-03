@@ -85,7 +85,7 @@ class DeviceWidget extends ConsumerWidget {
         syncState = SyncPeerState.supposedlySynced;
       } else {
         subtitle = fullHumanRevision(remotePeer.revision, ref);
-        syncState = (remotePeer.revision.hash == '')
+        syncState = remotePeer.revision.hash.isEmpty
             ? SyncPeerState.unknown
             : SyncPeerState.different;
       }

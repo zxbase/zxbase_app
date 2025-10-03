@@ -25,7 +25,7 @@ List<Widget> buildSettingsBarItem(String warning) {
 List<Widget> buildVaultBarItem(PeerGroup vaultGroup, String warning) {
   List<Widget> rv = <Widget>[const Icon(Icons.devices_rounded)];
 
-  if (vaultGroup.isEmpty || warning != '') {
+  if (vaultGroup.isEmpty || warning.isNotEmpty) {
     rv.add(const Positioned(top: 0.0, right: 0.0, child: RedBadge()));
   }
 

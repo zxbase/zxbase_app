@@ -6,7 +6,7 @@ import 'package:zxbase_vault/zxbase_vault.dart';
 
 String humanRevisionAuthor(Revision revision, WidgetRef ref) {
   String author;
-  if (revision.author == '') {
+  if (revision.author.isEmpty) {
     author = '';
   } else if (revision.author == ref.read(deviceProvider).id) {
     author = 'by me';

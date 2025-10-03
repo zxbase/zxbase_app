@@ -81,7 +81,7 @@ class Peer {
     channel = parsedJson['channel'];
     vaultChannel = parsedJson['vaultChannel'] ?? '';
     if (firstLoad) {
-      status = (channel == '') ? peerStatusPairing : peerStatusOffline;
+      status = channel.isEmpty ? peerStatusPairing : peerStatusOffline;
     } else {
       status = parsedJson['status'];
     }

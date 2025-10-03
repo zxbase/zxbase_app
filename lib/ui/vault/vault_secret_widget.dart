@@ -587,7 +587,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
 
         clearFields();
       } else {
-        if (entryId == '') {
+        if (entryId.isEmpty) {
           return Container();
         }
         UserVaultEntry? vaultEntry = ref

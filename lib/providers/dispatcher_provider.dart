@@ -132,7 +132,7 @@ class Dispatcher {
       }
     }
 
-    if (!rebuilt && offlinePeerId != '') {
+    if (!rebuilt && offlinePeerId.isNotEmpty) {
       // If there is at least one peer offline, trigger rebuild of peer list.
       // It is cheap, will not write to the disk.
       await ref
@@ -144,7 +144,7 @@ class Dispatcher {
   Future<void> pairPeer({required Peer peer}) async {
     RpsClient rps = ref.read(rpsProvider);
     String channelId = await rps.channel(peerId: peer.id, app: defaultApp);
-    if (channelId == '') {
+    if (channelId.isEmpty) {
       // the peer is not paired yet
       return;
     }
@@ -192,7 +192,7 @@ class Dispatcher {
     DateTime currTime = DateTime.now().toUtc();
 
     for (Peer peer in ref.read(peersProvider).peers.values) {
-      if (peer.channel == '') {
+      if (peer.channel.isEmpty) {
         continue;
       }
 

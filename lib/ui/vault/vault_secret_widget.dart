@@ -7,8 +7,8 @@ import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/ui/common/app_bar.dart';
 import 'package:zxbase_app/ui/common/dialogs.dart';
-import 'package:zxbase_app/ui/vault/password_generation_widget.dart';
 import 'package:zxbase_app/ui/common/scroll_column_widget.dart';
+import 'package:zxbase_app/ui/vault/password_generation_widget.dart';
 import 'package:zxbase_app/providers/green_vault/user_vault_provider.dart';
 import 'package:zxbase_app/providers/ui_providers.dart';
 import 'package:zxbase_app/providers/vault_sync_provider.dart';
@@ -332,8 +332,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
       ),
       _urlTextFields(),
       Focus(
-        // helps to get focus for keyboard shortcut
-        autofocus: true,
+        autofocus: true, // get keyboard focus
         child: ZXTextFormField(
           controller: _notesController,
           inputFormatters: [
@@ -404,13 +403,11 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
           validator: (value) {
             if (value!.length > Const.vaultUrlMaxLength) {
               return Const.urlLongWarn;
-            } else {
-              while (entry!.uris.length < i + 1) {
-                entry!.uris.add('');
-              }
-              entry!.uris[i] = value;
-              return null;
             }
+
+            // updating in validator saves writes to widget data entry
+            entry!.uris[i] = value;
+            return null;
           },
           onChanged: (text) {
             ref.read(isVaultEntryDirtyProvider.notifier).set(true);
@@ -428,6 +425,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
               onPressed: () {
                 ref.read(isVaultEntryDirtyProvider.notifier).set(true);
                 setState(() {
+                  entry!.uris.add('');
                   _urlControllers.add(TextEditingController());
                 });
               },
@@ -463,7 +461,7 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
 
   void _deleteUrl(int index) {
     setState(() {
-      if (!isNewEntry) entry!.uris.removeAt(index);
+      entry!.uris.removeAt(index);
       _urlControllers.removeAt(index);
     });
   }
@@ -571,12 +569,13 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Watch only entry Id, no new flag, to avoid scope problems and unnecessary rebuild.
+    // watch only entry Id, no new flag, to avoid scope problems and unnecessary rebuild
     String entryId = ref.watch(selectedVaultEntryProvider);
     isNewEntry = ref.read(newVaultEntryProvider);
 
-    if (isNewEntry) {
-      if (!ref.read(isVaultEntryDirtyProvider)) {
+    // update widget data entry only if it is not dirty
+    if (!ref.read(isVaultEntryDirtyProvider)) {
+      if (isNewEntry) {
         editMode = true;
         obscure = true;
 
@@ -587,32 +586,32 @@ class VaultSecretWidgetState extends ConsumerState<VaultSecretWidget> {
         entry = UserVaultEntry(id: newEntryId, type: typeLogin);
 
         clearFields();
-      }
-    } else {
-      if (entryId == '') {
-        return Container();
-      }
-      UserVaultEntry? vaultEntry = ref
-          .read(userVaultProvider.notifier)
-          .copyEntry(id: entryId);
-      if (vaultEntry == null) {
-        // The entry was deleted under our feet - by sync.
-        if (UI.isMobile) {
-          Navigator.pop(context);
+      } else {
+        if (entryId == '') {
+          return Container();
         }
-        // Don't update selected entry - it will cause scope issues.
-        return Container();
+        UserVaultEntry? vaultEntry = ref
+            .read(userVaultProvider.notifier)
+            .copyEntry(id: entryId);
+        if (vaultEntry == null) {
+          // The entry was deleted under our feet - by sync.
+          if (UI.isMobile) {
+            Navigator.pop(context);
+          }
+          // Don't update selected entry - it will cause scope issues.
+          return Container();
+        }
+        if (entry == null || entry!.id != entryId) {
+          // Load different entry.
+          editMode = false;
+          obscure = true;
+          setFields(vaultEntry);
+        } else if (!editMode) {
+          // Same entry was changed by sync.
+          setFields(vaultEntry);
+        }
+        entry = vaultEntry;
       }
-      if (entry == null || entry!.id != entryId) {
-        // Load different entry.
-        editMode = false;
-        obscure = true;
-        setFields(vaultEntry);
-      } else if (!editMode) {
-        // Same entry was changed by sync.
-        setFields(vaultEntry);
-      }
-      entry = vaultEntry;
     }
 
     return CallbackShortcuts(

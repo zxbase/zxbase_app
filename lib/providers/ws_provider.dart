@@ -7,6 +7,7 @@
 // Initialization is tested by launch provider test.
 
 import 'dart:developer';
+import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -29,7 +30,7 @@ class WebSocket {
   final Ref ref;
 
   // Stats.
-  DateTime lastErrorTime = DateTime.utc(-271821, 04, 20);
+  DateTime lastErrorTime = Const.minDate;
   String lastError = '';
 
   // Callbacks
@@ -42,8 +43,8 @@ class WebSocket {
   bool serverDisconnect = false;
 
   int hbLatency = -1;
-  DateTime hbReceived = DateTime.utc(-271821, 04, 20);
-  DateTime msgReceived = DateTime.utc(-271821, 04, 20);
+  DateTime hbReceived = Const.minDate;
+  DateTime msgReceived = Const.minDate;
 
   bool init({required String? token}) {
     log('Initialzing websocket.', name: component);

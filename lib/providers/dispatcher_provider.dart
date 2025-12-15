@@ -49,8 +49,7 @@ class Dispatcher {
   Duration frequency = const Duration(seconds: 60);
   JobState state = JobState.stopped;
 
-  // -271821-04-20 UTC
-  DateTime lastRunTime = DateTime.utc(-271821, 04, 20);
+  DateTime lastRunTime = Const.minDate;
   double lastRunDuration = 0.0;
 
   late Timer _fastWorkertimer;

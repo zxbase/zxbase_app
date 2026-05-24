@@ -104,7 +104,7 @@ class DevicesWidget extends ConsumerWidget {
                         color: secondaryColor,
                       ),
                     ),
-                    syncWarn == ''
+                    syncWarn.isEmpty
                         ? Container()
                         : Text(
                             Const.vaultSyncWarn,

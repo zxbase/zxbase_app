@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/core/rv.dart';
 import 'package:zxbase_app/providers/green_vault/green_vault_provider.dart';
 import 'package:zxbase_model/zxbase_model.dart';
@@ -81,7 +82,7 @@ class Peer {
     channel = parsedJson['channel'];
     vaultChannel = parsedJson['vaultChannel'] ?? '';
     if (firstLoad) {
-      status = (channel == '') ? peerStatusPairing : peerStatusOffline;
+      status = channel.isEmpty ? peerStatusPairing : peerStatusOffline;
     } else {
       status = parsedJson['status'];
     }
@@ -100,9 +101,8 @@ class Peer {
 
   String status = peerStatusCreated;
 
-  // -271821-04-20 UTC
-  DateTime lastSeen = DateTime.utc(-271821, 04, 20);
-  bool get everSeen => (lastSeen != DateTime.utc(-271821, 04, 20));
+  DateTime lastSeen = Const.minDate;
+  bool get everSeen => (lastSeen != Const.minDate);
 
   // serialization
   Map<String, dynamic> toJson() {

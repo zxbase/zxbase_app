@@ -16,6 +16,7 @@ import 'package:zxbase_app/core/channel/channel_message.dart';
 import 'package:zxbase_app/core/channel/connection_helper.dart';
 import 'package:zxbase_app/core/channel/handshake.dart';
 import 'package:zxbase_app/core/channel/signaling_message.dart';
+import 'package:zxbase_app/core/const.dart';
 import 'package:zxbase_app/core/log.dart';
 import 'package:zxbase_app/providers/config_provider.dart';
 import 'package:zxbase_app/providers/green_vault/device_provider.dart';
@@ -48,12 +49,12 @@ class Connection {
     return isIdleSince(stateUpdated);
   }
 
-  DateTime iceStateUpdated = DateTime.utc(-271821, 04, 20);
+  DateTime iceStateUpdated = Const.minDate;
   bool get iceIdle {
     return isIdleSince(iceStateUpdated);
   }
 
-  DateTime hbReceived = DateTime.utc(-271821, 04, 20);
+  DateTime hbReceived = Const.minDate;
 
   bool defaultChannelInitialized = false;
   late RTCDataChannel defaultChannel;

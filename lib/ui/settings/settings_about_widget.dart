@@ -250,7 +250,7 @@ class SettingsAboutWidgetState extends ConsumerState<SettingsAboutWidget> {
     WebSocket ws = ref.read(wsProvider);
     dump +=
         '\nWS connected:\t${ws.socket.connected}\nWS ID:\t${ws.socket.id}\n';
-    if (ws.lastError != '') {
+    if (ws.lastError.isNotEmpty) {
       dump += 'Last error:\t${ws.lastError}:${ws.lastErrorTime}\n';
     }
 

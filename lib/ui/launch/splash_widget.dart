@@ -21,12 +21,10 @@ class SplashWidget extends ConsumerStatefulWidget {
 }
 
 class _SplashWidgetState extends ConsumerState<SplashWidget> {
-  late Config confProvider;
-
   void _init() async {
     log('Executing init sequence.', name: component);
 
-    await confProvider.init();
+    await ref.read(configProvider).init();
     log('Configuration initialized.', name: component);
 
     await ref.read(blueVaultProvider.notifier).init();
@@ -41,7 +39,6 @@ class _SplashWidgetState extends ConsumerState<SplashWidget> {
   @override
   void initState() {
     super.initState();
-    confProvider = ref.read(configProvider);
     _init();
   }
 

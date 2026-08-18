@@ -1,34 +1,15 @@
 PODS:
-  - flutter_webrtc (1.4.0):
-    - FlutterMacOS
-    - WebRTC-SDK (= 144.7559.01)
   - FlutterMacOS (1.0.0)
-  - url_launcher_macos (0.0.1):
-    - FlutterMacOS
-  - WebRTC-SDK (144.7559.01)
 
 DEPENDENCIES:
-  - flutter_webrtc (from `Flutter/ephemeral/.symlinks/plugins/flutter_webrtc/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
-
-SPEC REPOS:
-  trunk:
-    - WebRTC-SDK
 
 EXTERNAL SOURCES:
-  flutter_webrtc:
-    :path: Flutter/ephemeral/.symlinks/plugins/flutter_webrtc/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
-  url_launcher_macos:
-    :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
-  flutter_webrtc: f1fb1a00c6080461bb2bc6caa5b93d07ddb68466
   FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
-  url_launcher_macos: f87a979182d112f911de6820aefddaf56ee9fbfd
-  WebRTC-SDK: ab9b5319e458c2bfebdc92b3600740da35d5630d
 
 PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
 

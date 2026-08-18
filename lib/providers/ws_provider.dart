@@ -46,7 +46,7 @@ class WebSocket {
   DateTime hbReceived = Const.minDate;
   DateTime msgReceived = Const.minDate;
 
-  bool init({required String? token}) {
+  bool init({required String token}) {
     log('Initialzing websocket.', name: component);
 
     socket = io.io(

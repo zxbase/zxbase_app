@@ -238,12 +238,12 @@ class SettingsAboutWidgetState extends ConsumerState<SettingsAboutWidget> {
 
     // token
     RpsClient rps = ref.read(rpsProvider);
-    String tokenRcv = (rps.token == null)
+    String tokenRcv = (rps.tokenStr.isEmpty)
         ? ''
         : HumanTime.preciseTime(rps.tokenDateTime.toLocal());
-    String tokenExp = (rps.token == null)
+    String tokenExp = (rps.tokenStr.isEmpty)
         ? ''
-        : HumanTime.preciseTime(rps.token!.exp.toLocal());
+        : HumanTime.preciseTime(rps.token.exp.toLocal());
     dump += 'Token received:\t$tokenRcv\nToken expires:\t$tokenExp\n';
 
     // websocket

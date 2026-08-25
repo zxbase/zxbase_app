@@ -46,7 +46,7 @@ class WebSocket {
   DateTime hbReceived = Const.minDate;
   DateTime msgReceived = Const.minDate;
 
-  bool init({required String? token}) {
+  bool init({required String token}) {
     log('Initialzing websocket.', name: component);
 
     socket = io.io(
@@ -162,21 +162,21 @@ class WebSocket {
     state = WsState.connecting;
     if (socket.connected) {
       log('Socket connected, reconnect.', name: component);
-      // that's a recommended way to update extra headers
-      // https://pub.dev/packages/socket_io_client
-      socket.io
-        ..disconnect()
-        ..connect();
+      // Manager.disconnect() closes the engine but does not reopen the Socket.
+      socket.io.disconnect();
     } else {
       log('Socket already disconnected, connect.', name: component);
       // disconnecting helps to kick stale socket
       socket.disconnect();
-      socket.connect();
     }
+    socket.connect();
   }
 
-  void updateToken({required String? token}) {
-    socket.io.options?['extraHeaders'] = {'Authorization': token};
+  void updateToken({required String token}) {
+    // WebSocketTransport.doOpen() casts extraHeaders to Map<String, String>.
+    socket.io.options?['extraHeaders'] = <String, String>{
+      'Authorization': token,
+    };
     reconnect();
   }
 }

@@ -69,10 +69,10 @@ class Dispatcher {
 
   Future<bool> _needsNewToken() async {
     RpsClient rps = ref.read(rpsProvider);
-    if (rps.token == null) {
+    if (rps.tokenStr.isEmpty) {
       return true; // network was not available on login
     }
-    Token token = rps.token!;
+    Token token = rps.token;
     DateTime tokenRefreshTime = token.exp.subtract(
       const Duration(minutes: tokenRefreshThreshold),
     );

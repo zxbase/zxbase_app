@@ -1,34 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_webrtc (1.4.0):
-    - Flutter
-    - WebRTC-SDK (= 144.7559.01)
-  - url_launcher_ios (0.0.1):
-    - Flutter
-  - WebRTC-SDK (144.7559.01)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
-  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-
-SPEC REPOS:
-  trunk:
-    - WebRTC-SDK
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_webrtc:
-    :path: ".symlinks/plugins/flutter_webrtc/ios"
-  url_launcher_ios:
-    :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_webrtc: ec91d94b484ad49cf191ef93413f64a40ffd3b4c
-  url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
-  WebRTC-SDK: ab9b5319e458c2bfebdc92b3600740da35d5630d
 
 PODFILE CHECKSUM: ce2a4dd764e1c7aeed6a7cdc5e61d092b6dc6d32
 

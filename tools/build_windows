@@ -1,0 +1,2 @@
+flutter build windows --dart-define-from-file=.env
+dart run msix:create --build-windows=false --store

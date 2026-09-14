@@ -1,0 +1,4 @@
+rm -rf build
+flutter clean
+flutter build linux --release --dart-define-from-file=.env
+snapcraft --use-lxd

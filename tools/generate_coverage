@@ -1,4 +1,4 @@
 rm -rf coverage
-tool/test
+tools/test
 genhtml coverage/lcov.info --no-function-coverage -o coverage
 open coverage/index.html
